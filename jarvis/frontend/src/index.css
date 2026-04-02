@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+body {
+  background-color: #050510;
+  color: white;
+  overflow: hidden;
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0,150,255,0.15), transparent);
+  pointer-events: none;
+}
+
+button {
+  box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+}
+
+.glow:hover {
+  box-shadow: 0 0 30px #00bfff;
+  transform: scale(1.05);
+  transition: 0.3s;
+}

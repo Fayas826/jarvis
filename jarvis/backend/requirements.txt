@@ -1,0 +1,13 @@
+openai
+speechrecognition
+pyttsx3
+pyaudio
+python-dotenv
+crewai
+langchain
+chromadb
+sentence-transformers
+requests
+python-telegram-bot
+fastapi
+uvicorn

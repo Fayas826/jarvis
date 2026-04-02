@@ -1,0 +1,5 @@
+mkdir "c:\jarvis AI\jarvis\frontend\src\assets"
+copy "C:\Users\Asus\.gemini\antigravity\brain\65ee9d46-f5e3-44cb-985d-953b2d53f85f\media__1775121739951.jpg" "c:\jarvis AI\jarvis\frontend\src\assets\reactor.jpg"
+copy "C:\Users\Asus\.gemini\antigravity\brain\65ee9d46-f5e3-44cb-985d-953b2d53f85f\media__1775121739752.jpg" "c:\jarvis AI\jarvis\frontend\src\assets\grid.jpg"
+copy "C:\Users\Asus\.gemini\antigravity\brain\65ee9d46-f5e3-44cb-985d-953b2d53f85f\media__1775121739952.jpg" "c:\jarvis AI\jarvis\frontend\src\assets\hud.jpg"
+copy "C:\Users\Asus\.gemini\antigravity\brain\65ee9d46-f5e3-44cb-985d-953b2d53f85f\space_bg_1775115383473.png" "c:\jarvis AI\jarvis\frontend\src\assets\space.jpg"
