@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    command: ["npm", "run", "dev"]
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - MONGO_URI=mongodb://jarvis_admin:StrongMongoPassword2026@mongo:27017/jarvis?authSource=admin
+      - REDIS_URL=redis://:jarvis_redis_secure_2026@redis:6379
+      - API_KEY=jarvis_secret_key_2026
+      - GITHUB_TOKEN=github_pat_ROTATED_PENDING_NEW_KEY
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./generated:/app/generated
+    depends_on:
+      - mongo
+      - redis
+
+  worker:
+    build: .
+    command: ["npm", "run", "worker"]
+    environment:
+      - MONGO_URI=mongodb://jarvis_admin:StrongMongoPassword2026@mongo:27017/jarvis?authSource=admin
+      - REDIS_URL=redis://:jarvis_redis_secure_2026@redis:6379
+      - API_KEY=jarvis_secret_key_2026
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./generated:/app/generated
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=jarvis_admin
+      - MONGO_INITDB_ROOT_PASSWORD=StrongMongoPassword2026
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass jarvis_redis_secure_2026
+
+volumes:
+  mongo-data:

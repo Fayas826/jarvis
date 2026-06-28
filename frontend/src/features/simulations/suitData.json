@@ -1,0 +1,37 @@
+[
+    {
+        "id": "MK_LXXXV",
+        "name": "MARK LXXXV [NANO_PRIME]",
+        "description": "The Zenith. Nano-composite construction. Absolute energy manipulation. Self-assembling molecular lattice architecture.",
+        "specs": { "integrity": "100%", "power": "100%", "weapons": "NANO_FORGE" },
+        "wireframe": "M 100 50 L 150 150 L 100 250 L 50 150 Z M 100 50 L 100 250 M 50 150 L 150 150 M 100 50 L 125 100 L 150 150 M 100 50 L 75 100 L 50 150 M 100 250 L 125 200 L 150 150 M 100 250 L 75 200 L 50 150 M 50 150 L 75 125 L 100 50 M 50 150 L 75 175 L 100 250 M 150 150 L 125 125 L 100 50 M 150 150 L 125 175 L 100 250 M 100 80 L 120 150 L 100 220 L 80 150 Z M 100 110 L 110 150 L 100 190 L 90 150 Z"
+    },
+    {
+        "id": "MK_III",
+        "name": "MARK III",
+        "description": "Gold-Titanium Alloy. Advanced flight stabilization. First flight-ready weapon system.",
+        "specs": { "integrity": "85%", "power": "68%", "weapons": "REPU_V2" },
+        "wireframe": "M 70 120 L 130 120 L 110 250 L 90 250 Z M 80 110 L 120 110 L 100 50 Z"
+    },
+    {
+        "id": "MK_VII",
+        "name": "MARK VII",
+        "description": "Advanced Combat Suit. Laser focus. Multi-stage deployment capability.",
+        "specs": { "integrity": "92%", "power": "84%", "weapons": "LASER_STRIKE" },
+        "wireframe": "M 60 150 L 140 150 L 120 300 L 80 300 Z M 100 150 L 100 50 M 70 140 L 130 140"
+    },
+    {
+        "id": "MK_XLII",
+        "name": "MARK XLII",
+        "description": "Autonomous Prehensile Propulsion. Prehensile armor parts follow the neural link.",
+        "specs": { "integrity": "74%", "power": "91%", "weapons": "PREHEN_LINK" },
+        "wireframe": "M 40 180 L 160 180 M 100 180 L 100 20 L 50 80 M 100 20 L 150 80"
+    },
+    {
+        "id": "MK_I",
+        "name": "MARK I [LEGACY]",
+        "description": "The Origin. Built in extreme conditions. Heavy iron-plate armor. Flame-throwers. Archival classification.",
+        "specs": { "integrity": "98%", "power": "12%", "weapons": "FLAME_CORE" },
+        "wireframe": "M 50 100 L 150 100 L 150 200 L 50 200 Z M 70 80 L 130 80 L 100 20 Z"
+    }
+]

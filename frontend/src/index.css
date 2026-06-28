@@ -1,0 +1,410 @@
+@import "tailwindcss";
+
+/* 🪐 O.M.E.G.A. ZENITH: SOVEREIGN DESIGN LANGUAGE (DOMAIN 1) */
+:root {
+  --stark-primary: #0022ff;    /* Signature Deep Blue */
+  --stark-secondary: #ffb900;  /* Interaction Gold */
+  --stark-threat: #ff2828;     /* Warning Crimson */
+  --stark-memory: #b300ff;     /* Sovereign Purple */
+  --stark-cyan: #00f0ff;       /* Neural Zenith */
+  --stark-bg: #00050a;
+  
+  --stark-glow: var(--stark-cyan);
+  --stark-glow-rgb: 0, 240, 255;
+  
+  --font-main: 'Outfit', sans-serif;
+  --font-mono: 'Space Mono', 'Fira Code', monospace;
+  
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-stark: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+body {
+  background: radial-gradient(circle at 50% 50%, var(--stark-bg) 0%, #000000 100%);
+  color: #e0faff;
+  overflow: hidden;
+  font-family: var(--font-main);
+  cursor: none !important; 
+  /* 🧪 PRISM-SHIFT: SUB-PERCEPTUAL COLOR EVOLUTION */
+  animation: prism-shift 24s infinite alternate ease-in-out;
+}
+
+@keyframes prism-shift {
+  0% { filter: hue-rotate(0deg) saturate(1); }
+  50% { filter: hue-rotate(5deg) saturate(1.1); }
+  100% { filter: hue-rotate(-5deg) saturate(1); }
+}
+
+/* 🌌 ZENITH_DEPTH: VOLUMETRIC LIGHT & NEBULA FILAMENT */
+body::before {
+  content: "";
+  position: absolute;
+  inset: -100px;
+  background:
+    radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.12), transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(50, 0, 255, 0.1), transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(0, 10, 20, 0.9), transparent 80%);
+  filter: blur(80px);
+  z-index: -2;
+  animation: nebula-float 40s infinite linear;
+}
+
+@keyframes nebula-float {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* 💠 ZENITH_PARTICLE_FIELD */
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px, 120px 120px;
+  pointer-events: none;
+  opacity: 0.2;
+  z-index: -1;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+}
+
+/* Cinematic Scanline Overlay (Refined for Parity) */
+body::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), 
+              linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.01));
+  z-index: 1000;
+  background-size: 100% 3px, 2px 100%;
+  pointer-events: none;
+  opacity: 0.12; /* Exact Parity Spec */
+}
+
+/* 🧊 O.M.E.G.A. STARK_PANEL: ULTIMATE_GLASSMORPHISM */
+.stark-panel {
+  position: relative;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.6) 100%);
+  backdrop-filter: blur(40px) saturate(180%) contrast(110%);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  box-shadow: 
+      0 8px 32px 0 rgba(0, 0, 0, 0.8),
+      inset 0 0 80px rgba(0, 240, 255, 0.05);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.stark-panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -150%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.1), transparent);
+  transform: skewX(-35deg);
+  animation: glass-shimmer 12s infinite linear;
+}
+
+/* ✨ STARK_GLOW: Cinematic Bloom Illusion */
+.stark-glow-cyan { filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.4)); }
+.stark-glow-amber { filter: drop-shadow(0 0 15px rgba(255, 185, 0, 0.4)); }
+.stark-glow-red { filter: drop-shadow(0 0 15px rgba(255, 40, 40, 0.4)); }
+.stark-glow-purple { filter: drop-shadow(0 0 15px rgba(179, 0, 255, 0.4)); }
+
+/* 🧬 SOVEREIGN_ICON_LANGUAGE */
+.stark-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* ⚡ ENERGY_PULSE: Synced with Neural Rhythm */
+@keyframes energy-pulse {
+  0% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+  100% { opacity: 0.4; transform: scale(1); }
+}
+.energy-pulse { animation: energy-pulse 4s infinite ease-in-out; }
+
+/* 🌈 CHROMATIC_ABERRATION_LAYER */
+.zenith-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 15px rgba(255, 0, 0, 0.05), inset 0 0 15px rgba(0, 0, 255, 0.05);
+  pointer-events: none;
+  mix-blend-mode: color-dodge;
+  opacity: 0.4;
+}
+
+/* ⚡ ZENITH_PRISM_HEADER */
+.zenith-prism-header {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #00f0ff, #00f0ff, transparent);
+  box-shadow: 0 0 15px #00f0ff;
+  opacity: 0.8;
+}
+
+/* 🧊 ZENITH-WIDGET: ORGANIC_HOLOGRAPHIC_PROFILING */
+.stark-widget {
+  border-radius: 2.5rem;
+  clip-path: polygon(5% 0, 95% 0, 100% 15%, 100% 85%, 95% 100%, 5% 100%, 0 85%, 0 15%);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stark-widget:hover {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0);
+  border-radius: 1rem;
+}
+
+@keyframes glass-shimmer {
+  0% { left: -150%; }
+  15% { left: 250%; }
+  100% { left: 250%; }
+}
+
+@keyframes holo-flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  33% { opacity: 0.97; filter: brightness(1.05); }
+  66% { opacity: 0.99; filter: brightness(0.95); }
+}
+
+@keyframes tactical-jitter {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-0.5px, 0.5px); }
+  50% { transform: translate(0.5px, -0.5px); }
+  75% { transform: translate(-0.5px, -0.5px); }
+  100% { transform: translate(0, 0); }
+}
+
+.holo-effect {
+  animation: holo-flicker 6s infinite ease-in-out; 
+}
+
+.tactical-jitter {
+  animation: tactical-jitter 0.15s infinite linear;
+}
+
+/* 🪐 O.M.E.G.A. XXXIX: VOLUMETRIC ENERGY CORE */
+.core-container {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  perspective: 1200px;
+}
+
+.core-outer,
+.core-main,
+.core-inner {
+  position: absolute;
+  inset: -25px; /* Sprawl Expansion */
+  border-radius: 50%;
+  pointer-events: none;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.core-outer { z-index: 1; transform: translateZ(-60px); }
+.core-main { z-index: 2; transform: translateZ(0); }
+.core-inner { z-index: 3; transform: translateZ(60px); }
+
+.core-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  letter-spacing: 12px;
+  font-size: 16px;
+  font-weight: 900;
+  opacity: 0.85;
+  z-index: 10;
+  text-shadow: 0 0 25px rgba(255,255,255,0.3);
+  pointer-events: none;
+}
+
+/* Custom Scrollbar for Stark OS */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: rgba(0, 240, 255, 0.05); }
+::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.2); border-radius: 10px; }
+
+.system-log {
+  font-family: monospace;
+  color: rgba(0, 255, 255, 0.6);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+/* Position driven by Framer Motion x/y on #root portal — avoid CSS transform clash */
+#custom-cursor {
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid rgba(0, 255, 255, 0.4);
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483647;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#custom-cursor::after {
+  content: "";
+  width: 4px;
+  height: 4px;
+  background: cyan;
+  border-radius: 50%;
+  box-shadow: 0 0 10px cyan;
+}
+
+#custom-cursor::before {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  border: 1px dashed rgba(0, 255, 255, 0.2);
+  border-radius: 50%;
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.glow-cyan { box-shadow: 0 0 20px rgba(0, 240, 255, 0.15); }
+.glow-amber { filter: drop-shadow(0 0 10px rgba(255, 185, 0, 0.4)); }
+  /* 🧬 O.M.E.G.A. TIER_10: MOLECULAR_ASSEMBLY_TOKENS */
+  .molecular-blur {
+    filter: blur(20px);
+    opacity: 0;
+    transform: scale(1.2) translateY(-20px);
+    animation: molecular-converge 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes molecular-converge {
+    0% { filter: blur(20px); opacity: 0; transform: scale(1.0) translateY(0); }
+    100% { filter: blur(0); opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .resonance-pulse {
+    animation: resonance-pulse 2.4s infinite alternate ease-in-out;
+  }
+
+  @keyframes resonance-pulse {
+    0% { text-shadow: 0 0 5px rgba(0, 240, 255, 0.2); transform: scale(1); }
+    100% { text-shadow: 0 0 25px rgba(0, 240, 255, 0.8); transform: scale(1.02); }
+  }
+
+  /* 🎯 RESTORED UI PANEL MODULES (1:1 PARITY) */
+.panel-right {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 105;
+  width: 280px;
+  color: rgba(0,255,255,0.7);
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.panel-right .title {
+  margin-bottom: 20px;
+  letter-spacing: 3px;
+}
+
+.panel-right .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.panel-right .bar {
+  width: 80px;
+  height: 2px;
+  background: rgba(0,255,255,0.1);
+}
+
+.panel-right .bar div {
+  height: 100%;
+  background: rgba(0,255,255,0.8);
+}
+
+.panel-left {
+  position: absolute;
+  left: 80px;
+  top: 200px;
+  color: rgba(0,255,255,0.6);
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.panel-bottom {
+  position: absolute;
+  left: 80px;
+  bottom: 80px;
+  color: rgba(0,255,255,0.6);
+  font-family: monospace;
+  font-size: 11px;
+}
+
+/* .top-metrics: position is now managed by the right-stack flex container in App.jsx */
+.top-metrics {
+  position: relative;
+  width: 100%;
+  z-index: 100;
+}
+
+/* 📱 O.M.E.G.A. LIX: MOBILE_RESONANCE_OVERRIDE */
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto !important;
+    cursor: auto !important;
+    perspective: none;
+  }
+
+  .zenith-glass {
+    backdrop-filter: blur(20px); /* Lighter blur for mobile performance */
+  }
+
+  /* ⚖️ PANEL_STACKING_ENGINE */
+  .panel-left, .panel-right, .panel-bottom, .top-metrics {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 90% !important;
+    margin: 20px auto !important;
+    padding-bottom: 40px;
+  }
+
+  .core-container {
+    width: 280px !important;
+    height: 280px !important;
+    margin: 40px auto;
+  }
+
+  #custom-cursor {
+    display: none !important;
+  }
+
+  .zenith-glass::before {
+    animation: none; /* Disable expensive shimmer on mobile */
+  }
+}
