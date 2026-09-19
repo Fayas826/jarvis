@@ -20,7 +20,7 @@ const INTENT_FRAGMENTS = [
     "ZENITH_AUTH_VERIFIED",
     "INTERCEPT_VECTOR_ALPHA_9",
     "QUANTUM_ENCRYPTION_ACTIVE",
-    "STARK_CORE_HANDSHAKE_READY"
+    "OMEGA_CORE_HANDSHAKE_READY"
 ];
 
 const seededValue = (index, seed = 61) => {
@@ -120,7 +120,7 @@ export default function NeuralIntercept({ status, mode, focusValue }) {
                 <div className="flex items-center gap-3">
                     <div className={`w-2 h-2 rounded-full animate-ping ${isIntercepted ? 'bg-red-500' : 'bg-cyan-500'}`} />
                     <span className={`font-mono text-[11px] font-black tracking-[0.5em] uppercase ${color} ${focusValue > 0.5 ? 'brightness-200' : ''}`}>
-                        {isIntercepted ? "NEURAL_SIGNAL_INTERCEPTED" : "STARK_NEURAL_UPLINK"}
+                        {isIntercepted ? "NEURAL_SIGNAL_INTERCEPTED" : "OMEGA_NEURAL_UPLINK"}
                     </span>
                 </div>
             </motion.div>

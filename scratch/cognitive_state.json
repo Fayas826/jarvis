@@ -1,0 +1,32 @@
+{
+  "current_objective": "Launch calculator application and wait",
+  "active_subgoal_id": "TASK-002",
+  "completed_subgoals": [
+    {
+      "id": "TASK-001",
+      "goal": "Verify screen capture active state",
+      "status": "COMPLETED",
+      "completed_at": 1787381013.1389174
+    }
+  ],
+  "pending_subgoals": [
+    {
+      "id": "TASK-002",
+      "goal": "Launch sandbox Calculator application",
+      "status": "PENDING"
+    }
+  ],
+  "failed_attempts": {
+    "TASK-002": 1
+  },
+  "assumptions": {},
+  "confidence_score": 0.85,
+  "history": [
+    "Goal initialized: Launch calculator application and wait",
+    "Active subgoal set to: TASK-001",
+    "Subgoal completed: TASK-001",
+    "Active subgoal set to: TASK-002",
+    "Subgoal failure: TASK-002 (Attempt 1): Retry attempt 1/2."
+  ],
+  "last_updated": 1787381079.322263
+}

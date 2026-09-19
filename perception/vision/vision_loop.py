@@ -12,12 +12,16 @@ from core.reliability.system_logger import system_logger
 
 try:
     import pyautogui
-except Exception:
+except Exception as e:
+    from core.reliability.system_logger import system_logger
+    system_logger.log('ERROR', 'vision_loop', f'Unhandled exception: {e}')
     pyautogui = None
 
 try:
     from google import genai
-except Exception:
+except Exception as e:
+    from core.reliability.system_logger import system_logger
+    system_logger.log('ERROR', 'vision_loop', f'Unhandled exception: {e}')
     genai = None
 
 load_dotenv()

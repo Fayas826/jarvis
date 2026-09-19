@@ -6,7 +6,7 @@ const seededValue = (index, seed = 42) => {
   return value - Math.floor(value);
 };
 
-export default function PersonalityHUD({ status = "idle", mode = "default" }) {
+export default function PersonalityHUD({ status = "idle", mode: _mode = "default" }) {
   // 🧠 NEURAL_NODE_GENERATOR: Visualizing Behavioral Logic
   const nodes = Array.from({ length: 12 }).map((_, i) => ({
     id: i,

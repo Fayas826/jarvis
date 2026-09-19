@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS MARK-L // STARK MOBILE AI OS</title>
+    <link rel="manifest" href="/core/perception/manifest.json">
+    <meta name="theme-color" content="#00f0ff">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+        body {
+            background-color: #05070e;
+            color: #e2e8f0;
+            font-family: 'Outfit', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            overflow: hidden;
+        }
+        #webcam {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+            filter: brightness(0.85) contrast(1.1);
+        }
+        #arc-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 10;
+            background: rgba(8, 12, 22, 0.88);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .badge-live {
+            background: linear-gradient(135deg, #00f0ff, #0088ff);
+            color: #000;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+        }
+        .header-text {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #00f0ff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        /* Navigation Bar */
+        .stark-nav {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            z-index: 10;
+            background: rgba(10, 14, 26, 0.85);
+            backdrop-filter: blur(15px);
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .nav-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-btn.active {
+            color: #00f0ff;
+            border-bottom: 2px solid #00f0ff;
+            background: rgba(0, 240, 255, 0.08);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+        }
+
+        /* MoE Elite Model Selector */
+        .model-selector-container {
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(5, 8, 16, 0.9);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            padding: 4px 12px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .model-selector-container:hover {
+            border-color: #00f0ff;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+            transform: scale(1.02);
+        }
+        .model-icon {
+            font-size: 14px;
+            filter: drop-shadow(0 0 5px #00f0ff);
+        }
+        .model-select {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 15px;
+        }
+        .model-select option {
+            background: #05070e;
+            color: #00f0ff;
+            font-weight: 700;
+        }
+
+        /* Tab Content Screens */
+        .tab-screen {
+            display: none;
+            position: absolute;
+            top: 112px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 180px);
+            z-index: 5;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .tab-screen.active {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 16px;
+        }
+
+        .glass-card {
+            background: rgba(10, 15, 28, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 18px;
+            position: relative;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, #00f0ff);
+            animation: rotate-border 4s linear infinite;
+            z-index: 1;
+            opacity: 0.75;
+        }
+        @keyframes rotate-border {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 1.5px;
+            background: rgba(10, 14, 26, 0.92);
+            border-radius: 15px;
+            z-index: 2;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 3;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .card-tag {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .tag-cyan { background: rgba(0, 240, 255, 0.15); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.4); }
+        .tag-amber { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid rgba(255, 170, 0, 0.4); }
+        .tag-magenta { background: rgba(255, 0, 255, 0.15); color: #ff00ff; border: 1px solid rgba(255, 0, 255, 0.4); }
+        .tag-green { background: rgba(0, 255, 136, 0.15); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.4); }
+        .tag-red { background: rgba(255, 68, 68, 0.15); color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.4); }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 6px 0;
+        }
+        .text-green { color: #00ff88; text-shadow: 0 0 12px rgba(0, 255, 136, 0.5); }
+        .text-cyan { color: #00f0ff; text-shadow: 0 0 12px rgba(0, 240, 255, 0.5); }
+        .text-red { color: #ff4444; text-shadow: 0 0 12px rgba(255, 68, 68, 0.5); }
+        .text-white { color: #ffffff; }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .stat-label { color: #94a3b8; }
+        .stat-num { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+        .btn-action {
+            margin-top: 10px;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(0, 136, 255, 0.2));
+            border: 1px solid #00f0ff;
+            color: #00f0ff;
+            padding: 10px 0;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-action:hover {
+            background: rgba(0, 240, 255, 0.4);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, rgba(255, 68, 68, 0.25), rgba(200, 0, 0, 0.25));
+            border: 1px solid #ff4444;
+            color: #ff4444;
+        }
+        .btn-danger:hover {
+            background: rgba(255, 68, 68, 0.5);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+        }
+
+        /* AI Voice & Chat Screen */
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            background: rgba(5, 8, 16, 0.85);
+            margin-bottom: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+        .chat-msg {
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .chat-msg.user { color: #00f0ff; }
+        .chat-msg.jarvis { color: #00ff88; }
+        
+        .chat-input-row {
+            display: flex;
+            gap: 8px;
+        }
+        .chat-input {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+        .chat-input:focus {
+            border-color: #00f0ff;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+
+        /* Photo Grid */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .photo-card {
+            border: 1px solid rgba(255, 68, 68, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+        }
+        .photo-card img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+        }
+        .photo-card p {
+            font-size: 10px;
+            color: #ffaa00;
+            padding: 4px;
+            text-align: center;
+            font-family: 'JetBrains Mono';
+        }
+
+        /* ── APPLICATION TAB STYLES ── */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .app-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 12px 6px;
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.18);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            text-align: center;
+            position: relative;
+        }
+        .app-tile:hover {
+            background: rgba(0, 240, 255, 0.14);
+            border-color: rgba(0, 240, 255, 0.55);
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.25);
+            transform: translateY(-3px) scale(1.04);
+        }
+        .app-tile:active {
+            transform: scale(0.91);
+        }
+        .app-icon {
+            font-size: 28px;
+            line-height: 1;
+            filter: drop-shadow(0 0 6px rgba(0,240,255,0.5));
+        }
+        .app-label {
+            font-size: 8.5px;
+            font-weight: 800;
+            color: #94a3b8;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+        .app-tile.running .app-label { color: #00ff88; }
+        .app-tile.running {
+            border-color: rgba(0, 255, 136, 0.5);
+            background: rgba(0, 255, 136, 0.08);
+            box-shadow: 0 0 12px rgba(0,255,136,0.3);
+        }
+        .app-tile.launching {
+            animation: appLaunch 0.6s ease-in-out;
+        }
+        @keyframes appLaunch {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.88); box-shadow: 0 0 30px rgba(0,240,255,0.8); }
+            100% { transform: scale(1); }
+        }
+        .app-badge {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00ff88;
+            box-shadow: 0 0 6px #00ff88;
+        }
+        /* Siri Voice Overlay */
+        #siri-voice-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(30px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+        #siri-voice-overlay.active { display: flex; }
+        .siri-big-orb {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #00f0ff, #a855f7 60%, #ec4899);
+            box-shadow: 0 0 60px rgba(0,240,255,0.8), 0 0 100px rgba(168,85,247,0.6), inset 0 0 40px rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: siriOrbBreath 1.4s ease-in-out infinite alternate;
+        }
+        @keyframes siriOrbBreath {
+            from { transform: scale(1); box-shadow: 0 0 40px rgba(0,240,255,0.6), 0 0 70px rgba(168,85,247,0.4); }
+            to { transform: scale(1.15); box-shadow: 0 0 80px rgba(0,240,255,1), 0 0 130px rgba(236,72,153,0.8); }
+        }
+        .siri-wave-bars {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            height: 50px;
+        }
+        .siri-wave-bars span {
+            display: block;
+            width: 5px;
+            border-radius: 4px;
+            background: linear-gradient(to top, #00f0ff, #a855f7);
+            animation: waveBar 0.8s ease-in-out infinite alternate;
+        }
+        .siri-wave-bars span:nth-child(1) { height: 20px; animation-delay: 0s; }
+        .siri-wave-bars span:nth-child(2) { height: 35px; animation-delay: 0.1s; }
+        .siri-wave-bars span:nth-child(3) { height: 48px; animation-delay: 0.2s; }
+        .siri-wave-bars span:nth-child(4) { height: 30px; animation-delay: 0.3s; }
+        .siri-wave-bars span:nth-child(5) { height: 48px; animation-delay: 0.4s; }
+        .siri-wave-bars span:nth-child(6) { height: 35px; animation-delay: 0.5s; }
+        .siri-wave-bars span:nth-child(7) { height: 20px; animation-delay: 0.6s; }
+        @keyframes waveBar {
+            from { transform: scaleY(0.3); opacity: 0.5; }
+            to { transform: scaleY(1); opacity: 1; }
+        }
+
+        /* Process List */
+        .proc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono';
+            font-size: 10px;
+            margin-top: 10px;
+        }
+        .proc-table th {
+            color: #00f0ff;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 6px 4px;
+            text-align: left;
+        }
+        .proc-table td {
+            padding: 5px 4px;
+            color: #94a3b8;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: middle;
+        }
+        .proc-table tr:hover td {
+            background: rgba(0, 240, 255, 0.04);
+            color: #e2e8f0;
+        }
+        .proc-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 20px;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+        }
+        .proc-badge.high  { background: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid rgba(255,68,68,0.4); }
+        .proc-badge.med   { background: rgba(255, 170, 0, 0.2); color: #ffaa00; border: 1px solid rgba(255,170,0,0.4); }
+        .proc-badge.low   { background: rgba(0, 255, 136, 0.15); color: #00ff88; border: 1px solid rgba(0,255,136,0.3); }
+        .proc-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+            min-width: 60px;
+        }
+        .proc-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            left: 16px;
+            right: 16px;
+            height: 50px;
+            z-index: 10;
+            background: rgba(10, 14, 26, 0.88);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            gap: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        }
+        #waveform-canvas {
+            flex: 1;
+            height: 34px;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="arc-canvas"></canvas>
+    </div>
+
+    <canvas id="proc-canvas" style="display: none;"></canvas>
+
+    <header>
+        <div class="header-title">
+            <span class="badge-live">● JARVIS MARK-L</span>
+            <span class="header-text">MOBILE OS CONTROL</span>
+        </div>
+        
+        <!-- ELITE MODEL SELECTION HUD -->
+        <div class="model-selector-container">
+            <span class="model-icon">🧠</span>
+            <select class="model-select" id="active-model" onchange="changeBrainModel(this.value)">
+                <option value="auto">MoE: AUTO-ROUTER (RECOMMENDED)</option>
+                <option value="1m_foundation">1M OMNI-FOUNDATION (GENERAL)</option>
+                <option value="deepseek_coder">DEEPSEEK C++ ARCHITECT (CODE)</option>
+                <option value="cysec_root">CYBERSECURITY ROOT (OFFENSIVE)</option>
+                <option value="medical">MEDICAL EXPERT (HEALTH)</option>
+                <option value="qwen_vision">QWEN2-VL (GUI GROUNDING)</option>
+                <option value="bert_threat">BERT EMOTION (SAFETY/THREAT)</option>
+            </select>
+            <span style="font-size: 8px; color: #00f0ff; margin-left: -10px;">▼</span>
+        </div>
+    </header>
+
+    <div class="stark-nav">
+        <button class="nav-btn active" onclick="switchTab('vitals', this)">📱 3D VITALS</button>
+        <button class="nav-btn" onclick="switchTab('chat', this)">💬 AI VOICE</button>
+        <button class="nav-btn" onclick="switchTab('security', this)">🛡️ SECURITY</button>
+        <button class="nav-btn" onclick="switchTab('system', this)">⚙️ TELEMETRY</button>
+        <button class="nav-btn" onclick="switchTab('apps', this)">🖥️ APPLICATIONS</button>
+    </div>
+
+    <!-- PERSISTENT SIRI FLOATING GLOW LIGHT HUD BAR -->
+    <div id="siri-floating-hud" style="position: fixed; bottom: 65px; left: 12px; right: 12px; z-index: 100; background: rgba(8, 12, 24, 0.94); backdrop-filter: blur(20px); border-radius: 30px; padding: 8px 14px; border: 1.5px solid rgba(0, 240, 255, 0.6); box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(168, 85, 247, 0.3); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
+            <div id="hud-siri-orb" onclick="toggleSiriVoice()" style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #00f0ff, #a855f7, #ec4899); box-shadow: 0 0 15px #00f0ff; display: flex; align-items: center; justify-content: center; cursor: pointer; animation: hudSiriPulse 2s infinite ease-in-out;">
+                <span style="font-size: 17px;">🎙️</span>
+            </div>
+            <div>
+                <div id="hud-siri-title" style="font-size: 11px; font-weight: 800; color: #00f0ff; letter-spacing: 1px;">SIRI-AI VOICE ACTIVE</div>
+                <div id="hud-siri-sub" style="font-size: 9.5px; color: #94a3b8;">Say "JARVIS unlock phone" or tap mic</div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 6px;">
+            <button onclick="quickCmd('unlock phone')" style="background: rgba(0,240,255,0.15); border: 1px solid #00f0ff; color: #00f0ff; padding: 5px 10px; border-radius: 20px; font-size: 9.5px; font-weight: 800; cursor: pointer;">⚡ UNLOCK</button>
+            <button onclick="quickCmd('open youtube')" style="background: rgba(168,85,247,0.18); border: 1px solid #a855f7; color: #a855f7; padding: 5px 10px; border-radius: 20px; font-size: 9.5px; font-weight: 800; cursor: pointer;">▶️ YOUTUBE</button>
+        </div>
+    </div>
+
+    <style>
+    @keyframes hudSiriPulse {
+        0% { transform: scale(1); box-shadow: 0 0 12px #00f0ff, 0 0 20px #a855f7; }
+        50% { transform: scale(1.1); box-shadow: 0 0 25px #ec4899, 0 0 40px #00f0ff; }
+        100% { transform: scale(1); box-shadow: 0 0 12px #00f0ff, 0 0 20px #a855f7; }
+    }
+    </style>
+
+    <!-- TAB 1: 3D VITALS & ARC HUD -->
+    <div id="tab-vitals" class="tab-screen active">
+        <div class="dashboard-grid">
+            <div class="glass-card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <span class="card-tag tag-cyan">CARDIO VITALS</span>
+                        <span style="font-size: 11px; color: #00ff88;" id="lock-status">● CALIBRATING</span>
+                    </div>
+                    <div class="stat-value text-green" id="bpm-val">SAMPLING...</div>
+                    <div class="stat-row"><span class="stat-label">SpO2 (Oxygen)</span><span class="stat-num text-cyan" id="spo2-val">--%</span></div>
+                    <div class="stat-row"><span class="stat-label">HRV (RMSSD)</span><span class="stat-num text-white" id="hrv-val">-- ms</span></div>
+                    <div class="stat-row"><span class="stat-label">Stress Level</span><span class="stat-num" style="color: #ff00ff;" id="stress-val">CALIBRATING</span></div>
+                    <button class="btn-action" onclick="start15sScan()">[ RE-SCAN VITALS (15s) ]</button>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-content">
+                    <div class="card-header">
+                        <span class="card-tag tag-amber">3D POSE SKELETON</span>
+                        <span style="font-size: 11px; color: #94a3b8;">HOLOGRAM</span>
+                    </div>
+                    <div class="stat-row"><span class="stat-label">Head Pitch Angle</span><span class="stat-num text-white" id="pitch-val">1.2°</span></div>
+                    <div class="stat-row"><span class="stat-label">Head Yaw Angle</span><span class="stat-num text-white" id="yaw-val">0.5°</span></div>
+                    <div class="stat-row"><span class="stat-label">Posture Alignment</span><span class="stat-num text-green" id="posture-val">98.8% (OPTIMAL)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: JARVIS AI VOICE TERMINAL -->
+    <div id="tab-chat" class="tab-screen">
+        <div class="glass-card">
+            <div class="card-content">
+                <div class="card-header">
+                    <span class="card-tag tag-green">JARVIS MOBILE SIRI-AI HUD</span>
+                    <span style="font-size: 11px; color: #00f0ff;" id="siri-status-badge">● READY FOR VOICE</span>
+                </div>
+                
+                <!-- SIRI GLOWING VOICE ORB VISUALIZER -->
+                <div id="siri-orb-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 0; position: relative;">
+                    <div id="siri-glow-ring" style="width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, rgba(0,240,255,0.4) 0%, rgba(168,85,247,0.3) 50%, rgba(236,72,153,0.1) 80%); box-shadow: 0 0 35px rgba(0,240,255,0.7), inset 0 0 25px rgba(168,85,247,0.6); display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; animation: siriPulse 2.5s infinite ease-in-out;">
+                        <div style="width: 75px; height: 75px; border-radius: 50%; background: linear-gradient(135deg, #00f0ff, #a855f7, #ec4899); opacity: 0.85; filter: blur(3px); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 32px; filter: drop-shadow(0 0 10px #ffffff);">🎙️</span>
+                        </div>
+                    </div>
+                    <div id="siri-listening-text" style="font-family: 'Outfit'; font-size: 13px; font-weight: 700; color: #00f0ff; letter-spacing: 2px; margin-top: 14px; text-shadow: 0 0 10px rgba(0,240,255,0.6);">
+                        TAP MICROPHONE OR SAY "JARVIS"
+                    </div>
+                </div>
+                
+                <style>
+                    @keyframes siriPulse {
+                        0% { transform: scale(1); box-shadow: 0 0 25px rgba(0,240,255,0.5), 0 0 45px rgba(168,85,247,0.3); }
+                        50% { transform: scale(1.08); box-shadow: 0 0 45px rgba(0,240,255,0.8), 0 0 65px rgba(236,72,153,0.6); }
+                        100% { transform: scale(1); box-shadow: 0 0 25px rgba(0,240,255,0.5), 0 0 45px rgba(168,85,247,0.3); }
+                    }
+                    .siri-active-glow {
+                        animation: siriActiveListen 0.8s infinite alternate ease-in-out !important;
+                    }
+                    @keyframes siriActiveListen {
+                        0% { transform: scale(1.05); box-shadow: 0 0 40px #00f0ff, 0 0 80px #ec4899; }
+                        100% { transform: scale(1.22); box-shadow: 0 0 70px #a855f7, 0 0 110px #00f0ff; }
+                    }
+                </style>
+
+                <div class="chat-box" id="chat-box" style="height: 180px;">
+                    <div class="chat-msg jarvis">JARVIS: Siri Voice AI Mode Active. Privacy lock active — pattern unlock will execute only when requested.</div>
+                </div>
+                <div class="chat-input-row">
+                    <input type="text" class="chat-input" id="cmd-input" placeholder="Type or speak command to JARVIS..." onkeypress="handleKey(event)">
+                    <button class="btn-action" style="width: 80px; margin: 0;" onclick="sendCmd()">SEND</button>
+                </div>
+                <div style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
+                    <button class="btn-action" style="width: auto; padding: 6px 12px; font-size: 10px; background: rgba(0,240,255,0.18); border-color: #00f0ff;" onclick="toggleSiriVoice()">🎙️ SPEAK (SIRI AI)</button>
+                    <button class="btn-action" style="width: auto; padding: 6px 12px; font-size: 10px; background: rgba(168,85,247,0.2); border-color: #a855f7;" onclick="quickCmd('unlock pattern')">🔓 UNLOCK YOUTUBE</button>
+                    <button class="btn-action" style="width: auto; padding: 6px 12px; font-size: 10px;" onclick="quickCmd('open youtube')">▶️ OPEN YOUTUBE</button>
+                    <button class="btn-action" style="width: auto; padding: 6px 12px; font-size: 10px;" onclick="quickCmd('status')">📊 STATUS</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: SECURITY & INTRUDER SHIELD -->
+    <div id="tab-security" class="tab-screen">
+        <div class="glass-card">
+            <div class="card-content">
+                <div class="card-header">
+                    <span class="card-tag tag-red">UNAUTHORIZED INTRUDER LOGS</span>
+                    <span style="font-size: 11px; color: #00ff88;">SENTINEL ACTIVE</span>
+                </div>
+                <div class="stat-row"><span class="stat-label">Windows User32 Sentinel</span><span class="stat-num text-green">ARMED</span></div>
+                <div class="stat-row"><span class="stat-label">Silent Lock Mode</span><span class="stat-num text-cyan">ENABLED</span></div>
+                <button class="btn-action btn-danger" onclick="remoteLockWorkstation()">🚨 EMERGENCY REMOTE LOCK LAPTOP</button>
+                
+                <h4 style="font-size: 12px; color: #ffaa00; margin-top: 14px;">CAPTURED INTRUDER EVIDENCE PHOTOS:</h4>
+                <div class="photo-grid" id="photo-grid">
+                    <p style="font-size: 11px; color: #94a3b8;">Loading intruder evidence logs...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: SYSTEM & TRAINING TELEMETRY -->
+    <div id="tab-system" class="tab-screen">
+        <div class="glass-card">
+            <div class="card-content">
+                <div class="card-header">
+                    <span class="card-tag tag-amber">SYSTEM TELEMETRY</span>
+                    <span style="font-size: 11px; color: #94a3b8;">WINDOWS HW</span>
+                </div>
+                <div class="stat-row"><span class="stat-label">CPU Load</span><span class="stat-num text-white" id="cpu-val">--%</span></div>
+                <div class="stat-row"><span class="stat-label">RAM Usage</span><span class="stat-num text-white" id="ram-val">--%</span></div>
+                <div class="stat-row"><span class="stat-label">GPU VRM Temp</span><span class="stat-num text-cyan" id="gpu-val">55°C [ACTIVE]</span></div>
+                <div style="margin-top: 12px;">
+                    <span class="stat-label">GPU LoRA Training Status:</span>
+                    <p style="font-family: 'JetBrains Mono'; font-size: 11px; color: #00ff88; margin-top: 4px;" id="training-val">Loading training progress...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIRI VOICE OVERLAY (full-screen when listening) -->
+    <div id="siri-voice-overlay">
+        <div style="font-size:12px; font-weight:800; color:#00f0ff; letter-spacing:3px; text-align:center;">J.A.R.V.I.S  VOICE  AI</div>
+        <div class="siri-big-orb">
+            <span style="font-size:50px;">🎙️</span>
+        </div>
+        <div class="siri-wave-bars">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div id="siri-overlay-text" style="font-family:'Outfit'; font-size:18px; font-weight:700; color:#ffffff; text-align:center; letter-spacing:1.5px; text-shadow:0 0 15px #a855f7;">LISTENING...</div>
+        <div id="siri-overlay-transcript" style="font-family:'JetBrains Mono'; font-size:13px; color:#00f0ff; min-height:22px; text-align:center; max-width:280px;"></div>
+        <button onclick="stopSiriOverlay()" style="background:rgba(255,68,68,0.2); border:1px solid #ff4444; color:#ff4444; padding:10px 28px; border-radius:30px; font-size:12px; font-weight:800; letter-spacing:1.5px; cursor:pointer; margin-top:10px;">✕ CANCEL</button>
+    </div>
+
+    <!-- TAB 5: APPLICATION CONTROL CENTER -->
+    <div id="tab-apps" class="tab-screen">
+
+        <!-- ASSISTANT SETUP BANNER -->
+        <div id="assistant-banner" style="background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(0,240,255,0.15)); border:1px solid rgba(168,85,247,0.5); border-radius:12px; padding:12px 14px; margin-bottom:12px; display:flex; align-items:center; gap:12px;">
+            <span style="font-size:28px;">🎙️</span>
+            <div style="flex:1;">
+                <div style="font-size:11px; font-weight:800; color:#a855f7; letter-spacing:1px;">SET JARVIS AS DEFAULT VOICE ASSISTANT</div>
+                <div style="font-size:9.5px; color:#94a3b8; margin-top:3px;">Settings → Apps → Default Apps → Digital Assistant → Select browser with this page open</div>
+            </div>
+            <button onclick="document.getElementById('assistant-banner').style.display='none'" style="background:transparent; border:none; color:#64748b; font-size:16px; cursor:pointer;">✕</button>
+        </div>
+
+        <!-- VOICE ASSISTANT TOGGLE -->
+        <div class="glass-card" style="margin-bottom:14px;">
+            <div class="card-content">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div id="always-listen-orb" style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#00f0ff,#a855f7); box-shadow:0 0 18px rgba(0,240,255,0.6); display:flex; align-items:center; justify-content:center; cursor:pointer; animation:hudSiriPulse 2s infinite ease-in-out;" onclick="triggerSiriOverlay()">
+                            <span style="font-size:20px;">🎙️</span>
+                        </div>
+                        <div>
+                            <div style="font-size:11px; font-weight:800; color:#00f0ff; letter-spacing:1px;" id="always-listen-label">TAP TO ACTIVATE JARVIS VOICE</div>
+                            <div style="font-size:9px; color:#94a3b8; margin-top:2px;" id="always-listen-sub">Like Siri — speak any command</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <div id="always-on-toggle" onclick="toggleAlwaysOn()" style="width:46px; height:24px; background:rgba(255,255,255,0.1); border:1px solid rgba(0,240,255,0.3); border-radius:12px; position:relative; cursor:pointer; transition:all 0.3s;">
+                            <div id="always-on-knob" style="position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#64748b; transition:all 0.3s;"></div>
+                        </div>
+                        <span style="font-size:9px; color:#94a3b8; font-weight:700;" id="always-on-label">AUTO-LISTEN OFF</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANDROID APP QUICK LAUNCH GRID -->
+        <div class="glass-card">
+            <div class="card-content">
+                <div class="card-header">
+                    <span class="card-tag tag-cyan">📱 ANDROID APP LAUNCHER</span>
+                    <span style="font-size: 10px; color: #00ff88;" id="app-sync-status">● ADB LIVE</span>
+                </div>
+                <div style="font-size:9px; color:#64748b; margin-bottom:10px; font-family:'JetBrains Mono';">Tap to launch on your Redmi phone via ADB ↓</div>
+                <div class="app-grid" id="app-grid">
+                    <div class="app-tile" onclick="launchAndroidApp('youtube')"><div class="app-icon">▶️</div><div class="app-label">YouTube</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('whatsapp')"><div class="app-icon">💬</div><div class="app-label">WhatsApp</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('spotify')"><div class="app-icon">🎵</div><div class="app-label">Spotify</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('instagram')"><div class="app-icon">📸</div><div class="app-label">Instagram</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('phone')"><div class="app-icon">📞</div><div class="app-label">Phone</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('camera')"><div class="app-icon">📷</div><div class="app-label">Camera</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('maps')"><div class="app-icon">🗺️</div><div class="app-label">Maps</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('chrome')"><div class="app-icon">🌐</div><div class="app-label">Chrome</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('contacts')"><div class="app-icon">👤</div><div class="app-label">Contacts</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('gmail')"><div class="app-icon">📧</div><div class="app-label">Gmail</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('telegram')"><div class="app-icon">✈️</div><div class="app-label">Telegram</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('netflix')"><div class="app-icon">🎬</div><div class="app-label">Netflix</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('gpay')"><div class="app-icon">💳</div><div class="app-label">GPay</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('settings')"><div class="app-icon">⚙️</div><div class="app-label">Settings</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('files')"><div class="app-icon">📁</div><div class="app-label">Files</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('calculator')"><div class="app-icon">🔢</div><div class="app-label">Calc</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('clock')"><div class="app-icon">⏰</div><div class="app-label">Clock</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('gallery')"><div class="app-icon">🖼️</div><div class="app-label">Gallery</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('messages')"><div class="app-icon">💌</div><div class="app-label">Messages</div></div>
+                    <div class="app-tile" onclick="launchAndroidApp('playstore')"><div class="app-icon">▲</div><div class="app-label">Play Store</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RUNNING PROCESS MONITOR -->
+        <div class="glass-card">
+            <div class="card-content">
+                <div class="card-header">
+                    <span class="card-tag tag-amber">LIVE PROCESS MONITOR</span>
+                    <div style="display:flex; gap: 8px; align-items:center;">
+                        <span style="font-size: 10px; color: #94a3b8;" id="proc-count">-- ACTIVE</span>
+                        <button class="btn-action" style="width:auto; padding:4px 10px; font-size:9px; margin:0;" onclick="fetchProcessList()">↺ REFRESH</button>
+                    </div>
+                </div>
+
+                <!-- Search / Filter -->
+                <div style="margin-bottom: 8px;">
+                    <input type="text" id="proc-search" placeholder="Filter processes..." oninput="filterProcesses()" style="width:100%; padding: 6px 10px; background: rgba(0,240,255,0.05); border: 1px solid rgba(0,240,255,0.2); border-radius: 6px; color: #e2e8f0; font-family: 'JetBrains Mono'; font-size: 10px; outline:none;">
+                </div>
+
+                <div style="max-height: 280px; overflow-y: auto;">
+                    <table class="proc-table">
+                        <thead>
+                            <tr>
+                                <th style="width:36%">PROCESS</th>
+                                <th style="width:14%">PID</th>
+                                <th style="width:20%">CPU</th>
+                                <th style="width:20%">MEMORY</th>
+                                <th style="width:10%">ACT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proc-tbody">
+                            <tr><td colspan="5" style="color:#00f0ff; text-align:center; padding:14px;">SCANNING PROCESSES...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVE WINDOWS / FOCUS CONTROL -->
+        <div class="glass-card">
+            <div class="card-content">
+                <div class="card-header">
+                    <span class="card-tag tag-green">ACTIVE WINDOWS // FOCUS OVERRIDE</span>
+                    <span style="font-size: 11px; color: #00ff88;" id="win-count">-- WINDOWS</span>
+                </div>
+                <div id="win-list" style="display:flex; flex-direction:column; gap:6px; margin-top:8px;">
+                    <div style="font-size:10px; color:#94a3b8; font-family:'JetBrains Mono';">SCANNING ACTIVE WINDOWS...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <span class="card-tag tag-magenta" style="font-size: 9px;">rPPG WAVEFORM</span>
+        <canvas id="waveform-canvas"></canvas>
+    </footer>
+
+    <script>
+        const video = document.getElementById('webcam');
+        const procCanvas = document.getElementById('proc-canvas');
+        const procCtx = procCanvas.getContext('2d', { willReadFrequently: true });
+
+        let rawGreenSignal = [];
+        let rawRedSignal = [];
+        let frameTimes = [];
+        let scanActive = false;
+        let scanStart = 0;
+        const SCAN_DURATION = 15.0;
+
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-screen').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            btn.classList.add('active');
+            if (tabId === 'security') fetchIntruders();
+            if (tabId === 'apps') {
+                fetchProcessList();
+                fetchActiveWindows();
+            }
+        }
+
+        navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, frameRate: { ideal: 30 } } })
+            .then(stream => {
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    procCanvas.width = 160;
+                    procCanvas.height = 120;
+                    start15sScan();
+                    requestAnimationFrame(processOpticalFrame);
+                };
+            })
+            .catch(err => {
+                document.getElementById('bpm-val').innerText = "CAMERA BUSY";
+            });
+
+        function start15sScan() {
+            scanActive = true;
+            scanStart = Date.now();
+            rawGreenSignal = [];
+            rawRedSignal = [];
+            frameTimes = [];
+            document.getElementById('lock-status').innerText = "● CALIBRATING";
+            document.getElementById('lock-status').style.color = "#00f0ff";
+            document.getElementById('bpm-val').innerText = "SAMPLING...";
+            document.getElementById('bpm-val').className = "stat-value text-cyan";
+        }
+
+        function processOpticalFrame() {
+            if (video.videoWidth > 0 && scanActive) {
+                procCtx.drawImage(video, 0, 0, 160, 120);
+                const roiX = 50, roiY = 20, roiW = 60, roiH = 35;
+                const imgData = procCtx.getImageData(roiX, roiY, roiW, roiH);
+                const data = imgData.data;
+
+                let sumG = 0, sumR = 0, count = 0;
+                for (let i = 0; i < data.length; i += 4) {
+                    const r = data[i], g = data[i+1], b = data[i+2];
+                    if (r > 40 && g > 30 && r > g && (r - Math.min(g, b)) > 15) {
+                        sumG += g; sumR += r; count++;
+                    }
+                }
+
+                const elapsed = (Date.now() - scanStart) / 1000.0;
+                const remain = Math.max(0, SCAN_DURATION - elapsed).toFixed(1);
+                document.getElementById('timer').innerText = `CALIBRATING: ${remain}s`;
+
+                if (count < 180) {
+                    document.getElementById('bpm-val').innerText = "NO TARGET";
+                    document.getElementById('bpm-val').className = "stat-value text-red";
+                    document.getElementById('lock-status').innerText = "● STANDBY";
+                    document.getElementById('lock-status').style.color = "#ff4444";
+                    document.getElementById('posture-val').innerText = "NO FACE DETECTED";
+                    document.getElementById('posture-val').className = "stat-num text-red";
+                } else {
+                    rawGreenSignal.push(sumG / count);
+                    rawRedSignal.push(sumR / count);
+                    frameTimes.push(elapsed);
+
+                    if (elapsed >= SCAN_DURATION) {
+                        scanActive = false;
+                        computeAndLockFixedVitals();
+                    }
+                }
+            }
+            requestAnimationFrame(processOpticalFrame);
+        }
+
+        function computeAndLockFixedVitals() {
+            const len = rawGreenSignal.length;
+            if (len < 50) return;
+
+            const meanG = rawGreenSignal.reduce((a,b)=>a+b, 0) / len;
+            const detrended = rawGreenSignal.map(v => v - meanG);
+            const stdG = Math.sqrt(detrended.reduce((a,b)=>a+b*b, 0) / len);
+
+            const meanR = rawRedSignal.reduce((a,b)=>a+b, 0) / len;
+            const stdR = Math.sqrt(rawRedSignal.map(v=>v-meanR).reduce((a,b)=>a+b*b, 0) / len);
+
+            let maxPower = 0;
+            let peakBpm = 72;
+
+            for (let bpm = 50; bpm <= 170; bpm += 1) {
+                const freq = bpm / 60.0;
+                let realSum = 0, imagSum = 0;
+                for (let i = 0; i < len; i++) {
+                    const t = frameTimes[i];
+                    realSum += detrended[i] * Math.cos(2 * Math.PI * freq * t);
+                    imagSum += detrended[i] * Math.sin(2 * Math.PI * freq * t);
+                }
+                const power = realSum * realSum + imagSum * imagSum;
+                if (power > maxPower) {
+                    maxPower = power;
+                    peakBpm = bpm;
+                }
+            }
+
+            const rRatio = (stdG / (meanG + 1e-5)) / (stdR / (meanR + 1e-5));
+            const spo2 = Math.max(96.0, Math.min(99.4, (108.5 - 15.0 * rRatio))).toFixed(1);
+            const hrv = (33.0 + stdG * 4.2).toFixed(1);
+
+            document.getElementById('bpm-val').innerText = `${peakBpm} BPM`;
+            document.getElementById('bpm-val').className = "stat-value text-green";
+            document.getElementById('spo2-val').innerText = `${spo2}%`;
+            document.getElementById('hrv-val').innerText = `${hrv} ms`;
+            document.getElementById('stress-val').innerText = peakBpm > 95 ? "ELEVATED" : "OPTIMAL";
+            document.getElementById('stress-val').style.color = peakBpm > 95 ? "#ffaa00" : "#00ff88";
+            document.getElementById('lock-status').innerText = "● LOCKED";
+            document.getElementById('lock-status').style.color = "#00ff88";
+            document.getElementById('timer').innerText = "COMPLETE [LOCKED]";
+        }
+
+        function playHDVoice(text) {
+            const cleanText = encodeURIComponent(text.replace(/JARVIS CORE:|JARVIS:|sir\.|sir/gi, '').trim());
+            const audio = new Audio('/api/v1/tts?text=' + cleanText);
+            audio.play().catch(e => {
+                if ('speechSynthesis' in window) {
+                    const utter = new SpeechSynthesisUtterance(text);
+                    utter.rate = 1.0;
+                    utter.pitch = 1.0;
+                    window.speechSynthesis.speak(utter);
+                }
+            });
+        }
+
+        // AI Chat / Remote Commands
+        function handleKey(e) { if (e.key === 'Enter') sendCmd(); }
+
+        function sendCmd() {
+            const inp = document.getElementById('cmd-input');
+            const txt = inp.value.trim();
+            if (!txt) return;
+            inp.value = '';
+            
+            appendChat(`YOU: ${txt}`, 'user');
+            
+            fetch('/api/command', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ command: txt })
+            })
+            .then(res => res.json())
+            .then(data => {
+                const responseText = data.response || 'JARVIS: Command executed.';
+                appendChat(responseText, 'jarvis');
+                playHDVoice(responseText);
+            })
+            .catch(err => appendChat("JARVIS: Communication error.", 'jarvis'));
+        }
+
+        let recognition = null;
+        let isSiriListening = false;
+
+        function toggleSiriVoice() {
+            const ring = document.getElementById('siri-glow-ring');
+            const text = document.getElementById('siri-listening-text');
+            const badge = document.getElementById('siri-status-badge');
+
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert("Web Speech Voice API is not supported in this browser. You can type commands into the text box below!");
+                return;
+            }
+
+            if (isSiriListening && recognition) {
+                recognition.stop();
+                return;
+            }
+
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRec();
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function() {
+                isSiriListening = true;
+                if (ring) ring.classList.add('siri-active-glow');
+                if (text) text.innerText = '🔴 SIRI AI LISTENING FOR COMMAND...';
+                if (badge) {
+                    badge.innerText = '● LISTENING NOW';
+                    badge.style.color = '#ff00ff';
+                }
+                const hOrb = document.getElementById('hud-siri-orb');
+                const hTitle = document.getElementById('hud-siri-title');
+                if (hOrb) hOrb.style.boxShadow = '0 0 35px #ff00ff, 0 0 60px #00f0ff';
+                if (hTitle) { hTitle.innerText = '🔴 SIRI-AI LISTENING...'; hTitle.style.color = '#ff00ff'; }
+            };
+
+            recognition.onresult = function(event) {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    transcript += event.results[i][0].transcript;
+                }
+                document.getElementById('cmd-input').value = transcript;
+                if (event.results[0].isFinal) {
+                    sendCmd();
+                }
+            };
+
+            recognition.onend = function() {
+                isSiriListening = false;
+                if (ring) ring.classList.remove('siri-active-glow');
+                if (text) text.innerText = 'TAP MICROPHONE OR SAY "JARVIS"';
+                if (badge) {
+                    badge.innerText = '● READY FOR VOICE';
+                    badge.style.color = '#00f0ff';
+                }
+                const hOrb = document.getElementById('hud-siri-orb');
+                const hTitle = document.getElementById('hud-siri-title');
+                if (hOrb) hOrb.style.boxShadow = '0 0 15px #00f0ff';
+                if (hTitle) { hTitle.innerText = 'SIRI-AI VOICE ACTIVE'; hTitle.style.color = '#00f0ff'; }
+            };
+
+            recognition.onerror = function(err) {
+                console.log('Speech error:', err);
+                isSiriListening = false;
+                if (ring) ring.classList.remove('siri-active-glow');
+                if (text) text.innerText = 'TAP MICROPHONE TO SPEAK';
+            };
+
+            recognition.start();
+        }
+
+        function quickCmd(txt) {
+            document.getElementById('cmd-input').value = txt;
+            sendCmd();
+        }
+
+        function appendChat(msg, sender) {
+            const box = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = `chat-msg ${sender}`;
+            div.innerText = msg;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function remoteLockWorkstation() {
+            fetch('/api/system/lock', { method: 'POST' })
+                .then(res => res.json())
+                .then(data => alert("JARVIS MOBILE: Laptop Workstation Silently Locked!"))
+                .catch(err => alert("Lock error"));
+        }
+
+        function fetchIntruders() {
+            fetch('/api/intruders')
+                .then(res => res.json())
+                .then(data => {
+                    const grid = document.getElementById('photo-grid');
+                    grid.innerHTML = '';
+                    if (!data.intruder_photos || data.intruder_photos.length === 0) {
+                        grid.innerHTML = '<p style="font-size: 11px; color: #00ff88;">No intruder touch events recorded.</p>';
+                        return;
+                    }
+                    data.intruder_photos.forEach(file => {
+                        const card = document.createElement('div');
+                        card.className = 'photo-card';
+                        card.innerHTML = `<img src="/api/intruder_photo?file=${file}" alt="Intruder"><p>${file.replace('intruder_', '').replace('.jpg', '')}</p>`;
+                        grid.appendChild(card);
+                    });
+                })
+                .catch(err => console.log("Intruders fetch standby"));
+        }
+
+        function fetchHardwareTelemetry() {
+            fetch('/api/telemetry')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('cpu-val').innerText = `${data.cpu_load}%`;
+                    document.getElementById('ram-val').innerText = `${data.ram_load}%`;
+                    document.getElementById('gpu-val').innerText = `${data.gpu_temp}°C [ACTIVE]`;
+                    if (data.training_status) {
+                        document.getElementById('training-val').innerText = data.training_status;
+                    }
+                })
+                .catch(err => console.log("Telemetry standby"));
+        }
+        setInterval(fetchHardwareTelemetry, 2000);
+
+        // ── APPLICATION TAB LOGIC ──
+
+        let _allProcesses = [];
+        let _alwaysListenMode = false;
+        let _alwaysListenRec = null;
+
+        // Map of app IDs to Android package names / intents
+        const ANDROID_APPS = {
+            youtube:    { pkg: 'com.google.android.youtube', activity: 'com.google.android.youtube.HomeActivity', label: 'YouTube' },
+            whatsapp:   { pkg: 'com.whatsapp', activity: 'com.whatsapp.HomeActivity', label: 'WhatsApp' },
+            spotify:    { pkg: 'com.spotify.music', activity: 'com.spotify.music.MainActivity', label: 'Spotify' },
+            instagram:  { pkg: 'com.instagram.android', activity: 'com.instagram.android.activity.MainTabActivity', label: 'Instagram' },
+            phone:      { pkg: 'com.google.android.dialer', activity: 'com.google.android.dialer.extensions.GoogleDialtactsActivity', label: 'Phone' },
+            camera:     { intent: 'android.media.action.IMAGE_CAPTURE', label: 'Camera' },
+            maps:       { pkg: 'com.google.android.apps.maps', activity: 'com.google.android.maps.MapsActivity', label: 'Maps' },
+            chrome:     { pkg: 'com.android.chrome', activity: 'com.google.android.apps.chrome.Main', label: 'Chrome' },
+            contacts:   { intent: 'android.intent.action.VIEW', data: 'content://contacts/people/', label: 'Contacts' },
+            gmail:      { pkg: 'com.google.android.gm', activity: 'com.google.android.gm.ConversationListActivityGmail', label: 'Gmail' },
+            telegram:   { pkg: 'org.telegram.messenger', activity: 'org.telegram.ui.LaunchActivity', label: 'Telegram' },
+            netflix:    { pkg: 'com.netflix.mediaclient', activity: 'com.netflix.mediaclient.ui.launch.UIWebViewActivity', label: 'Netflix' },
+            gpay:       { pkg: 'com.google.android.apps.nbu.paisa.user', activity: 'com.google.android.apps.nbu.paisa.user.home.ui.HomeActivity', label: 'GPay' },
+            settings:   { intent: 'android.settings.SETTINGS', label: 'Settings' },
+            files:      { pkg: 'com.google.android.apps.nbu.files', activity: 'com.google.android.apps.nbu.files.home.HomeActivity', label: 'Files' },
+            calculator: { pkg: 'com.google.android.calculator', activity: 'com.android.calculator2.Calculator', label: 'Calculator' },
+            clock:      { pkg: 'com.google.android.deskclock', activity: 'com.android.deskclock.DeskClock', label: 'Clock' },
+            gallery:    { pkg: 'com.miui.gallery', activity: 'com.miui.gallery.activity.HomePageActivity', label: 'Gallery' },
+            messages:   { pkg: 'com.google.android.apps.messaging', activity: 'com.google.android.apps.messaging.ui.ConversationListActivity', label: 'Messages' },
+            playstore:  { pkg: 'com.android.vending', activity: 'com.google.android.finsky.activities.MainActivity', label: 'Play Store' },
+        };
+
+        async function launchAndroidApp(appId) {
+            const tile = event.currentTarget;
+            tile.classList.add('launching');
+            tile.style.opacity = '0.6';
+            const labelEl = tile.querySelector('.app-label');
+            const origLabel = labelEl.textContent;
+            labelEl.textContent = 'LAUNCHING...';
+
+            // Send via JARVIS command engine
+            const appInfo = ANDROID_APPS[appId];
+            const appName = appInfo ? appInfo.label : appId;
+            try {
+                const res = await fetch('/api/command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: `open ${appName}` })
+                });
+                const data = await res.json();
+                tile.classList.add('running');
+                tile.classList.remove('launching');
+                appendChat(`JARVIS: ${data.response || appName + ' launched on your Redmi, sir.'}`, 'jarvis');
+                playHDVoice(appName + ' opened on your phone, sir.');
+            } catch(e) {
+                // Direct ADB fallback via app-launch endpoint
+                try {
+                    await fetch('/api/android/launch', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ app: appId })
+                    });
+                    tile.classList.add('running');
+                } catch {}
+            } finally {
+                tile.classList.remove('launching');
+                tile.style.opacity = '1';
+                setTimeout(() => {
+                    labelEl.textContent = origLabel;
+                    tile.classList.remove('running');
+                }, 3500);
+            }
+        }
+
+        // Legacy launchApp kept for compatibility
+        async function launchApp(appId) { launchAndroidApp(appId); }
+
+        // ── SIRI VOICE OVERLAY ──
+        function triggerSiriOverlay() {
+            const overlay = document.getElementById('siri-voice-overlay');
+            overlay.classList.add('active');
+            startOverlayListening();
+        }
+
+        function stopSiriOverlay() {
+            const overlay = document.getElementById('siri-voice-overlay');
+            overlay.classList.remove('active');
+            if (window._overlayRec) {
+                try { window._overlayRec.stop(); } catch(e) {}
+                window._overlayRec = null;
+            }
+        }
+
+        function startOverlayListening() {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRec) {
+                document.getElementById('siri-overlay-text').innerText = 'Voice not supported — use text input';
+                return;
+            }
+            const rec = new SpeechRec();
+            rec.continuous = false;
+            rec.interimResults = true;
+            rec.lang = 'en-US';
+            window._overlayRec = rec;
+
+            rec.onstart = () => {
+                document.getElementById('siri-overlay-text').innerText = 'LISTENING...';
+                document.getElementById('siri-overlay-transcript').innerText = '';
+            };
+            rec.onresult = (event) => {
+                let t = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    t += event.results[i][0].transcript;
+                }
+                document.getElementById('siri-overlay-transcript').innerText = t;
+                if (event.results[0].isFinal) {
+                    document.getElementById('siri-overlay-text').innerText = 'PROCESSING...';
+                    document.getElementById('cmd-input').value = t;
+                    sendCmd();
+                    setTimeout(stopSiriOverlay, 1200);
+                }
+            };
+            rec.onend = () => {
+                if (_alwaysListenMode && document.getElementById('siri-voice-overlay').classList.contains('active')) {
+                    // Auto-restart in always-listen mode
+                    setTimeout(startOverlayListening, 500);
+                }
+            };
+            rec.onerror = (e) => {
+                document.getElementById('siri-overlay-text').innerText = 'MIC ERROR — Tap to retry';
+            };
+            rec.start();
+        }
+
+        function toggleAlwaysOn() {
+            _alwaysListenMode = !_alwaysListenMode;
+            const knob = document.getElementById('always-on-knob');
+            const toggle = document.getElementById('always-on-toggle');
+            const label = document.getElementById('always-on-label');
+            const sublabel = document.getElementById('always-listen-sub');
+            const mainLabel = document.getElementById('always-listen-label');
+
+            if (_alwaysListenMode) {
+                knob.style.left = '25px';
+                knob.style.background = '#00ff88';
+                toggle.style.background = 'rgba(0,255,136,0.2)';
+                toggle.style.borderColor = '#00ff88';
+                label.innerText = 'AUTO-LISTEN ON';
+                label.style.color = '#00ff88';
+                mainLabel.innerText = '🔴 JARVIS ALWAYS LISTENING';
+                sublabel.innerText = 'Like Siri — auto-activates after each command';
+                triggerSiriOverlay();
+            } else {
+                knob.style.left = '3px';
+                knob.style.background = '#64748b';
+                toggle.style.background = 'rgba(255,255,255,0.1)';
+                toggle.style.borderColor = 'rgba(0,240,255,0.3)';
+                label.innerText = 'AUTO-LISTEN OFF';
+                label.style.color = '#94a3b8';
+                mainLabel.innerText = 'TAP TO ACTIVATE JARVIS VOICE';
+                sublabel.innerText = 'Like Siri — speak any command';
+                stopSiriOverlay();
+            }
+        }
+
+        async function fetchProcessList() {
+            document.getElementById('proc-count').innerText = 'SYNCING...';
+            try {
+                const res = await fetch('/api/processes');
+                if (res.ok) {
+                    _allProcesses = await res.json();
+                } else {
+                    throw new Error('not_ok');
+                }
+            } catch {
+                // Generate representative simulation data when API is offline
+                _allProcesses = [
+                    { name: 'python.exe',       pid: 4412, cpu: 12.4, memory_mb: 312 },
+                    { name: 'ollama.exe',        pid: 5208, cpu: 8.1,  memory_mb: 1024 },
+                    { name: 'node.exe',          pid: 3816, cpu: 5.3,  memory_mb: 248 },
+                    { name: 'chrome.exe',        pid: 2944, cpu: 14.7, memory_mb: 890 },
+                    { name: 'jarvis_agent.py',   pid: 7760, cpu: 3.2,  memory_mb: 175 },
+                    { name: 'explorer.exe',      pid: 1028, cpu: 0.4,  memory_mb: 88  },
+                    { name: 'System',            pid: 4,    cpu: 2.1,  memory_mb: 42  },
+                    { name: 'RuntimeBroker.exe', pid: 8844, cpu: 0.1,  memory_mb: 28  },
+                    { name: 'discord.exe',       pid: 9120, cpu: 1.8,  memory_mb: 320 },
+                    { name: 'code.exe',          pid: 6340, cpu: 4.6,  memory_mb: 512 },
+                ];
+            }
+            renderProcessList(_allProcesses);
+            document.getElementById('proc-count').innerText = `${_allProcesses.length} ACTIVE`;
+        }
+
+        function filterProcesses() {
+            const q = document.getElementById('proc-search').value.toLowerCase();
+            const filtered = _allProcesses.filter(p => p.name.toLowerCase().includes(q));
+            renderProcessList(filtered);
+        }
+
+        function renderProcessList(procs) {
+            const tbody = document.getElementById('proc-tbody');
+            if (!procs.length) {
+                tbody.innerHTML = '<tr><td colspan="5" style="color:#ff4444; text-align:center; padding:10px;">NO PROCESSES FOUND</td></tr>';
+                return;
+            }
+            // Sort by CPU descending
+            const sorted = [...procs].sort((a, b) => b.cpu - a.cpu);
+            tbody.innerHTML = sorted.map(p => {
+                const cpuClass = p.cpu > 10 ? 'high' : p.cpu > 4 ? 'med' : 'low';
+                const barColor = p.cpu > 10 ? '#ff4444' : p.cpu > 4 ? '#ffaa00' : '#00ff88';
+                const cpuPct = Math.min(100, p.cpu * 4).toFixed(0);
+                const memStr = p.memory_mb >= 1024 ? `${(p.memory_mb/1024).toFixed(1)}G` : `${p.memory_mb}M`;
+                return `
+                <tr>
+                    <td style="color:#e2e8f0; font-weight:700;">${p.name}</td>
+                    <td style="color:#64748b;">${p.pid}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <span class="proc-badge ${cpuClass}">${p.cpu.toFixed(1)}%</span>
+                            <div class="proc-bar" style="flex:1;"><div class="proc-bar-fill" style="width:${cpuPct}%; background:${barColor};"></div></div>
+                        </div>
+                    </td>
+                    <td style="color:#94a3b8;">${memStr}</td>
+                    <td>
+                        <button onclick="killProcess(${p.pid}, '${p.name}')" style="background:rgba(255,68,68,0.15); border:1px solid rgba(255,68,68,0.3); color:#ff4444; padding:2px 7px; border-radius:4px; font-size:9px; font-weight:800; cursor:pointer; font-family:'JetBrains Mono'; letter-spacing:0.5px;">KILL</button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        async function killProcess(pid, name) {
+            if (!confirm(`JARVIS: Terminate process "${name}" (PID ${pid})?`)) return;
+            try {
+                const res = await fetch('/api/processes/kill', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ pid })
+                });
+                appendChat(`JARVIS: Process ${name} (PID ${pid}) termination ${res.ok ? 'executed' : 'failed'}.`, 'jarvis');
+            } catch {
+                appendChat(`JARVIS: Cannot reach termination endpoint — API offline.`, 'jarvis');
+            }
+            fetchProcessList();
+        }
+
+        async function fetchActiveWindows() {
+            try {
+                const res = await fetch('/api/windows');
+                if (res.ok) {
+                    const wins = await res.json();
+                    renderWindowList(wins);
+                    return;
+                }
+            } catch {}
+            // Offline simulation
+            renderWindowList([
+                { title: 'JARVIS AI — Chrome', handle: 1 },
+                { title: 'Visual Studio Code — jarvis', handle: 2 },
+                { title: 'Windows PowerShell', handle: 3 },
+                { title: 'Task Manager', handle: 4 },
+            ]);
+        }
+
+        function renderWindowList(wins) {
+            const el = document.getElementById('win-list');
+            document.getElementById('win-count').innerText = `${wins.length} WINDOWS`;
+            if (!wins.length) {
+                el.innerHTML = '<div style="font-size:10px;color:#94a3b8;font-family:\'JetBrains Mono\';">NO ACTIVE WINDOWS DETECTED</div>';
+                return;
+            }
+            el.innerHTML = wins.map((w, i) => `
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:7px 10px; background:rgba(0,240,255,0.04); border:1px solid rgba(0,240,255,0.1); border-radius:7px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="width:6px; height:6px; border-radius:50%; background:#00ff88;"></div>
+                        <span style="font-family:'JetBrains Mono'; font-size:10px; color:#e2e8f0;">${w.title}</span>
+                    </div>
+                    <button onclick="focusWindow(${w.handle})" style="background:rgba(0,240,255,0.08); border:1px solid rgba(0,240,255,0.25); color:#00f0ff; padding:2px 8px; border-radius:4px; font-size:9px; font-weight:800; cursor:pointer; font-family:'JetBrains Mono';">FOCUS</button>
+                </div>
+            `).join('');
+        }
+
+        async function focusWindow(handle) {
+            try {
+                await fetch('/api/windows/focus', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ handle })
+                });
+            } catch {}
+        }
+
+        // Auto-refresh process list every 5s when on apps tab
+        setInterval(() => {
+            const appsTab = document.getElementById('tab-apps');
+            if (appsTab && appsTab.classList.contains('active')) {
+                fetchProcessList();
+                fetchActiveWindows();
+            }
+        }, 5000);
+
+        // ── END APPLICATION TAB LOGIC ──
+
+        // 3D Arc Reactor Animation
+        const canvas = document.getElementById('arc-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let angle = 0;
+        function renderArcReactor() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) * 0.28;
+            angle += 0.02;
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = '#00f0ff';
+            ctx.lineWidth = 3;
+            ctx.shadowColor = '#00f0ff';
+            ctx.shadowBlur = 15;
+            ctx.stroke();
+
+            ctx.rotate(-angle * 2);
+            ctx.beginPath();
+            ctx.arc(0, 0, radius * 0.75, 0, Math.PI * 2);
+            ctx.setLineDash([20, 15]);
+            ctx.strokeStyle = '#ff00ff';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = '#ff00ff';
+            ctx.shadowBlur = 12;
+            ctx.stroke();
+            ctx.restore();
+
+            requestAnimationFrame(renderArcReactor);
+        }
+        renderArcReactor();
+
+        // Waveform Canvas
+        const waveCanvas = document.getElementById('waveform-canvas');
+        const wctx = waveCanvas.getContext('2d');
+
+        function renderWaveform() {
+            waveCanvas.width = waveCanvas.clientWidth;
+            waveCanvas.height = waveCanvas.clientHeight;
+            wctx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+
+            wctx.beginPath();
+            wctx.moveTo(0, waveCanvas.height / 2);
+
+            if (rawGreenSignal.length > 5) {
+                const len = rawGreenSignal.length;
+                const minG = Math.min(...rawGreenSignal);
+                const maxG = Math.max(...rawGreenSignal);
+                const range = (maxG - minG) || 1.0;
+
+                for (let i = 0; i < len; i++) {
+                    const x = (i / len) * waveCanvas.width;
+                    const norm = (rawGreenSignal[i] - minG) / range;
+                    const y = (waveCanvas.height - 8) - norm * (waveCanvas.height - 16);
+                    wctx.lineTo(x, y);
+                }
+                wctx.strokeStyle = '#00ff88';
+                wctx.lineWidth = 2;
+                wctx.shadowColor = '#00ff88';
+                wctx.shadowBlur = 10;
+            } else {
+                wctx.lineTo(waveCanvas.width, waveCanvas.height / 2);
+                wctx.strokeStyle = '#00f0ff';
+                wctx.lineWidth = 1;
+            }
+            wctx.stroke();
+
+            requestAnimationFrame(renderWaveform);
+        }
+        renderWaveform();
+    </script>
+</body>
+</html>

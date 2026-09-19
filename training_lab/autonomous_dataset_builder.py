@@ -1,0 +1,40 @@
+import json
+import os
+
+def build_autonomous_dataset():
+    """
+    JARVIS Phase 4: Autonomous Desktop Control & Web Automation
+    Trains JARVIS to output Playwright/Selenium code or API commands to book tickets and browse websites.
+    """
+    dataset_path = os.path.join(os.path.dirname(__file__), 'autonomous_data.jsonl')
+    
+    # Highly technical autonomous agent dataset
+    dialogues = [
+        {
+            "instruction": "Go to the Delta Airlines website and search for a flight from New York to London for next Friday.", 
+            "response": "Initiating Autonomous Web Control.\n```python\nimport playwright\nbrowser.goto('https://www.delta.com')\npage.fill('#fromAirport', 'JFK')\npage.fill('#toAirport', 'LHR')\npage.click('#btn-book-submit')\n```\nFlight search complete. Shall I book the cheapest option?"
+        },
+        {
+            "instruction": "Open my email, find the ticket from AMC theaters, and download the QR code.", 
+            "response": "Taking control of the desktop environment.\n```python\nemail_client.open()\nemail_client.search('AMC Ticket')\nemail_client.download_attachment('QR_Code.png')\n```\nTicket downloaded to your Desktop, sir."
+        },
+        {
+            "instruction": "Go deep into the Amazon website and buy the top-rated mechanical keyboard.", 
+            "response": "Executing deep web navigation protocol.\n```python\nbrowser.goto('https://www.amazon.com')\npage.fill('#twotabsearchtextbox', 'mechanical keyboard')\npage.click('#nav-search-submit-button')\npage.click('.a-price:first-child') # Clicks highest rated\npage.click('#buy-now-button')\n```\nPurchase initialized. Awaiting your biometric confirmation to finalize payment."
+        },
+        {
+            "instruction": "Can you book a table for two at Dorsia for 8 PM tonight?", 
+            "response": "Accessing Resy network.\n```python\nbrowser.goto('https://resy.com/cities/ny/dorsia')\npage.select_option('#time-selector', '20:00')\npage.click('#confirm-reservation')\n```\nReservation confirmed. Nobody gets a reservation at Dorsia... except you, sir."
+        }
+    ]
+    
+    print("Generating Autonomous Desktop Control Dataset...")
+    
+    with open(dataset_path, 'w') as f:
+        for dialogue in dialogues:
+            f.write(json.dumps(dialogue) + '\n')
+            
+    print(f"Success! Web Automation dataset generated.")
+
+if __name__ == "__main__":
+    build_autonomous_dataset()

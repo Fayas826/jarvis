@@ -22,7 +22,7 @@ let API_BASE_URL = getLocalHost();
 
 export const loadNexusConfig = async () => {
     try {
-        console.log("[NEXUS] Searching for Neural Lighthouse...");
+        import.meta.env.DEV && console.log("[NEXUS] Searching for Neural Lighthouse...");
         const response = await fetch(`/config.json?v=${Date.now()}`);
         if (!response.ok) throw new Error("LIGHTHOUSE_OFFLINE");
         
@@ -36,7 +36,7 @@ export const loadNexusConfig = async () => {
                 const pulse = await fetch(`${potentialUrl}/resonance/vitals`, { signal: AbortSignal.timeout(1000) });
                 if (!pulse.ok) throw new Error("TUNNEL_DEAD");
                 API_BASE_URL = potentialUrl;
-                console.log(`[NEXUS] Neural Bridge Established & Verified: ${API_BASE_URL}`);
+                import.meta.env.DEV && console.log(`[NEXUS] Neural Bridge Established & Verified: ${API_BASE_URL}`);
             } catch {
                 console.warn("[NEXUS] Discovered Bridge is non-responsive. Falling back to Local Resonance.");
                 API_BASE_URL = getLocalHost();

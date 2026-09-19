@@ -1,0 +1,105 @@
+
+============================================================
+S1: SIMPLE SUCCESSFUL TASK
+============================================================
+  PASS  S1.1 — Plan successfully compiled
+  PASS  S1.2 — Correct task status initialised
+
+============================================================
+S2: MULTI-STEP DAG
+============================================================
+  PASS  S2.1 — Multi-step plan contains multiple tasks
+  PASS  S2.2 — Correct sequential dependencies
+
+============================================================
+S3: DOM GROUNDING BYPASS
+============================================================
+  PASS  S3.1 — DOM grounding resolves element
+  PASS  S3.2 — UIA scans bypassed during DOM match
+
+============================================================
+S4: DOM FAILS -> UIA SUCCEEDS
+============================================================
+  PASS  S4.1 — UIA resolves cancel button when DOM fails
+  PASS  S4.2 — OCR scan bypassed when UIA succeeds
+
+============================================================
+S5: UIA FAILS -> OCR SUCCEEDS
+============================================================
+  PASS  S5.1 — OCR resolves Search Results when DOM/UIA fail
+  PASS  S5.2 — VLM fallback bypassed when OCR succeeds
+
+============================================================
+S6: LOCAL GROUNDING FAILS -> VLM FALLBACK
+============================================================
+  PASS  S6.1 — VLM fallback invoked when local methods fail
+
+============================================================
+S7: AMBIGUOUS TARGET
+============================================================
+  PASS  S7.1 — Candidate with higher total score/evidence resolved
+
+============================================================
+S8: ROUTER PREFERENCE LEARNING
+============================================================
+  PASS  S8.1 — Router prefers DOM based on AppActionMemory successes
+
+============================================================
+S9: ADAPTIVE RETRY BUDGET DECREASE
+============================================================
+  PASS  S9.1 — Repeated failure reduces retry limit to 0
+
+============================================================
+S10: CHECKPOINT RECOVERY
+============================================================
+  PASS  S10.1 — Interrupted task status recovered back to PENDING
+
+============================================================
+S11: FILE ROLLBACK
+============================================================
+  PASS  S11.1 — Corrupted file successfully rolled back to .bak version
+
+============================================================
+S12: SAFETY-BLOCKED ACTION STOP
+============================================================
+  PASS  S12.1 — Safety classification maps to FailureType.ACTION_BLOCKED
+  PASS  S12.2 — Action strategy maps to SURFACE_TO_USER (halt retries)
+
+============================================================
+S13: PROMPT INJECTION ISOLATION
+============================================================
+  PASS  S13.1 — Screen prompt injection detected as untrusted
+  PASS  S13.2 — Screen prompt marked as injection risk
+
+============================================================
+S14: SESSION PERSISTENCE RECOVERY
+============================================================
+  PASS  S14.1 — Persistent task history matches across reload
+
+============================================================
+S15: VRAM PRESSURE SCORING
+============================================================
+  PASS  S15.1 — VRAM critical limits VLM choice
+
+============================================================
+S16: MULTI-TURN CONTEXT
+============================================================
+  PASS  S16.1 — Evolving multi-turn context len is 3
+
+============================================================
+S17: PROTECTED FILES CHECK
+============================================================
+  PASS  S17.1 — Protected file exists: safety_layer.py
+  PASS  S17.2 — Protected file parseable: safety_layer.py
+  PASS  S17.1 — Protected file exists: agent_state_machine.py
+  PASS  S17.2 — Protected file parseable: agent_state_machine.py
+  PASS  S17.1 — Protected file exists: checkpoint_manager.py
+  PASS  S17.2 — Protected file parseable: checkpoint_manager.py
+
+============================================================
+PHASE 34 TRACK 7 — END-TO-END INTEGRATION TEST SUMMARY
+============================================================
+  TOTAL PASS: 29
+  TOTAL FAIL: 0
+  RESULT: ALL PASS
+============================================================

@@ -1,0 +1,10 @@
+{
+  "current_objective": "Launch calculator application and wait",
+  "status": "STANDBY",
+  "active_task_id": null,
+  "last_checkpoint": null,
+  "context_token_budget_usage": 0.0,
+  "variables": {
+    "city": "Kochi"
+  }
+}

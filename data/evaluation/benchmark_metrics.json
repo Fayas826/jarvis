@@ -1,0 +1,32 @@
+{
+  "benchmark": "ScreenSpot + OSWorld + Mind2Web",
+  "dataset_version": "1.0.0",
+  "total_samples": 5,
+  "evaluated_samples": 4,
+  "successful_samples": 2,
+  "failed_samples": 2,
+  "unsupported_samples": 1,
+  "accuracy": 0.0,
+  "average_latency_ms": 9728.330135345459,
+  "median_latency_ms": 9728.330135345459,
+  "p95_latency_ms": 9728.330135345459,
+  "false_positive_rate": 0.0,
+  "timestamp": "2026-08-22T06:14:21Z",
+  "environment": {
+    "os": "Windows",
+    "vram": "4GB"
+  },
+  "model_backend": {
+    "ocr": "EasyOCR",
+    "segmentation": "OpenCV Contours",
+    "fallback": "Gemini API"
+  },
+  "perception_sources": {
+    "dom": 1,
+    "ocr": 1,
+    "cv_segmenter": 1
+  },
+  "notes": [
+    "Offline cached dataset samples executed successfully."
+  ]
+}

@@ -5,10 +5,15 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "nodemon --watch \"src/**/*.ts\" --exec \"npx ts-node\" src/index.ts",
+    "dev": "node tools/dev-all.mjs",
+    "dev:backend": "nodemon --watch \"src/**/*.ts\" --exec \"npx ts-node\" src/index.ts",
+    "dev:hud": "npm --prefix frontend run dev",
     "build": "tsc",
+    "build:hud": "npm --prefix frontend run build",
     "worker": "npx ts-node src/workers/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "dev:all": "node tools/dev-all.mjs",
+    "dev:core": "python -m uvicorn backend.api:app --host 127.0.0.1 --port 5001 --reload"
   },
   "dependencies": {
     "@types/ws": "^8.18.1",
@@ -21,6 +26,8 @@
     "ioredis": "^5.3.2",
     "mongoose": "^7.6.3",
     "morgan": "^1.10.0",
+    "puppeteer": "^25.10.0",
+    "stripe": "^22.6.1",
     "winston": "^3.11.0",
     "ws": "^8.20.1"
   },

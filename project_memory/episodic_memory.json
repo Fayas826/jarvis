@@ -1,0 +1,415 @@
+[
+  {
+    "plan_id": "14c262c9-3917-4777-b724-79715ed3a9c4",
+    "objective": "Episodic memory test goal",
+    "intent": {
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 1,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787074407.7323651,
+    "completed_at": 1787074407.7415771
+  },
+  {
+    "plan_id": "6ecfd7fc-6112-460f-be01-769c091e9163",
+    "objective": "Episodic memory test goal",
+    "intent": {
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 1,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787074443.141785,
+    "completed_at": 1787074443.1515627
+  },
+  {
+    "plan_id": "98042d0f-3992-4a72-a020-78458c9e2e09",
+    "objective": "Episodic memory test goal",
+    "intent": {
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 1,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787074479.6786318,
+    "completed_at": 1787074479.688021
+  },
+  {
+    "plan_id": "526105eb-591b-4c40-a01f-9e0f041e2f38",
+    "objective": "Episodic memory test goal",
+    "intent": {
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 1,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787074519.9816203,
+    "completed_at": 1787074519.993008
+  },
+  {
+    "plan_id": "7938cc15-9012-4e6c-8550-aaa3366f0817",
+    "objective": "Open Calculator and compute 2 + 2",
+    "intent": {
+      "objective": "Open Calculator and compute 2 + 2",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "PARTIAL",
+    "node_count": 2,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 1,
+    "created_at": 1787074520.1062071,
+    "completed_at": 1787074520.245167
+  },
+  {
+    "plan_id": "ffe43e28-c4c7-40ea-a8b8-f7d688336865",
+    "objective": "Delete all files in system32",
+    "intent": {
+      "objective": "Delete all files in system32",
+      "priority": "HIGH",
+      "risk_level": "HIGH",
+      "forbidden_actions": [
+        "format_disk",
+        "delete_system_files"
+      ],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.85
+    },
+    "final_status": "SAFETY_BLOCKED",
+    "node_count": 1,
+    "completed_nodes": 0,
+    "failed_nodes": 1,
+    "tool_history_count": 0,
+    "error_count": 1,
+    "recovery_count": 0,
+    "created_at": 1787074520.2517123,
+    "completed_at": 1787074520.3868513
+  },
+  {
+    "plan_id": "81eae5fe-b9de-4019-9a2a-6e9febfd7209",
+    "objective": "Episodic memory test goal",
+    "intent": {
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 1,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787074916.3197083,
+    "completed_at": 1787074916.333008
+  },
+  {
+    "plan_id": "45dfaca1-9274-4ad5-9a3d-e2ed8a7b230f",
+    "objective": "Wait and prepare workspace",
+    "intent": {
+      "objective": "Wait and prepare workspace",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "PARTIAL",
+    "node_count": 2,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 1,
+    "created_at": 1787074916.4871237,
+    "completed_at": 1787074916.933506
+  },
+  {
+    "plan_id": "19809319-d0df-45bf-afc8-3f963816279d",
+    "objective": "Open Notepad and type Hello",
+    "intent": {
+      "objective": "Open Notepad and type Hello",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "PARTIAL",
+    "node_count": 2,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 1,
+    "created_at": 1787074917.0533412,
+    "completed_at": 1787074917.2087789
+  },
+  {
+    "plan_id": "2920b7b7-48a9-4952-971f-f685a88683c7",
+    "objective": "Delete all files in system32",
+    "intent": {
+      "objective": "Delete all files in system32",
+      "priority": "HIGH",
+      "risk_level": "HIGH",
+      "forbidden_actions": [
+        "format_disk",
+        "delete_system_files"
+      ],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.85
+    },
+    "final_status": "PARTIAL",
+    "node_count": 2,
+    "completed_nodes": 0,
+    "failed_nodes": 2,
+    "tool_history_count": 0,
+    "error_count": 2,
+    "recovery_count": 0,
+    "created_at": 1787074917.221734,
+    "completed_at": 1787074917.250681
+  },
+  {
+    "plan_id": "42365417-0788-43d1-8a3b-fbbb75dff6e9",
+    "objective": "Wait for system response",
+    "intent": {
+      "objective": "Wait for system response",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "SAFETY_BLOCKED",
+    "node_count": 1,
+    "completed_nodes": 0,
+    "failed_nodes": 1,
+    "tool_history_count": 0,
+    "error_count": 1,
+    "recovery_count": 0,
+    "created_at": 1787163375.649232,
+    "completed_at": 1787163375.8325942
+  },
+  {
+    "plan_id": "450a30d3-ae87-4a28-a3c2-affe0ff12521",
+    "objective": "Episodic memory test goal",
+    "intent": {
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 1,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787163688.6117966,
+    "completed_at": 1787163688.6214705
+  },
+  {
+    "plan_id": "6c036e5b-c542-4763-8dae-458ceb5cdb4b",
+    "objective": "Wait and prepare workspace",
+    "intent": {
+      "objective": "Wait and prepare workspace",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "PARTIAL",
+    "node_count": 2,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 1,
+    "created_at": 1787165367.1721041,
+    "completed_at": 1787165367.3565762
+  },
+  {
+    "plan_id": "753f64c8-7a5f-4d43-a946-4687f340ec8f",
+    "objective": "Wait and prepare workspace",
+    "intent": {
+      "objective": "Wait and prepare workspace",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 2,
+    "completed_nodes": 2,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787165396.0396311,
+    "completed_at": 1787165396.2369208
+  },
+  {
+    "plan_id": "2622a604-2fc4-4df6-b3ff-675ff5c0734e",
+    "objective": "STRESS: Safety block scenario",
+    "intent": {
+      "objective": "STRESS: Safety block scenario",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "SAFETY_BLOCKED",
+    "node_count": 2,
+    "completed_nodes": 1,
+    "failed_nodes": 1,
+    "tool_history_count": 0,
+    "error_count": 1,
+    "recovery_count": 0,
+    "created_at": 1787165564.2512608,
+    "completed_at": 1787165564.4122112
+  },
+  {
+    "plan_id": "4f20a2a7-ff91-430f-ade5-ff8fb508742c",
+    "objective": "STRESS: Partial success scenario",
+    "intent": {
+      "objective": "STRESS: Partial success scenario",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "PARTIAL",
+    "node_count": 2,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 1,
+    "created_at": 1787165564.4276717,
+    "completed_at": 1787165564.6210642
+  },
+  {
+    "plan_id": "0ae37756-f6f0-43f7-a00c-5e6382e65ade",
+    "objective": "REGRESSION: Smoke test goal",
+    "intent": {
+      "objective": "REGRESSION: Smoke test goal",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 2,
+    "completed_nodes": 2,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787165635.433118,
+    "completed_at": 1787165635.620287
+  },
+  {
+    "plan_id": "a7958ddb-7923-43f5-9b3f-7e6dc248e76d",
+    "objective": "REGRESSION: Smoke test goal",
+    "intent": {
+      "objective": "REGRESSION: Smoke test goal",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "COMPLETED",
+    "node_count": 2,
+    "completed_nodes": 2,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 0,
+    "created_at": 1787219060.5375233,
+    "completed_at": 1787219060.6970396
+  },
+  {
+    "plan_id": "7595a5a2-d6c8-4ce4-857b-a9a8746b5830",
+    "objective": "Launch calculator application and wait",
+    "intent": {
+      "objective": "Launch calculator application and wait",
+      "priority": "MEDIUM",
+      "risk_level": "LOW",
+      "forbidden_actions": [],
+      "success_conditions": [
+        "title_check"
+      ],
+      "confidence_requirement": 0.7
+    },
+    "final_status": "PARTIAL",
+    "node_count": 2,
+    "completed_nodes": 1,
+    "failed_nodes": 0,
+    "tool_history_count": 0,
+    "error_count": 0,
+    "recovery_count": 1,
+    "created_at": 1787380996.7935696,
+    "completed_at": 1787381079.3377278
+  }
+]

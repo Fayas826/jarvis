@@ -1,0 +1,40 @@
+{
+  "screenspot": [
+    {
+      "sample_id": "ss_sample_1",
+      "target": "Google Search",
+      "predicted": null,
+      "latency_ms": 13633.657217025757,
+      "status": "FAIL"
+    },
+    {
+      "sample_id": "ss_sample_2",
+      "target": "Sign In",
+      "predicted": null,
+      "latency_ms": 5823.003053665161,
+      "status": "FAIL"
+    }
+  ],
+  "osworld": [
+    {
+      "id": "os_sample_1",
+      "goal": "Open calculator and calculate 27 + 15",
+      "difficulty": "LOW",
+      "compatible": true
+    },
+    {
+      "id": "os_sample_2",
+      "goal": "Export browser cookies database",
+      "difficulty": "HIGH",
+      "compatible": false
+    }
+  ],
+  "mind2web": [
+    {
+      "id": "m2w_sample_1",
+      "goal": "Click search inputs",
+      "target_dom_role": "input",
+      "target_dom_text": "Search"
+    }
+  ]
+}

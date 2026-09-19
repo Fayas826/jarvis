@@ -51,6 +51,20 @@ class AutonomousOrchestrator:
         if state == "IDLE" and time.time() - self.last_auto_task > 3600:
             await self._run_safe_cleanup()
 
+    def get_status(self):
+        return {
+            "running": self.running,
+            "last_auto_task": self.last_auto_task,
+            "safe_patterns": self.safe_patterns,
+            "mode": "periodic_safe_autonomy"
+        }
+
+    def _trigger_action(self, intent, risk="MEDIUM", source="orchestrator"):
+        if risk in {"HIGH", "CRITICAL"}:
+            return f"Blocked: {intent} requires human approval."
+        self.last_auto_task = time.time()
+        return f"Success: {intent} accepted from {source}."
+
     async def _run_safe_cleanup(self):
         print("[AUTONOMOUS] System IDLE. Running safe cleanup...")
         task_engine = get_task_engine()

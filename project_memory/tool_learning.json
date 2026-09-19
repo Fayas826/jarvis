@@ -1,0 +1,28 @@
+{
+  "chrome::click": {
+    "dom": {
+      "successes": 6,
+      "failures": 0,
+      "last_used": 1787074479.7001686
+    },
+    "uia": {
+      "successes": 0,
+      "failures": 3,
+      "last_used": 1787074479.702618
+    }
+  },
+  "wait::wait": {
+    "uia": {
+      "successes": 15,
+      "failures": 0,
+      "last_used": 1787381013.140426
+    }
+  },
+  "open_app::open_app": {
+    "uia": {
+      "successes": 3,
+      "failures": 0,
+      "last_used": 1787219060.6924992
+    }
+  }
+}

@@ -53,7 +53,7 @@ const TemporalMesh = ({ progress }) => {
         return pos;
     }, []);
 
-    useFrame((state) => {
+    useFrame((_state) => {
         if (!meshRef.current) return;
         const t = performance.now() / 1000;
         meshRef.current.rotation.y = Math.sin(t * 0.2) * 0.5;
@@ -112,7 +112,7 @@ const TelemetryTag = ({ label, value, unit, position, color = "cyan", mouseX, mo
 };
 
 export default function FaceScanner({ onVerify, mode = 'standard' }) {
-  useEffect(() => { console.log("[BIOMETRIC] FaceScanner component mounted safely."); }, []);
+  // Biometric scanner initialized
   const [status, setStatus] = useState("ESTABLISHING_SSS-TIER_LINK...");
   const [biometrics, setBiometrics] = useState({
     synaptic: 98.2,

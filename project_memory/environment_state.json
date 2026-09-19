@@ -1,0 +1,53 @@
+{
+  "windows": {
+    "Notepad": {
+      "pid": 0,
+      "process": "system",
+      "first_seen": 1787074407.7676654,
+      "last_seen": 1787074917.187228,
+      "observation_count": 7
+    },
+    "jarvis - Antigravity IDE - file:///C:/Users/Asus/.gemini/antigravity-ide/brain/a0e0fa67-2269-4530-a457-e2a360f698b9/PHASE_34_MEMORY_TESTS.md (Agent) (PHASE_34_MEMORY_TESTS.md)": {
+      "pid": 0,
+      "process": "system",
+      "first_seen": 1787163371.685093,
+      "last_seen": 1787381013.133239,
+      "observation_count": 14
+    }
+  },
+  "applications": {
+    "notepad.exe": {
+      "first_seen": 1787074407.7676654,
+      "last_seen": 1787074520.0113344,
+      "launch_count": 1
+    },
+    "system": {
+      "first_seen": 1787074916.9073315,
+      "last_seen": 1787381013.133239,
+      "launch_count": 1
+    }
+  },
+  "files_seen": {
+    "C:\\test.txt": {
+      "last_seen": 1787074520.0174904,
+      "size": 1024
+    }
+  },
+  "processes": {
+    "notepad.exe": {
+      "pid": 1234,
+      "last_seen": 1787074520.0195074
+    }
+  },
+  "browser": {
+    "url": "https://google.com",
+    "title": "Google - Chrome",
+    "last_seen": 1787074520.0139372
+  },
+  "ui_focus": {
+    "window": "jarvis - Antigravity IDE - file:///C:/Users/Asus/.gemini/antigravity-ide/brain/a0e0fa67-2269-4530-a457-e2a360f698b9/PHASE_34_MEMORY_TESTS.md (Agent) (PHASE_34_MEMORY_TESTS.md)",
+    "process": "system",
+    "ts": 1787381013.133239
+  },
+  "last_updated": 1787381013.133239
+}

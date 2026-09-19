@@ -10,7 +10,7 @@ const DominionHUD = ({ onClose, onControl }) => {
 
     const routines = [
         { id: 'GHOST_PROTOCOL', label: 'GHOST_PROTOCOL', icon: '👻' },
-        { id: 'STARK_SECURITY', label: 'STARK_SECURITY', icon: '🛡️' },
+        { id: 'OMEGA_SECURITY', label: 'OMEGA_SECURITY', icon: '🛡️' },
         { id: 'NIGHT_WATCH', label: 'NIGHT_WATCH', icon: '🌙' }
     ];
 

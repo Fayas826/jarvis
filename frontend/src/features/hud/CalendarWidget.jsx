@@ -5,7 +5,7 @@ export default function CalendarWidget({ data: _data }) {
   // Simulated intelligence data
   const events = [
     { time: "09:00", title: "Neural Link Calibration", priority: "high" },
-    { time: "14:30", title: "Stark-Cloud Sync", priority: "low" }
+    { time: "14:30", title: "OMEGA Cloud Sync", priority: "low" }
   ];
 
   const emails = [
@@ -66,7 +66,7 @@ export default function CalendarWidget({ data: _data }) {
       {/* Visual Data Flow Indicator */}
       <div className="flex items-center gap-2 mt-2 opacity-30">
          <div className="w-full h-[1px] bg-cyan-700" />
-         <span className="text-[7px] text-cyan-500/50 tracking-[0.6em] font-mono whitespace-nowrap">STARK_HUD_V4_COMMS</span>
+         <span className="text-[7px] text-cyan-500/50 tracking-[0.6em] font-mono whitespace-nowrap">OMEGA_HUD_V20_COMMS</span>
       </div>
     </motion.div>
   );

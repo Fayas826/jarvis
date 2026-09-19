@@ -1,0 +1,41 @@
+
+============================================================
+CAT 1 — ADAPTIVE RETRY LIMITS
+============================================================
+  PASS  C1.1 — Default retry limit remains 3 with no history
+  PASS  C1.2 — Low success rate reduces retry limit to 1 (lim=1)
+  PASS  C1.3 — 0% success rate reduces retry limit to 0 (lim=0)
+
+============================================================
+CAT 2 — CHECKPOINT ROLLBACK TRIGGER
+============================================================
+  PASS  C2.1 — Rollback correctly restores initial file contents
+  PASS  C2.2 — Backup file is replaced / removed after rollback
+
+============================================================
+CAT 3 — SAFETY BLOCK IMMEDIATE HALT
+============================================================
+  PASS  C3.1 — Safety block maps to FailureType.ACTION_BLOCKED
+  PASS  C3.2 — ACTION_BLOCKED selects SURFACE_TO_USER strategy
+  PASS  C3.3 — Needs user intervention (no retry)
+  PASS  C3.4 — Should retry is False
+
+============================================================
+CAT 4 — REGRESSION & COMPATIBILITY
+============================================================
+  PASS  C4.1 — Protected file exists: safety_layer.py
+  PASS  C4.2 — Protected file parseable: safety_layer.py
+  PASS  C4.1 — Protected file exists: agent_state_machine.py
+  PASS  C4.2 — Protected file parseable: agent_state_machine.py
+  PASS  C4.1 — Protected file exists: checkpoint_manager.py
+  PASS  C4.2 — Protected file parseable: checkpoint_manager.py
+  PASS  C4.3 — task_recovery.py does not import safety_layer
+  PASS  C4.4 — task_recovery.py does not import checkpoint_manager
+
+============================================================
+PHASE 34 TRACK 5 — RECOVERY TEST SUMMARY
+============================================================
+  TOTAL PASS: 17
+  TOTAL FAIL: 0
+  RESULT: ALL PASS
+============================================================

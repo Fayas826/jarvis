@@ -1,0 +1,72 @@
+
+============================================================
+34.1 — TASK PLANNER (DAG schema + retry policy)
+============================================================
+  PASS  34.1.A — TaskPlanner class importable
+  PASS  34.1.B — Field 'parent_id' present in task_planner.py
+  PASS  34.1.B — Field 'retry_policy' present in task_planner.py
+  PASS  34.1.B — Field 'preconditions' present in task_planner.py
+
+============================================================
+34.2 — GROUNDING / PERCEPTION (scoring + validity)
+============================================================
+  PASS  34.2.A — VisionGrounder importable
+  PASS  34.2.B — Pattern 'confidence' present in gui_grounding.py
+  PASS  34.2.B — Pattern 'ambiguity' present in gui_grounding.py
+  PASS  34.2.B — Pattern 'bbox' present in gui_grounding.py
+  PASS  34.2.B — Pattern 'evidence' present in gui_grounding.py
+
+============================================================
+34.3 — TOOL ROUTER (hierarchy + reliability memory)
+============================================================
+  PASS  34.3.A — ToolRouter instantiable
+  PASS  34.3.B — decide_tool_route() selects: dom (score=0.88)
+  PASS  34.3.C — record_outcome() succeeds
+
+============================================================
+34.4 — MEMORY LAYER (context, task, grounding cache)
+============================================================
+  PASS  34.4.A — ConversationalContext add/retrieve works
+  PASS  34.4.B — ConversationalContext.clear() works
+  PASS  34.4.C — TaskMemory record/get round-trip
+  PASS  34.4.D — GroundingPatternCache record/lookup round-trip
+  PASS  34.4.E — GroundingPatternCache.invalidate() works
+
+============================================================
+34.5 — CONVERSATIONAL INTERPRETER (pattern + resolution + trust)
+============================================================
+  PASS  34.5.A — COMMAND classification, trusted=True
+  PASS  34.5.B — Correction detection
+  PASS  34.5.C — Reference resolution (entity=previous_target, method=context_lookup)
+  PASS  34.5.D — Screen-originated text marked untrusted
+  PASS  34.5.E — Unresolved ref penalises confidence (0.95)
+
+============================================================
+34.6 — INTEGRATION (ai_routes.py pipeline wire)
+============================================================
+  PASS  34.6.A — ai_routes.py parses without SyntaxError
+  PASS  34.6.B — Hook 'conversational_interpreter' present in ai_routes.py
+  PASS  34.6.B — Hook 'conversational_context' present in ai_routes.py
+  PASS  34.6.B — Hook 'interpret_async' present in ai_routes.py
+  PASS  34.6.B — Hook 'intent.trusted' present in ai_routes.py
+  PASS  34.6.B — Hook 'resolved_utterance' present in ai_routes.py
+  PASS  34.6.B — Hook 'add_turn' present in ai_routes.py
+  PASS  34.6.B — Hook 'intent_type' present in ai_routes.py
+  PASS  34.6.B — Hook 'is_correction' present in ai_routes.py
+
+============================================================
+SAFETY CONTRACT — All Phase 34 Modules
+============================================================
+  PASS  SAFETY — conversational_context: no dangerous methods exposed
+  PASS  SAFETY — task_memory: no dangerous methods exposed
+  PASS  SAFETY — grounding_cache: no dangerous methods exposed
+  PASS  SAFETY — conversational_interpreter: no dangerous methods exposed
+  PASS  SAFETY — ToolRouter(): no dangerous methods exposed
+
+============================================================
+PHASE 34 FINAL VALIDATION SUMMARY
+============================================================
+  TOTAL PASS: 36
+  TOTAL FAIL: 0
+  RESULT: PHASE 34 EVOLUTION: VALIDATED AND COMPLETE
+============================================================

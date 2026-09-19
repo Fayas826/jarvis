@@ -1,0 +1,9 @@
+[
+    {
+        "id": "REQ-1",
+        "agent": "IDESurveillanceSwarm",
+        "target": "c:\\jarvis AI\\jarvis\\scratch\\broken_app\\index.html",
+        "content": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Jarvis Swarm Test App</title>\n</head>\n<body>\n    <h1>Data Entry Form</h1>\n    <p>Clicking this button will throw an Uncaught ReferenceError in the F12 Console.</p>\n    <button onclick=\"submitData()\">Submit</button>\n\n<script>\nfunction submitData() {\n    alert('Data Submitted Successfully!');\n}\n</script>\n</body>\n</html>",
+        "status": "APPROVED"
+    }
+]

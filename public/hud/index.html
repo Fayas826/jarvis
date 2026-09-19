@@ -2,26 +2,56 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>JARVIS O.M.E.G.A. — Control Center</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<link rel="manifest" href="/core/perception/manifest.json">
+<meta name="theme-color" content="#00d4ff">
+<title>JARVIS O.M.E.G.A. — MARK-L STARK OS</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --cyan:#00d4ff;--purple:#7b2dff;--green:#00ff88;--orange:#ff6b35;--red:#ff2d55;
-  --bg:#020812;--glass:rgba(0,212,255,0.05);--border:rgba(0,212,255,0.2);
+  --bg:#020812;--glass:rgba(0,212,255,0.06);--border:rgba(0,212,255,0.25);
 }
 body{background:var(--bg);color:var(--cyan);font-family:'Share Tech Mono',monospace;overflow:hidden;height:100vh;width:100vw}
-canvas#bg{position:fixed;inset:0;z-index:0;opacity:0.3}
-#app{position:relative;z-index:1;height:100vh;display:grid;grid-template-rows:60px 1fr 120px;grid-template-columns:300px 1fr 300px;gap:8px;padding:8px}
+canvas#bg{position:fixed;inset:0;z-index:0;opacity:0.35}
+
+#app{position:relative;z-index:1;height:100vh;display:grid;grid-template-rows:60px 1fr 90px;grid-template-columns:320px 1fr 320px;gap:8px;padding:8px}
+
+/* MOBILE RESPONSIVE LAYOUT — FIXED STICKY VOICE & CHAT INPUT DOCK */
+@media (max-width: 768px) {
+  body { overflow-y: auto; }
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    padding-bottom: 90px;
+  }
+  .status-bar { display: none !important; }
+  
+  #voice-panel {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    border-radius: 12px 12px 0 0 !important;
+    border-top: 2px solid var(--cyan) !important;
+    background: rgba(6, 12, 26, 0.98) !important;
+    backdrop-filter: blur(30px) !important;
+    box-shadow: 0 -10px 40px rgba(0, 212, 255, 0.4) !important;
+    padding: 10px 14px !important;
+  }
+}
 
 /* HEADER */
 header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;
   background:var(--glass);border:1px solid var(--border);border-radius:8px;padding:0 20px;
   backdrop-filter:blur(20px)}
-.logo{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;
+.logo{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;
   background:linear-gradient(90deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.status-bar{display:flex;gap:20px;font-size:.75rem}
+.status-bar{display:flex;gap:18px;font-size:.75rem}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 2s infinite}
 .dot.green{background:var(--green);box-shadow:0 0 8px var(--green)}
 .dot.cyan{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
@@ -33,303 +63,456 @@ header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-be
 .panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
 .panel-title{font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:3px;
-  color:var(--cyan);opacity:.7;margin-bottom:12px;text-transform:uppercase}
+  color:var(--cyan);opacity:.85;margin-bottom:12px;text-transform:uppercase}
 
-/* LEFT — Agents */
-#agents{grid-row:2}
-.agent{display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:8px;
-  background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.1);border-radius:6px;
-  transition:all .3s}
-.agent:hover{border-color:var(--cyan);background:rgba(0,212,255,0.1)}
-.agent-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;border:2px solid var(--border)}
+/* AGENT CARDS */
+#agents{grid-row:2; overflow-y: auto;}
+.agent{display:flex;align-items:center;gap:10px;padding:10px;margin-bottom:8px;
+  background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.18);border-radius:8px;
+  cursor:pointer;transition:all .25s ease-in-out;position:relative}
+.agent:hover{border-color:var(--cyan);background:rgba(0,212,255,0.18);transform:translateX(4px);box-shadow:0 0 15px rgba(0,212,255,0.3)}
+.agent-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.2rem;border:2px solid var(--border)}
 .agent-info{flex:1;min-width:0}
-.agent-name{font-size:.75rem;color:#fff;font-weight:bold}
-.agent-status{font-size:.65rem;color:var(--cyan);opacity:.7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.agent-badge{font-size:.6rem;padding:2px 8px;border-radius:10px;font-family:'Orbitron',sans-serif}
+.agent-name{font-size:.8rem;color:#fff;font-weight:bold}
+.agent-status{font-size:.68rem;color:var(--cyan);opacity:.8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.agent-badge{font-size:.6rem;padding:3px 8px;border-radius:10px;font-family:'Orbitron',sans-serif}
 .badge-active{background:rgba(0,255,136,.15);color:var(--green);border:1px solid var(--green)}
-.badge-idle{background:rgba(0,212,255,.1);color:var(--cyan);border:1px solid var(--border)}
-.badge-busy{background:rgba(255,107,53,.15);color:var(--orange);border:1px solid var(--orange)}
 
-/* CENTER — Main */
+/* MOVIE STARK PROTOCOL SLIDERS */
+.protocol-slider-container { margin-top: 14px; }
+.protocol-item {
+  background: rgba(10, 15, 28, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.protocol-name { font-size: 0.7rem; font-family: 'Orbitron'; color: #fff; }
+.slide-toggle {
+  width: 50px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid var(--cyan);
+  transition: all 0.3s;
+}
+.slide-toggle.active { background: rgba(0, 255, 136, 0.3); border-color: var(--green); }
+.slide-circle {
+  width: 18px;
+  height: 18px;
+  background: var(--cyan);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px var(--cyan);
+}
+.slide-toggle.active .slide-circle { left: 28px; background: var(--green); box-shadow: 0 0 8px var(--green); }
+
+/* CENTER PANEL: 3D ARC REACTOR VISUALIZER */
 #center{display:flex;flex-direction:column;gap:8px}
-#tasks-panel{flex:1;overflow-y:auto}
-#tasks-panel::-webkit-scrollbar{width:4px}
-#tasks-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.task-card{display:flex;align-items:center;gap:12px;padding:10px 12px;margin-bottom:6px;
-  background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.12);border-radius:6px;
-  animation:slideIn .4s ease}
-.task-type{font-size:.65rem;padding:3px 8px;border-radius:4px;font-family:'Orbitron',sans-serif;white-space:nowrap}
-.type-council{background:rgba(123,45,255,.2);color:var(--purple);border:1px solid var(--purple)}
-.type-generate{background:rgba(0,212,255,.15);color:var(--cyan);border:1px solid var(--cyan)}
-.type-security{background:rgba(255,45,85,.15);color:var(--red);border:1px solid var(--red)}
-.type-deploy{background:rgba(0,255,136,.15);color:var(--green);border:1px solid var(--green)}
-.type-default{background:rgba(255,255,255,.05);color:#aaa;border:1px solid #333}
-.task-info{flex:1;min-width:0}
-.task-id{font-size:.6rem;color:#666}
-.task-desc{font-size:.72rem;color:#ccc;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.task-status{font-size:.6rem;padding:2px 6px;border-radius:3px;white-space:nowrap}
-.s-running{color:var(--orange);background:rgba(255,107,53,.15)}
-.s-completed{color:var(--green);background:rgba(0,255,136,.1)}
-.s-failed{color:var(--red);background:rgba(255,45,85,.1)}
-.s-pending{color:#888;background:rgba(255,255,255,.05)}
+#hologram-panel{height:200px;position:relative;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);border-radius:8px;border:1px solid var(--border);}
+#arc-canvas-3d{position:absolute;inset:0;width:100%;height:100%;}
 
-/* RIGHT — Metrics */
-#metrics{grid-row:2}
-.metric{margin-bottom:16px}
-.metric-label{font-size:.65rem;opacity:.6;margin-bottom:4px;display:flex;justify-content:space-between}
+#tasks-panel{flex:1;overflow-y:auto}
+.task-card{display:flex;align-items:center;gap:12px;padding:10px 12px;margin-bottom:6px;
+  background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.12);border-radius:6px;}
+.task-type{font-size:.65rem;padding:3px 8px;border-radius:4px;font-family:'Orbitron',sans-serif;}
+.type-generate{background:rgba(0,212,255,.15);color:var(--cyan);border:1px solid var(--cyan)}
+
+/* METRICS & LOG */
+#metrics{grid-row:2; overflow-y: auto;}
+.metric{margin-bottom:12px}
+.metric-label{font-size:.68rem;opacity:.8;margin-bottom:4px;display:flex;justify-content:space-between}
 .metric-val{color:#fff;font-weight:bold}
 .bar-track{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px;transition:width 1s ease;position:relative}
-.bar-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:4px;
-  background:rgba(255,255,255,.8);border-radius:2px;box-shadow:0 0 6px currentColor}
+.bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
 .bar-cyan{background:linear-gradient(90deg,rgba(0,212,255,.4),var(--cyan))}
 .bar-purple{background:linear-gradient(90deg,rgba(123,45,255,.4),var(--purple))}
-.bar-green{background:linear-gradient(90deg,rgba(0,255,136,.4),var(--green))}
-.bar-orange{background:linear-gradient(90deg,rgba(255,107,53,.4),var(--orange))}
 
-.log-entry{font-size:.65rem;padding:4px 0;border-bottom:1px solid rgba(0,212,255,.05);
-  color:#888;display:flex;gap:8px}
-.log-entry .log-time{color:var(--cyan);opacity:.5;white-space:nowrap}
-.log-entry .log-msg{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.log-entry.warn .log-msg{color:var(--orange)}
-.log-entry.error .log-msg{color:var(--red)}
+.log-entry{font-size:.65rem;padding:4px 0;border-bottom:1px solid rgba(0,212,255,.05);color:#888;display:flex;gap:8px}
 .log-entry.success .log-msg{color:var(--green)}
 
-/* BOTTOM — Voice */
-#voice-panel{grid-column:1/-1;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
-.voice-input-wrap{display:flex;align-items:center;gap:12px;
-  background:rgba(0,212,255,.05);border:1px solid var(--border);border-radius:8px;padding:8px 16px}
-#voice-text{background:transparent;border:none;outline:none;color:#fff;font-family:'Share Tech Mono',monospace;
-  font-size:.85rem;flex:1;caret-color:var(--cyan)}
-#voice-text::placeholder{color:rgba(0,212,255,.3)}
-.mic-btn{width:50px;height:50px;border-radius:50%;border:2px solid var(--cyan);background:rgba(0,212,255,.1);
-  color:var(--cyan);font-size:1.3rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
-.mic-btn:hover{background:rgba(0,212,255,.25);box-shadow:0 0 20px rgba(0,212,255,.5)}
-.mic-btn.listening{background:rgba(255,45,85,.2);border-color:var(--red);color:var(--red);
-  animation:micPulse 1s infinite}
-#waveform{width:200px;height:50px}
-.send-btn{padding:8px 20px;background:linear-gradient(135deg,var(--purple),var(--cyan));
-  border:none;border-radius:6px;color:#fff;font-family:'Orbitron',sans-serif;font-size:.7rem;
-  letter-spacing:2px;cursor:pointer;transition:all .3s}
-.send-btn:hover{opacity:.85;box-shadow:0 0 20px rgba(0,212,255,.4)}
+/* BOTTOM VOICE INPUT DOCK */
+#voice-panel{grid-column:1/-1;display:flex;align-items:center;justify-content:center;background:rgba(8,14,28,0.92);border:1px solid var(--cyan);border-radius:8px;}
+.voice-input-wrap{display:flex;align-items:center;gap:10px;background:rgba(0,212,255,.05);border:1px solid var(--border);border-radius:8px;padding:6px 14px;flex:1}
+#voice-text{background:transparent;border:none;outline:none;color:#fff;font-family:'Share Tech Mono',monospace;font-size:.9rem;flex:1;caret-color:var(--cyan)}
+.mic-btn{width:46px;height:46px;border-radius:50%;border:2px solid var(--cyan);background:rgba(0,212,255,0.15);color:var(--cyan);font-size:1.3rem;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center}
+.mic-btn.listening{background:rgba(255,45,85,.3);border-color:var(--red);color:var(--red);animation:micPulse 0.8s infinite}
+.send-btn{padding:10px 22px;background:linear-gradient(135deg,var(--purple),var(--cyan));border:none;border-radius:6px;color:#fff;font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:2px;cursor:pointer;transition:all .3s}
 
-/* ANIMATIONS */
+/* MODAL OVERLAY */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,8,18,0.85);backdrop-filter:blur(10px);z-index:99999;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-box{background:rgba(10,18,34,0.95);border:1px solid var(--cyan);border-radius:12px;padding:24px;width:90%;max-width:500px;box-shadow:0 0 30px rgba(0,212,255,0.4)}
+.modal-title{font-family:'Orbitron';font-size:1.1rem;color:var(--cyan);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.modal-body{font-size:0.8rem;color:#ccc;line-height:1.5;margin-bottom:18px}
+.modal-btn{padding:8px 16px;background:var(--cyan);color:#000;border:none;border-radius:6px;font-family:'Orbitron';font-size:0.7rem;font-weight:bold;cursor:pointer;margin-right:8px}
+
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,45,85,.4)}70%{box-shadow:0 0 0 12px rgba(255,45,85,0)}}
-@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
-@keyframes scanLine{0%{top:0}100%{top:100%}}
-.scan-line{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);
-  animation:scanLine 3s linear infinite;opacity:.4;pointer-events:none}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,45,85,.5)}70%{box-shadow:0 0 0 16px rgba(255,45,85,0)}}
+.siri-badge-bar{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.siri-badge-bar::-webkit-scrollbar{display:none;}
+.siri-btn{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.35);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:0.62rem;padding:4px 9px;border-radius:12px;white-space:nowrap;cursor:pointer;transition:all 0.2s;}
+.siri-btn:hover, .siri-btn:active{background:var(--cyan);color:#000;box-shadow:0 0 8px var(--cyan);}
 </style>
 </head>
 <body>
 <canvas id="bg"></canvas>
+
 <div id="app">
   <!-- HEADER -->
   <header>
-    <div class="logo">⬡ JARVIS O.M.E.G.A.</div>
+    <div class="logo">⬡ STARK OS // JARVIS AI CORE</div>
     <div class="status-bar">
       <span><span class="dot green"></span>Prime Directress</span>
-      <span><span class="dot cyan"></span>Task Worker</span>
-      <span><span class="dot green"></span>MongoDB</span>
-      <span><span class="dot cyan"></span>Redis</span>
-      <span id="ws-status"><span class="dot" style="background:#888"></span>WebSocket</span>
+      <span><span class="dot cyan"></span>Win32 Root Layer</span>
+      <span><span class="dot green"></span>Voice React 3D Arc</span>
+      <span id="ws-status"><span class="dot green"></span>ONLINE</span>
     </div>
     <div class="time-display" id="clock">--:--:--</div>
   </header>
 
-  <!-- LEFT: AGENTS -->
+  <!-- LEFT: SWARM AGENTS + MOVIE PROTOCOL SLIDERS -->
   <div class="panel" id="agents">
-    <div class="scan-line"></div>
-    <div class="panel-title">▸ Active Agents</div>
+    <div class="panel-title">▸ Swarm Agents (Tap to Control)</div>
     <div id="agent-list">
-      <div class="agent">
+      <div class="agent" onclick="triggerAgent('Prime Directress', 'Swarm Orchestration Master')">
         <div class="agent-icon" style="border-color:#7b2dff;background:rgba(123,45,255,.15)">👑</div>
         <div class="agent-info"><div class="agent-name">Prime Directress</div><div class="agent-status">Orchestrating swarm</div></div>
         <span class="agent-badge badge-active">ACTIVE</span>
       </div>
-      <div class="agent">
+      <div class="agent" onclick="triggerAgent('Security Auditor', 'Silent Intruder & Win32 Lock')">
         <div class="agent-icon" style="border-color:#00d4ff;background:rgba(0,212,255,.1)">🔍</div>
-        <div class="agent-info"><div class="agent-name">Security Auditor</div><div class="agent-status">Monitoring threats</div></div>
+        <div class="agent-info"><div class="agent-name">Security Auditor</div><div class="agent-status">Intruder sentinel active</div></div>
         <span class="agent-badge badge-active">ACTIVE</span>
       </div>
-      <div class="agent">
-        <div class="agent-icon" style="border-color:#00ff88;background:rgba(0,255,136,.1)">⚡</div>
-        <div class="agent-info"><div class="agent-name">Code Executioner</div><div class="agent-status">Standing by</div></div>
-        <span class="agent-badge badge-idle">IDLE</span>
-      </div>
-      <div class="agent">
-        <div class="agent-icon" style="border-color:#ff6b35;background:rgba(255,107,53,.1)">🚀</div>
-        <div class="agent-info"><div class="agent-name">Deploy Engine</div><div class="agent-status">Standing by</div></div>
-        <span class="agent-badge badge-idle">IDLE</span>
-      </div>
-      <div class="agent">
-        <div class="agent-icon" style="border-color:#ff2d55;background:rgba(255,45,85,.1)">🧠</div>
-        <div class="agent-info"><div class="agent-name">Memory Core</div><div class="agent-status">0 memories loaded</div></div>
+      <div class="agent" onclick="triggerAgent('Browser Agent', 'Automated Live Web Search')">
+        <div class="agent-icon" style="border-color:#00ff88;background:rgba(0,255,136,.1)">🌐</div>
+        <div class="agent-info"><div class="agent-name">Browser Agent</div><div class="agent-status">Live Web Search ready</div></div>
         <span class="agent-badge badge-active">ACTIVE</span>
       </div>
-      <div class="agent">
-        <div class="agent-icon" style="border-color:#00d4ff;background:rgba(0,212,255,.1)">📡</div>
-        <div class="agent-info"><div class="agent-name">Browser Agent</div><div class="agent-status">Puppeteer ready</div></div>
-        <span class="agent-badge badge-idle">IDLE</span>
+    </div>
+
+    <!-- MOVIE STARK PROTOCOL SLIDERS -->
+    <div class="panel-title" style="margin-top:14px;">▸ Movie Stark Protocol Sliders</div>
+    <div class="protocol-slider-container">
+      <div class="protocol-item">
+        <span class="protocol-name">🚨 LOCKDOWN PROTOCOL</span>
+        <div class="slide-toggle" onclick="toggleProtocol(this, 'lock workstation')"><div class="slide-circle"></div></div>
+      </div>
+      <div class="protocol-item">
+        <span class="protocol-name">⚡ HYPER-TRAINING OVERCLOCK</span>
+        <div class="slide-toggle active" onclick="toggleProtocol(this, 'check training status')"><div class="slide-circle"></div></div>
+      </div>
+      <div class="protocol-item">
+        <span class="protocol-name">🛡️ STEALTH SENTINEL</span>
+        <div class="slide-toggle active" onclick="toggleProtocol(this, 'clean temporary files')"><div class="slide-circle"></div></div>
+      </div>
+      <div class="protocol-item">
+        <span class="protocol-name">🔑 WINDOWS PASSWORD CHANGE</span>
+        <div class="slide-toggle" onclick="promptPasswordChange()"><div class="slide-circle"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- CENTER -->
+  <!-- CENTER: VOICE-REACT 3D ARC REACTOR & MEDIA PLAYER & TASK STREAM -->
   <div id="center">
+    <div class="panel" id="hologram-panel">
+      <canvas id="arc-canvas-3d"></canvas>
+      <div style="position:absolute;bottom:8px;font-family:'Orbitron';font-size:0.65rem;color:var(--cyan);letter-spacing:2px;text-shadow:0 0 10px var(--cyan);">
+        STARK MARK-L // VOICE-REACT 3D ARC REACTOR
+      </div>
+    </div>
+
+    <!-- STARK HOLOGRAPHIC MEDIA PLAYER -->
+    <div class="panel" id="media-panel" style="display:none;margin-top:4px;padding:10px;background:rgba(6,12,26,0.95);border:1px solid var(--cyan);box-shadow:0 0 20px rgba(0,212,255,0.3);">
+      <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span id="media-title">🎬 STARK MEDIA ENGINE</span>
+        <button style="background:none;border:none;color:var(--red);font-family:'Orbitron';font-size:0.75rem;font-weight:bold;cursor:pointer;" onclick="closeMediaPlayer()">✕ CLOSE</button>
+      </div>
+      <div style="width:100%;height:190px;border-radius:8px;overflow:hidden;background:#000;border:1px solid var(--border);">
+        <iframe id="media-iframe" style="width:100%;height:100%;border:none;" allow="autoplay; encrypted-media"></iframe>
+      </div>
+    </div>
+
     <div class="panel" id="tasks-panel">
-      <div class="scan-line"></div>
       <div class="panel-title">▸ Task Stream — Live Queue</div>
-      <div id="task-list"><div style="color:#333;font-size:.75rem;text-align:center;padding:20px">Awaiting tasks from Prime Directress...</div></div>
+      <div id="task-list"><div style="color:#333;font-size:.75rem;text-align:center;padding:10px">Loading task queue...</div></div>
     </div>
   </div>
 
-  <!-- RIGHT: METRICS + LOGS -->
+  <!-- RIGHT: METRICS & LOG -->
   <div class="panel" id="metrics">
-    <div class="scan-line"></div>
     <div class="panel-title">▸ System Vitals</div>
     <div class="metric">
-      <div class="metric-label"><span>CPU LOAD</span><span class="metric-val" id="cpu-val">--</span></div>
+      <div class="metric-label"><span>CPU LOAD</span><span class="metric-val" id="cpu-val">--%</span></div>
       <div class="bar-track"><div class="bar-fill bar-cyan" id="cpu-bar" style="width:0%"></div></div>
     </div>
     <div class="metric">
-      <div class="metric-label"><span>HEAP MEMORY</span><span class="metric-val" id="mem-val">--</span></div>
+      <div class="metric-label"><span>RAM MEMORY</span><span class="metric-val" id="mem-val">--%</span></div>
       <div class="bar-track"><div class="bar-fill bar-purple" id="mem-bar" style="width:0%"></div></div>
     </div>
     <div class="metric">
-      <div class="metric-label"><span>QUEUE DEPTH</span><span class="metric-val" id="q-val">0</span></div>
-      <div class="bar-track"><div class="bar-fill bar-green" id="q-bar" style="width:0%"></div></div>
+      <div class="metric-label"><span>GPU LoRA STEP</span><span class="metric-val" id="q-val">Loading...</span></div>
+      <div class="bar-track"><div class="bar-fill bar-green" id="q-bar" style="width:74%"></div></div>
     </div>
-    <div class="metric">
-      <div class="metric-label"><span>AGENTS ACTIVE</span><span class="metric-val" id="agent-val">2/6</span></div>
-      <div class="bar-track"><div class="bar-fill bar-orange" id="agent-bar" style="width:33%"></div></div>
-    </div>
-    <div class="panel-title" style="margin-top:16px">▸ System Log</div>
-    <div id="log-list" style="overflow-y:auto;max-height:180px"></div>
+
+    <div class="panel-title" style="margin-top:14px">▸ System Log</div>
+    <div id="log-list" style="overflow-y:auto;max-height:160px"></div>
   </div>
 
-  <!-- BOTTOM: VOICE -->
+  <!-- BOTTOM: ALWAYS-VISIBLE STICKY MOBILE VOICE & CHAT DOCK -->
   <div class="panel" id="voice-panel">
-    <div style="display:flex;align-items:center;gap:12px;width:100%">
-      <button class="mic-btn" id="mic-btn" title="Hold to speak">🎤</button>
+    <div class="siri-badge-bar">
+      <button type="button" class="siri-btn" onclick="quickCmd('play video Iron Man trailer')">🎬 Play Video</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('play Starboy on Spotify')">🎵 Play Music</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('play live news')">📰 Live News</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('call Mom')">📞 Call Contact</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('call 9876543210')">🔢 Dial Number</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('sms Hello from JARVIS')">💬 SMS</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('whatsapp')">🟢 WhatsApp</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('toggle flashlight')">🔦 Flashlight</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('check battery level')">🔋 Battery</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('set alarm 7 AM')">⏰ Alarm</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('maps Eiffel Tower')">🗺️ Maps</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('open camera')">📸 Camera</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('open settings')">⚙️ Settings</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('open notepad on laptop')">📝 Notepad</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('open chrome on laptop')">🌐 Chrome</button>
+      <button type="button" class="siri-btn" onclick="quickCmd('vibrate device')">📳 Buzz</button>
+    </div>
+    <form style="display:flex;align-items:center;gap:10px;width:100%" onsubmit="sendCommand(); return false;">
+      <button type="button" class="mic-btn" id="mic-btn" title="Tap to speak (Voice React Active)">🎤</button>
       <div class="voice-input-wrap" style="flex:1">
-        <input type="text" id="voice-text" placeholder="Speak or type a command... (e.g. 'JARVIS, scan my codebase')" />
+        <input type="text" id="voice-text" placeholder="Speak or type a command... (e.g. 'search Iron Man on YouTube')" onkeypress="if(event.key==='Enter')sendCommand()"/>
       </div>
-      <canvas id="waveform" width="160" height="44"></canvas>
-      <button class="send-btn" onclick="sendCommand()">EXECUTE ▶</button>
+      <button type="submit" class="send-btn" id="send-btn" onclick="sendCommand()" ontouchend="sendCommand(); event.preventDefault();">EXECUTE ▶</button>
+    </form>
+  </div>
+</div>
+
+<!-- AGENT ACTION MODAL OVERLAY -->
+<div class="modal-overlay" id="agent-modal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span id="modal-agent-name">AGENT NAME</span>
+      <button style="background:none;border:none;color:#ff2d55;font-size:1.2rem;cursor:pointer;" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-agent-body">Loading agent details...</div>
+    <div>
+      <button class="modal-btn" id="modal-run-btn" onclick="runAgentAction()">⚡ EXECUTE WORKFLOW</button>
+      <button class="modal-btn" style="background:transparent;border:1px solid var(--cyan);color:var(--cyan);" onclick="closeModal()">CLOSE</button>
     </div>
   </div>
 </div>
 
 <script>
+// ── Service Worker Offline Registration ─────────────────
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('/public/hud/sw.js').catch(()=>{});
+  });
+}
+
 // ── Clock ────────────────────────────────────────────────
 const clock = document.getElementById('clock');
 setInterval(()=>{clock.textContent=new Date().toLocaleTimeString('en-US',{hour12:false})},1000);
 
-// ── Hex Grid Background ──────────────────────────────────
+// ── 3D CONSTELLATION NEURAL MESH BACKGROUND ───────────────
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
-canvas.width=innerWidth; canvas.height=innerHeight;
-function drawHex(x,y,r,a){
-  ctx.beginPath();
-  for(let i=0;i<6;i++){const ang=Math.PI/3*i-Math.PI/6;ctx.lineTo(x+r*Math.cos(ang),y+r*Math.sin(ang))}
-  ctx.closePath();ctx.strokeStyle=`rgba(0,212,255,${a})`;ctx.lineWidth=.5;ctx.stroke();
+let particles = [];
+const PARTICLE_COUNT = 70;
+
+function resizeBg(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
-function drawGrid(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const r=40,w=r*Math.sqrt(3),h=r*1.5;
-  for(let row=-1;row<canvas.height/h+2;row++){
-    for(let col=-1;col<canvas.width/w+2;col++){
-      const x=col*w+(row%2)*w/2;const y=row*h;
-      drawHex(x,y,r-.5,(Math.sin(Date.now()/3000+row+col)*.5+.5)*.15+.02);
+window.addEventListener('resize', resizeBg);
+resizeBg();
+
+for(let i=0; i<PARTICLE_COUNT; i++){
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.8,
+    vy: (Math.random() - 0.5) * 0.8,
+    radius: Math.random() * 2 + 1,
+    color: Math.random() > 0.5 ? '#00d4ff' : (Math.random() > 0.5 ? '#7b2dff' : '#00ff88')
+  });
+}
+
+function animBg(){
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Radial Cosmic Background Glow
+  const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, canvas.width);
+  grad.addColorStop(0, 'rgba(0, 212, 255, 0.08)');
+  grad.addColorStop(0.6, 'rgba(123, 45, 255, 0.03)');
+  grad.addColorStop(1, 'rgba(2, 8, 18, 0.95)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Update & Draw Particles
+  for(let i=0; i<PARTICLE_COUNT; i++){
+    let p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+
+    if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+    if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = 8;
+    ctx.fill();
+
+    // Connect close particle nodes with glowing laser lines
+    for(let j=i+1; j<PARTICLE_COUNT; j++){
+      let p2 = particles[j];
+      let dx = p.x - p2.x;
+      let dy = p.y - p2.y;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 120){
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = `rgba(0, 212, 255, ${0.35 * (1 - dist / 120)})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
     }
   }
+  requestAnimationFrame(animBg);
 }
-function animBg(){drawGrid();requestAnimationFrame(animBg)}
 animBg();
 
-// ── WebSocket ─────────────────────────────────────────────
-const API = location.origin.replace('4000','4000');
-const WS_URL = `ws://${location.hostname}:4000/ws`;
-let ws;
-const wsDot = document.getElementById('ws-status');
+// ── VOICE-REACT 3D ARC REACTOR ROTATING SPHERE CANVAS ─────
+const arcCanvas = document.getElementById('arc-canvas-3d');
+const actx = arcCanvas.getContext('2d');
+let arcAngle = 0;
+let isVoiceActive = false;
 
-function connectWS(){
-  try{
-    ws=new WebSocket(WS_URL);
-    ws.onopen=()=>{
-      wsDot.innerHTML='<span class="dot green"></span>WebSocket';
-      addLog('WebSocket connected to Prime Directress','success');
-    };
-    ws.onmessage=(e)=>{
-      const d=JSON.parse(e.data);
-      handleWsEvent(d);
-    };
-    ws.onclose=()=>{
-      wsDot.innerHTML='<span class="dot" style="background:#ff2d55"></span>WebSocket';
-      addLog('WebSocket disconnected. Reconnecting...','warn');
-      setTimeout(connectWS,3000);
-    };
-    ws.onerror=()=>ws.close();
-  }catch(err){addLog('WS connection failed','error')}
+function resizeArcCanvas(){
+  arcCanvas.width = arcCanvas.clientWidth;
+  arcCanvas.height = arcCanvas.clientHeight;
 }
-connectWS();
+window.addEventListener('resize', resizeArcCanvas);
+resizeArcCanvas();
 
-function handleWsEvent(d){
-  if(d.type==='JARVIS_ONLINE'){addLog(d.message,'success')}
-  else if(d.type==='TASK_CREATED'){addTaskCard(d);updateQueue(1)}
-  else if(d.type==='TASK_COMPLETED'){addLog(`Task completed: ${d.taskId||''}`, 'success');updateQueue(-1)}
-  else if(d.type==='TASK_FAILED'){addLog(`Task FAILED: ${d.taskId||''}`, 'error')}
-  else if(d.type==='SECURITY_ALERT'){addLog(`🚨 SECURITY: ${d.message||''}`, 'error')}
-  else if(d.type==='COMMAND_RECEIVED'){addLog(`Command acknowledged: ${d.command}`, 'success')}
+function render3DArcReactor(){
+  if(arcCanvas.width === 0) resizeArcCanvas();
+  actx.clearRect(0, 0, arcCanvas.width, arcCanvas.height);
+  const cx = arcCanvas.width / 2;
+  const cy = arcCanvas.height / 2;
+  const radius = Math.min(cx, cy) * 0.62;
+
+  // React to voice input: spins 3x faster and glows brighter when speaking!
+  const speed = isVoiceActive ? 0.08 : 0.025;
+  arcAngle += speed;
+
+  actx.save();
+  actx.translate(cx, cy);
+
+  // Outer Glowing Cyan Ring
+  actx.rotate(arcAngle);
+  actx.beginPath();
+  actx.arc(0, 0, radius, 0, Math.PI * 2);
+  actx.strokeStyle = isVoiceActive ? '#ff00ff' : '#00d4ff';
+  actx.lineWidth = isVoiceActive ? 4 : 3;
+  actx.shadowColor = isVoiceActive ? '#ff00ff' : '#00d4ff';
+  actx.shadowBlur = isVoiceActive ? 30 : 16;
+  actx.stroke();
+
+  // Inner Rotating Counter Ring
+  actx.rotate(-arcAngle * 2.2);
+  actx.beginPath();
+  actx.arc(0, 0, radius * 0.72, 0, Math.PI * 2);
+  actx.setLineDash([15, 12]);
+  actx.strokeStyle = isVoiceActive ? '#00ff88' : '#7b2dff';
+  actx.lineWidth = 2;
+  actx.shadowColor = isVoiceActive ? '#00ff88' : '#7b2dff';
+  actx.shadowBlur = 14;
+  actx.stroke();
+
+  // 8 Orbiting Light Nodes
+  for(let i=0; i<8; i++){
+    const a = arcAngle * 1.5 + (i * Math.PI / 4);
+    const px = radius * 0.85 * Math.cos(a);
+    const py = radius * 0.85 * Math.sin(a);
+    actx.beginPath();
+    actx.arc(px, py, isVoiceActive ? 6 : 4, 0, Math.PI * 2);
+    actx.fillStyle = isVoiceActive ? '#00d4ff' : '#00ff88';
+    actx.shadowColor = isVoiceActive ? '#00d4ff' : '#00ff88';
+    actx.shadowBlur = 12;
+    actx.fill();
+  }
+
+  actx.restore();
+  requestAnimationFrame(render3DArcReactor);
+}
+render3DArcReactor();
+
+// ── MOVIE STARK PROTOCOL SLIDER TOGGLE ────────────────────
+function toggleProtocol(el, cmd){
+  el.classList.toggle('active');
+  const isAct = el.classList.contains('active');
+  addLog(`Protocol toggled: ${isAct ? 'ENABLED' : 'DISABLED'}`, isAct ? 'success' : 'warn');
+  if(isAct) quickCmd(cmd);
 }
 
-// ── Task Cards ────────────────────────────────────────────
-let taskCount=0;
-const taskList=document.getElementById('task-list');
-
-function addTaskCard(d){
-  const t=d.taskType||d.type||'task';
-  const typeMap={council_task:'council',generate_code:'generate',fix_errors:'security',deploy_release:'deploy'};
-  const cls=typeMap[t]||'default';
-  const el=document.createElement('div');el.className='task-card';
-  el.innerHTML=`<span class="task-type type-${cls}">${t.replace('_',' ').toUpperCase()}</span>
-    <div class="task-info"><div class="task-id">#${d.taskId||++taskCount}</div>
-    <div class="task-desc">${d.input||d.message||'Processing...'}</div></div>
-    <span class="task-status s-running">RUNNING</span>`;
-  if(taskList.children[0]?.style?.textAlign==='center')taskList.innerHTML='';
-  taskList.prepend(el);
-  if(taskList.children.length>20)taskList.removeChild(taskList.lastChild);
+function promptPasswordChange(){
+  const newPass = prompt("Enter NEW Windows Account Password:");
+  if(newPass){
+    quickCmd(`change password to ${newPass}`);
+  }
 }
 
-// ── Metrics ───────────────────────────────────────────────
-let queueDepth=0;
-function updateQueue(delta){
-  queueDepth=Math.max(0,queueDepth+delta);
-  document.getElementById('q-val').textContent=queueDepth;
-  document.getElementById('q-bar').style.width=Math.min(queueDepth*10,100)+'%';
+// ── Interactive Agent Trigger Modal ──────────────────────
+let activeModalAgent = '';
+
+function triggerAgent(name, desc){
+  activeModalAgent = name;
+  document.getElementById('modal-agent-name').innerText = `🤖 ${name}`;
+  document.getElementById('modal-agent-body').innerHTML = `
+    <strong>Role:</strong> ${desc}<br>
+    <strong>Status:</strong> <span style="color:#00ff88;">ONLINE & OPERATIONAL</span><br><br>
+    This agent is linked to the JARVIS Win32 kernel engine. Triggering this workflow will execute direct system actions on your laptop mainframe.
+  `;
+  document.getElementById('agent-modal').classList.add('active');
+  speak(`Agent ${name} selected.`);
 }
 
-async function pollMetrics(){
-  try{
-    const r=await fetch(`${API}/api/v1/tasks`,{headers:{'x-api-key':localStorage.getItem('jarvis_api_key')||''}});
-    if(r.ok){const d=await r.json();updateTasksFromPoll(d)}
-  }catch{}
-  // Simulate vitals (replace with real endpoint if available)
-  const cpu=Math.round(20+Math.random()*40);
-  const mem=Math.round(35+Math.random()*30);
-  document.getElementById('cpu-val').textContent=cpu+'%';
-  document.getElementById('mem-val').textContent=mem+'%';
-  document.getElementById('cpu-bar').style.width=cpu+'%';
-  document.getElementById('mem-bar').style.width=mem+'%';
+function closeModal(){
+  document.getElementById('agent-modal').classList.remove('active');
 }
-function updateTasksFromPoll(d){}
-setInterval(pollMetrics,5000);pollMetrics();
 
-// ── Log ───────────────────────────────────────────────────
+function runAgentAction(){
+  closeModal();
+  addLog(`⚡ Executing workflow for ${activeModalAgent}...`, 'success');
+  quickCmd(`execute ${activeModalAgent} workflow`);
+}
+
+function quickCmd(txt){
+  document.getElementById('voice-text').value = txt;
+  sendCommand();
+}
+
+// ── API & Network State Monitoring ─────────────────────
 const logList=document.getElementById('log-list');
+const wsStatus=document.getElementById('ws-status');
+let isLaptopOnline = true;
+let offlineNoticeLogged = false;
+
 function addLog(msg,type=''){
   const el=document.createElement('div');
   el.className='log-entry '+(type||'');
@@ -338,97 +521,695 @@ function addLog(msg,type=''){
   logList.prepend(el);
   if(logList.children.length>50)logList.removeChild(logList.lastChild);
 }
-addLog('JARVIS O.M.E.G.A. HUD initialized');
-addLog('Prime Directress standing by');
-addLog('Memory Core online');
+addLog('STARK OS JARVIS Core Initialized', 'success');
 
-// ── Voice ─────────────────────────────────────────────────
+async function pollMetrics(){
+  try{
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const r=await fetch('/api/v1/metrics', { signal: controller.signal });
+    clearTimeout(timeoutId);
+    if(r.ok){
+      const d=await r.json();
+      document.getElementById('cpu-val').textContent=d.cpu_load||'--%';
+      document.getElementById('cpu-bar').style.width=(d.cpu_percent||0)+'%';
+      document.getElementById('mem-val').textContent=d.ram_load||'--%';
+      document.getElementById('mem-bar').style.width=(parseFloat(d.ram_load)||0)+'%';
+      if(d.training_status) document.getElementById('q-val').textContent=d.training_status;
+      
+      if(!isLaptopOnline){
+        isLaptopOnline = true;
+        offlineNoticeLogged = false;
+        if(wsStatus) wsStatus.innerHTML = '<span class="dot green"></span>ONLINE (GPU MAINFRAME)';
+        addLog('⚡ Connection re-established with Laptop GPU Mainframe!', 'success');
+      }
+    }
+  }catch(e){
+    if(isLaptopOnline){
+      isLaptopOnline = false;
+      if(wsStatus) wsStatus.innerHTML = '<span class="dot orange" style="background:#ff9900;box-shadow:0 0 8px #ff9900;"></span>STANDALONE MOBILE MODE';
+      if(!offlineNoticeLogged){
+        addLog('📱 Laptop powered OFF / Offline. Switched to STANDALONE MOBILE AI MODE.', 'warn');
+        addLog('⚡ Tap "EXECUTE ▶" to send command via Mobile Engine or trigger Wake-on-LAN.', 'success');
+        offlineNoticeLogged = true;
+      }
+    }
+  }
+}
+setInterval(pollMetrics, 3500); pollMetrics();
+
+async function pollTasks(){
+  if(!isLaptopOnline) return;
+  try{
+    const r=await fetch('/api/v1/tasks');
+    const d=await r.json();
+    if(d.tasks) updateTaskStream(d.tasks);
+  }catch(e){}
+}
+setInterval(pollTasks, 4000); pollTasks();
+
+function updateTaskStream(tasks){
+  const list=document.getElementById('task-list');
+  list.innerHTML='';
+  tasks.forEach(t=>{
+    const card=document.createElement('div');
+    card.className='task-card';
+    card.innerHTML=`
+      <span class="task-type type-${t.type||'generate'}">${t.type||'TASK'}</span>
+      <div style="flex:1;"><div style="font-size:0.75rem;color:#fff;">${t.description}</div><div style="font-size:0.6rem;color:#00d4ff;">ID: ${t.id}</div></div>
+      <span style="font-size:0.65rem;color:#00ff88;">${t.status.toUpperCase()}</span>
+    `;
+    list.appendChild(card);
+  });
+}
+
+// ── WEBAUDIO VOICE ENGINE WITH AUTONOMOUS CONTINUOUS HANDS-FREE LOOP (SIRI PARITY) ──
 const micBtn=document.getElementById('mic-btn');
 const voiceText=document.getElementById('voice-text');
-let recog,listening=false;
+let recog, listening=false;
+let isProcessingSpeech = false;
+let isContinuousWakeActive = true; // Autonomous Hands-Free Mode (Always-Listening)
+
+function autoStartListening(){
+  if(!isContinuousWakeActive || !recog) return;
+  if(window.speechSynthesis && window.speechSynthesis.speaking) return; // Wait until JARVIS finishes speaking
+  if(listening || isProcessingSpeech) return;
+
+  try {
+    recog.start();
+    micBtn.classList.add('listening');
+    listening = true;
+    isVoiceActive = true;
+  } catch(e) {}
+}
 
 if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recog=new SR();recog.continuous=false;recog.lang='en-US';recog.interimResults=true;
+  recog=new SR();
+  recog.continuous=false;
+  recog.lang='en-US';
+  recog.interimResults=true;
+
   recog.onresult=(e)=>{
-    const t=Array.from(e.results).map(r=>r[0].transcript).join('');
-    voiceText.value=t;
+    let interim = '';
+    let final = '';
+
+    for (let i = e.resultIndex; i < e.results.length; ++i) {
+      if (e.results[i].isFinal) {
+        final += e.results[i][0].transcript;
+      } else {
+        interim += e.results[i][0].transcript;
+      }
+    }
+
+    const currentText = final || interim;
+    voiceText.value = currentText;
+
+    if (final && !isProcessingSpeech) {
+      isProcessingSpeech = true;
+      addLog(`🎤 Autonomous Wake Capture: "${final.trim()}"`, 'success');
+      recog.stop();
+      setTimeout(() => {
+        sendCommand();
+        isProcessingSpeech = false;
+      }, 250);
+    }
   };
-  recog.onend=()=>{micBtn.classList.remove('listening');listening=false;stopWave();};
-}else{addLog('Speech recognition not available in this browser','warn')}
 
-micBtn.onclick=()=>{
-  if(!recog){voiceText.focus();return}
-  if(listening){recog.stop()}
-  else{recog.start();micBtn.classList.add('listening');listening=true;startWave();addLog('🎤 Listening...')}
-};
+  recog.onend=()=>{
+    micBtn.classList.remove('listening');
+    listening=false;
+    isVoiceActive=false;
+    // Autonomously restart listening after 350ms if not speaking!
+    if(isContinuousWakeActive && (!window.speechSynthesis || !window.speechSynthesis.speaking)){
+      setTimeout(autoStartListening, 350);
+    }
+  };
 
-// TTS
-function speak(text){
-  if(!window.speechSynthesis)return;
-  const u=new SpeechSynthesisUtterance(text);
-  u.pitch=.9;u.rate=.95;u.volume=1;
-  const voices=speechSynthesis.getVoices();
-  const preferred=voices.find(v=>v.name.includes('Google')||v.name.includes('Daniel')||v.name.includes('Alex'));
-  if(preferred)u.voice=preferred;
+  recog.onerror=(e)=>{
+    micBtn.classList.remove('listening');
+    listening=false;
+    isVoiceActive=false;
+    isProcessingSpeech=false;
+    if(isContinuousWakeActive && e.error !== 'not-allowed'){
+      setTimeout(autoStartListening, 700);
+    }
+  };
+}
+
+let defaultVoice = null;
+let audioUnlocked = false;
+
+function loadVoices(){
+  if(!window.speechSynthesis) return;
+  const voices = speechSynthesis.getVoices();
+  defaultVoice = voices.find(v => v.lang.startsWith('en')) || voices[0];
+}
+if(window.speechSynthesis){
+  speechSynthesis.onvoiceschanged = loadVoices;
+  loadVoices();
+}
+
+function unlockAudioContext(){
+  if(audioUnlocked) return;
+  if(window.speechSynthesis){
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance("JARVIS Autonomous Voice System Active.");
+    u.volume = 0.1;
+    if(defaultVoice) u.voice = defaultVoice;
+    speechSynthesis.speak(u);
+    audioUnlocked = true;
+  }
+  autoStartListening();
+}
+
+function speak(text, callback){
+  if(!window.speechSynthesis){
+    if(callback) callback();
+    return;
+  }
+  speechSynthesis.cancel(); // Clear old speech queue
+  const cleanText = text.replace(/JARVIS CORE:|JARVIS WIN32 ENGINE:|JARVIS MOBILE:|JARVIS MAINFRAME:/gi, '').trim();
+  const u = new SpeechSynthesisUtterance(cleanText);
+  u.pitch = 0.95; u.rate = 1.0; u.volume = 1.0;
+  if(!defaultVoice) loadVoices();
+  if(defaultVoice) u.voice = defaultVoice;
+
+  u.onend = () => {
+    if(callback) callback();
+    // Autonomously resume listening immediately after JARVIS speaks!
+    setTimeout(autoStartListening, 300);
+  };
+  u.onerror = () => {
+    if(callback) callback();
+    setTimeout(autoStartListening, 300);
+  };
+
   speechSynthesis.speak(u);
 }
 
-// ── Send Command ──────────────────────────────────────────
+// Auto start continuous wake loop on window load & user touch
+window.addEventListener('load', () => {
+  setTimeout(autoStartListening, 800);
+});
+document.addEventListener('touchstart', unlockAudioContext, { once: true });
+document.addEventListener('click', unlockAudioContext, { once: true });
+
+micBtn.onclick=async()=>{
+  unlockAudioContext();
+  if(!recog){
+    addLog('Speech API not supported in this browser. Type command into text box.', 'warn');
+    voiceText.focus();
+    return;
+  }
+  if(listening){
+    recog.stop();
+  }else{
+    voiceText.value = '';
+    try {
+      recog.start();
+      micBtn.classList.add('listening');
+      listening=true;
+      isVoiceActive=true;
+      addLog('🎤 Listening... (Speak now)');
+    } catch(err){
+      addLog('Tap text box to type command directly.', 'warn');
+    }
+  }
+};
+
+// ── SMART AI Q&A ENGINE (ANSWERS QUESTIONS & TALKS BACK) ──
+function answerQuestionLocally(cmd){
+  const c = cmd.toLowerCase().trim();
+  
+  if(c.includes("who are you") || c.includes("what is your name")){
+    return "I am JARVIS O.M.E.G.A., your Stark Mark 85 AI Assistant.";
+  } else if(c.includes("who created you") || c.includes("who made you")){
+    return "I was engineered by Tony Stark and Fayas as an advanced AI Swarm Core.";
+  } else if(c.includes("hello") || c.includes("hey") || c.includes("hi jarvis")){
+    return "Hello sir! JARVIS systems are 100% operational and ready.";
+  } else if(c.includes("how are you")){
+    return "All core diagnostics report optimal status, sir. Ready for your command.";
+  } else if(c.includes("calculate") || c.match(/\d+[\+\-\*\/]\d+/)){
+    try {
+      const expr = c.replace(/calculate|what is|how much is/gi, '').trim();
+      const res = Function(`'use strict'; return (${expr.replace(/[^0-9\+\-\*\/\(\)\.]/g, '')})`)();
+      return `The calculation result is ${res}.`;
+    } catch(e){}
+  }
+  return null;
+}
+
+// ── STANDALONE MOBILE AI ENGINE & ON-DEVICE CONTROL ──
+let activeTorchTrack = null;
+
+async function toggleTorch(forceState){
+  try {
+    if(activeTorchTrack && forceState !== true){
+      activeTorchTrack.stop();
+      activeTorchTrack = null;
+      addLog("🔦 Flashlight turned OFF.", "success");
+      speak("Flashlight turned off.");
+      return true;
+    }
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' }
+    });
+    const track = stream.getVideoTracks()[0];
+    if(track){
+      const caps = track.getCapabilities ? track.getCapabilities() : {};
+      if(caps.torch || 'torch' in track.getSettings()){
+        await track.applyConstraints({ advanced: [{ torch: true }] });
+        activeTorchTrack = track;
+        addLog("🔦 Flashlight activated on mobile device!", "success");
+        speak("Flashlight turned on.");
+      } else {
+        track.stop();
+        toggleScreenTorch();
+      }
+    }
+  } catch(e) {
+    toggleScreenTorch();
+  }
+  return true;
+}
+
+function toggleScreenTorch(){
+  let overlay = document.getElementById('screen-torch-overlay');
+  if(!overlay){
+    overlay = document.createElement('div');
+    overlay.id = 'screen-torch-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:#ffffff;z-index:999999;display:flex;align-items:center;justify-content:center;color:#000;font-family:Orbitron,sans-serif;font-weight:bold;font-size:1.1rem;padding:20px;text-align:center;cursor:pointer;';
+    overlay.innerHTML = '🔦 SCREEN TORCH ACTIVE<br><br><span style="font-size:0.8rem;color:#444">(Tap anywhere to close)</span>';
+    overlay.onclick = () => overlay.remove();
+    document.body.appendChild(overlay);
+    addLog("🔦 Screen Torch activated!", "success");
+    speak("Screen torch activated.");
+  } else {
+    overlay.remove();
+    addLog("🔦 Screen Torch turned off.", "success");
+    speak("Screen torch turned off.");
+  }
+}
+
+function playEmbeddedVideo(query){
+  const mediaPanel = document.getElementById('media-panel');
+  const mediaIframe = document.getElementById('media-iframe');
+  const mediaTitle = document.getElementById('media-title');
+  if(mediaPanel && mediaIframe){
+    mediaPanel.style.display = 'block';
+    if(mediaTitle) mediaTitle.textContent = `🎬 VIDEO PLAYER: '${query || 'Iron Man'}'`;
+    mediaIframe.src = `https://www.youtube-nocookie.com/embed?listType=search&list=${encodeURIComponent(query || 'Iron Man')}&autoplay=1`;
+    addLog(`🎬 Media Engine: Playing YouTube video for '${query}' inside HUD...`, "success");
+    speak(`Playing video for ${query || 'video'} inside Stark HUD.`);
+  }
+}
+
+function playEmbeddedMusic(query){
+  const mediaPanel = document.getElementById('media-panel');
+  const mediaIframe = document.getElementById('media-iframe');
+  const mediaTitle = document.getElementById('media-title');
+  if(mediaPanel && mediaIframe){
+    mediaPanel.style.display = 'block';
+    if(mediaTitle) mediaTitle.textContent = `🎵 MUSIC PLAYER: '${query || 'Starboy'}'`;
+    mediaIframe.src = `https://open.spotify.com/embed/search/${encodeURIComponent(query || 'Starboy')}`;
+    addLog(`🎵 Media Engine: Playing Spotify music for '${query}' inside HUD...`, "success");
+    speak(`Playing music for ${query || 'music'} inside Stark HUD.`);
+  }
+}
+
+function closeMediaPlayer(){
+  const mediaPanel = document.getElementById('media-panel');
+  const mediaIframe = document.getElementById('media-iframe');
+  if(mediaPanel) mediaPanel.style.display = 'none';
+  if(mediaIframe) mediaIframe.src = '';
+  addLog("⏹ Media player closed.", "warn");
+  speak("Media player closed.");
+}
+
+function cleanMediaSearchQuery(cmd){
+  return cmd.replace(/\b(jarvis|open|youtube|search|play|watch|trailer|song|songs|it|and|for|on|any|video|videos|a|the|in|inside)\b/gi, '').replace(/\s+/g, ' ').trim();
+}
+
+function executeMobileAppIntent(cmd){
+  const c = cmd.toLowerCase();
+  
+  if(navigator.vibrate) navigator.vibrate([80, 40, 80]);
+
+  // 0. DIRECT NATIVE APP INTENTS (OFFICIAL YOUTUBE & SPOTIFY APPS)
+  if(c.includes("stop music") || c.includes("stop video") || c.includes("close player")){
+    addLog("⏹ Media Intent: Stopping playback...", "warn");
+    speak("Media playback stopped.");
+    return true;
+  } else if(c.includes("youtube") || c.includes("video") || c.includes("watch") || c.includes("trailer") || c.includes("song")){
+    const query = cleanMediaSearchQuery(cmd) || "Kalyani";
+    const speechMsg = `Right away, sir. Opening YouTube and playing ${query} for you now.`;
+    addLog(`🎬 Direct Playback: Resolving top YouTube video for '${query}'...`, "success");
+    speak(speechMsg, () => {
+      fetch(`/api/v1/yt_resolve?query=${encodeURIComponent(query)}`)
+        .then(r => r.json())
+        .then(data => {
+          if(data.intent_url) {
+            window.location.href = data.intent_url;
+            setTimeout(() => {
+              if(!document.hidden && data.watch_url) {
+                window.location.href = data.watch_url;
+              }
+            }, 500);
+          } else {
+            window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAQ%253D%253D`;
+          }
+        })
+        .catch(() => {
+          window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}&sp=EgIQAQ%253D%253D`;
+        });
+    });
+    return true;
+  } else if(c.includes("play music") || c.includes("spotify") || (c.includes("play") && !c.includes("game"))){
+    const song = cleanMediaSearchQuery(cmd) || "Starboy";
+    const directSpotifyUrl = `https://open.spotify.com/search/${encodeURIComponent(song)}`;
+    addLog(`🎵 Direct Intent: Launching official Spotify App for '${song}'...`, "success");
+    speak(`Opening official Spotify app for ${song}.`);
+    // Direct launch into official Spotify Android App
+    window.location.href = `intent://open.spotify.com/search/${encodeURIComponent(song)}#Intent;package=com.spotify.music;scheme=https;end`;
+    setTimeout(() => {
+      if (!document.hidden) {
+        window.location.href = directSpotifyUrl;
+      }
+    }, 500);
+    return true;
+  }
+
+  // 1. PHONE CALLING (DIGITS OR CONTACT NAMES)
+  if(c.includes("call") || c.includes("dial") || c.includes("phone")){
+    const digitMatch = cmd.match(/[\+\d\s\-\(\)]{3,}/);
+    const digits = digitMatch ? digitMatch[0].replace(/[^0-9\+]/g, '') : '';
+    const rawTarget = cmd.replace(/call|dial|phone|contact|to|a|my/gi, '').trim();
+
+    if(digits && digits.length >= 3){
+      addLog(`📱 Mobile Intent: Dialing ${digits}...`, "success");
+      speak(`Dialing number ${digits}.`);
+      window.location.href = `tel:${digits}`;
+    } else if(rawTarget) {
+      addLog(`📱 Mobile Intent: Searching contact '${rawTarget}' to call...`, "success");
+      speak(`Initiating call for ${rawTarget}. Opening contacts dialer.`);
+      window.location.href = `intent:#Intent;action=android.intent.action.SEARCH;q=${encodeURIComponent(rawTarget)};end`;
+      setTimeout(() => {
+        if (!document.hidden) {
+          window.location.href = `tel:${encodeURIComponent(rawTarget)}`;
+        }
+      }, 700);
+    } else {
+      addLog(`📱 Mobile Intent: Opening Phone Dialer...`, "success");
+      speak("Opening phone dialer.");
+      window.location.href = "tel:";
+    }
+    return true;
+  }
+
+  // 2. FLASHLIGHT / TORCH
+  if(c.includes("flashlight") || c.includes("torch")){
+    const turnOn = !c.includes("off");
+    toggleTorch(turnOn);
+    return true;
+  }
+
+  // 3. BATTERY TELEMETRY
+  if(c.includes("battery") || c.includes("charge") || c.includes("power level")){
+    if('getBattery' in navigator){
+      navigator.getBattery().then(b => {
+        const pct = Math.round(b.level * 100);
+        const state = b.charging ? "currently charging" : "discharging";
+        const reply = `Mobile battery level is at ${pct} percent and ${state}.`;
+        addLog(`🔋 ${reply}`, "success");
+        speak(reply);
+      });
+    } else {
+      speak("Battery telemetry unavailable on this browser.");
+    }
+    return true;
+  }
+
+  // 4. SMS MESSAGING
+  if(c.includes("sms") || c.includes("text message") || c.includes("send text")){
+    const body = cmd.replace(/sms|text|message|send/gi, '').trim();
+    addLog(`📱 Mobile Intent: Opening SMS composer...`, "success");
+    speak("Opening SMS composer.");
+    window.location.href = `sms:?body=${encodeURIComponent(body)}`;
+    return true;
+  }
+
+  // 5. WHATSAPP
+  if(c.includes("whatsapp")){
+    const msg = cmd.replace(/whatsapp|send|message/gi, '').trim();
+    addLog("📱 Mobile Intent: Opening WhatsApp...", "success");
+    speak("Opening WhatsApp.");
+    if(msg){
+      window.location.href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+    } else {
+      window.location.href = "intent://send#Intent;package=com.whatsapp;scheme=whatsapp;end";
+    }
+    return true;
+  }
+
+  // 6. ALARM / TIMERS / CLOCK
+  if(c.includes("alarm") || c.includes("timer") || c.includes("clock")){
+    addLog("⏰ Mobile Intent: Opening Clock & Alarm...", "success");
+    speak("Opening Clock and Alarm manager.");
+    window.location.href = "intent:#Intent;action=android.intent.action.SHOW_TIMERS;end";
+    return true;
+  }
+
+  // 7. SYSTEM SETTINGS / WIFI / BLUETOOTH
+  if(c.includes("wifi") || c.includes("wi-fi")){
+    addLog("⚙️ Mobile Intent: Opening Wi-Fi Settings...", "success");
+    speak("Opening Wi-Fi settings.");
+    window.location.href = "intent:#Intent;action=android.settings.WIFI_SETTINGS;end";
+    return true;
+  } else if(c.includes("bluetooth")){
+    addLog("⚙️ Mobile Intent: Opening Bluetooth Settings...", "success");
+    speak("Opening Bluetooth settings.");
+    window.location.href = "intent:#Intent;action=android.settings.BLUETOOTH_SETTINGS;end";
+    return true;
+  } else if(c.includes("setting")){
+    addLog("⚙️ Mobile Intent: Opening System Settings...", "success");
+    speak("Opening Android Settings.");
+    window.location.href = "intent:#Intent;action=android.settings.SETTINGS;end";
+    return true;
+  }
+
+  // 8. CAMERA & PHOTOS
+  if(c.includes("camera") || c.includes("photo") || c.includes("selfie")){
+    addLog("📸 Mobile Intent: Launching Camera...", "success");
+    speak("Launching Camera.");
+    window.location.href = "intent:#Intent;action=android.media.action.IMAGE_CAPTURE;end";
+    return true;
+  } else if(c.includes("gallery") || c.includes("photos")){
+    addLog("🖼️ Mobile Intent: Opening Photo Gallery...", "success");
+    speak("Opening Photo Gallery.");
+    window.location.href = "intent:#Intent;action=android.intent.action.VIEW;type=image/*;end";
+    return true;
+  }
+
+  // 10. YOUTUBE
+  if(c.includes("youtube")){
+    const query = cmd.replace(/youtube|search|play|on|for/gi, '').trim();
+    addLog(`📱 Mobile Intent: Searching YouTube for '${query}'...`, "success");
+    speak(`Searching YouTube for ${query || 'videos'}.`);
+    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+    return true;
+  }
+
+  // 11. MAPS / LOCATION
+  if(c.includes("map") || c.includes("location")){
+    const query = cmd.replace(/maps|map|location|find|search|for|take me to/gi, '').trim();
+    addLog(`📱 Mobile Intent: Opening Google Maps for '${query}'...`, "success");
+    speak(`Opening Google Maps for ${query || 'current location'}.`);
+    window.open(`https://www.google.com/maps/search/${encodeURIComponent(query ? query : 'current location')}`, '_blank');
+    return true;
+  }
+
+  // 12. WEB SEARCH
+  if(c.includes("search") || c.includes("find") || c.includes("google")){
+    const query = cmd.replace(/search|web|for|find|google/gi, '').trim();
+    addLog(`📱 Mobile Intent: Searching Google for '${query}'...`, "success");
+    speak(`Searching Google for ${query || cmd}.`);
+    window.open(`https://www.google.com/search?q=${encodeURIComponent(query || cmd)}`, '_blank');
+    return true;
+  }
+
+  // 13. HAPTIC VIBRATION
+  if(c.includes("vibrate") || c.includes("buzz")){
+    if(navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+    addLog("📱 Mobile Haptics: Vibrating device!", "success");
+    speak("Haptic vibration alert sent to mobile phone.");
+    return true;
+  }
+  return false;
+}
+
+async function processStandaloneMobileAI(cmd){
+  const c = cmd.toLowerCase();
+  let reply = "";
+
+  if(executeMobileAppIntent(cmd)){
+    return;
+  }
+
+  if(c.includes("wake") || c.includes("turn on") || c.includes("power on") || c.includes("boot")){
+    reply = "JARVIS MOBILE: Broadcasting Wake-on-LAN magic packet to laptop (asus-a15)...";
+    addLog(reply, 'success');
+    sendWakeOnLanPacket();
+  } else if(c.includes("who are you") || c.includes("name")){
+    reply = "I am JARVIS O.M.E.G.A. Mobile Command Center.";
+  } else {
+    reply = `JARVIS MOBILE: Directive '${cmd}' logged on mobile engine.`;
+  }
+
+  addLog(`[MOBILE ENGINE]: ${reply}`, 'success');
+  speak(reply);
+}
+
+function sendWakeOnLanPacket(){
+  addLog("⚡ Sending Wake-on-LAN signal to laptop MAC 94:BB:43:B5:89:54...", "warn");
+  fetch('/api/v1/wol', { method: 'POST' }).catch(()=>{});
+}
+
 async function sendCommand(){
+  unlockAudioContext();
   const cmd=voiceText.value.trim();
   if(!cmd)return;
-  addLog(`▶ ${cmd}`);
+  addLog(`🌐 [DIRECTIVE DISPATCHED]: "${cmd}"`, 'success');
   voiceText.value='';
-  speak('Understood. Dispatching to Prime Directress.');
+  isVoiceActive=true;
 
-  // Route to backend
-  const apiKey=localStorage.getItem('jarvis_api_key')||'';
-  const taskType=routeCommand(cmd);
-  try{
-    const r=await fetch(`${API}/api/v1/tasks`,{
-      method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey},
-      body:JSON.stringify({projectId:'hud-voice',type:taskType,input:{prompt:cmd}})
-    });
-    const d=await r.json();
-    addTaskCard({taskType,taskId:d.task?._id||'HUD',input:cmd});
-    addLog(`Task dispatched: ${taskType}`,'success');
-  }catch(e){addLog('Failed to reach JARVIS backend. Check API key.','error')}
-}
-voiceText.addEventListener('keydown',e=>{if(e.key==='Enter')sendCommand()});
-
-function routeCommand(cmd){
-  const c=cmd.toLowerCase();
-  if(c.includes('scan')||c.includes('security')||c.includes('audit'))return'fix_errors';
-  if(c.includes('deploy')||c.includes('release'))return'deploy_release';
-  if(c.includes('generate')||c.includes('build')||c.includes('create'))return'generate_code';
-  if(c.includes('test'))return'run_tests';
-  if(c.includes('council')||c.includes('swarm'))return'council_task';
-  return'analyze_files';
-}
-
-// API Key prompt
-if(!localStorage.getItem('jarvis_api_key')){
-  const k=prompt('Enter JARVIS API Key (from .env API_KEY):');
-  if(k)localStorage.setItem('jarvis_api_key',k);
-}
-
-// ── Waveform Canvas ───────────────────────────────────────
-const wc=document.getElementById('waveform');const wctx=wc.getContext('2d');
-let waveAnim,waveActive=false;
-function drawWave(t=0){
-  wctx.clearRect(0,0,wc.width,wc.height);
-  wctx.beginPath();
-  for(let x=0;x<wc.width;x++){
-    const amp=waveActive?12:2;
-    const y=wc.height/2+Math.sin(x*.08+t)*amp+Math.sin(x*.15+t*1.5)*(amp*.5);
-    x===0?wctx.moveTo(x,y):wctx.lineTo(x,y);
+  // 1. Check local Q&A answers
+  const localAnswer = answerQuestionLocally(cmd);
+  if(localAnswer){
+    addLog(`🤖 JARVIS: ${localAnswer}`, 'success');
+    speak(localAnswer);
+    setTimeout(()=>{ isVoiceActive=false; }, 2000);
+    return;
   }
-  wctx.strokeStyle='rgba(0,212,255,.8)';wctx.lineWidth=2;wctx.stroke();
+
+  // 2. FIRST: Execute Mobile App Intent SYNCHRONOUSLY to preserve User Gesture Token!
+  const isMobileHandled = executeMobileAppIntent(cmd);
+
+  // 3. SECOND: Send command to Laptop Mainframe in background
+  let laptopSuccess = false;
+  try{
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
+    const r=await fetch('/api/v1/tasks',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({command:cmd, input:{prompt:cmd}}),
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    const d=await r.json();
+    laptopSuccess = true;
+    const replyText = d.response || 'Command executed on laptop mainframe.';
+    
+    // Only speak laptop response if mobile intent did not already speak
+    if (!isMobileHandled) {
+      addLog(`💻 Mainframe Result: ${replyText}`, 'success');
+      speak(replyText);
+    } else {
+      addLog(`💻 Mainframe Logged: ${replyText}`, 'success');
+    }
+  }catch(e){
+    if (!isMobileHandled) {
+      addLog('📱 Laptop offline. Processing on Mobile Engine...', 'warn');
+    }
+  }
+
+  if(!laptopSuccess && !isMobileHandled){
+    processStandaloneMobileAI(cmd);
+  }
+
+  setTimeout(()=>{ isVoiceActive=false; }, 2000);
 }
-function startWave(){waveActive=true;let t=0;waveAnim=setInterval(()=>drawWave(t+=.1),30)}
-function stopWave(){waveActive=false;clearInterval(waveAnim);setTimeout(()=>drawWave(),100)}
-drawWave();
+
+let currentAudioObj = null;
+
+function speak(text, callback){
+  if(!text) {
+    if(callback) callback();
+    return;
+  }
+  addLog(`🗣️ JARVIS Voice: "${text}"`, "info");
+  
+  if(currentAudioObj){
+    try { currentAudioObj.pause(); } catch(e){}
+    currentAudioObj = null;
+  }
+  
+  const ttsUrl = `/api/v1/tts?text=${encodeURIComponent(text)}`;
+  
+  fetch(ttsUrl)
+    .then(res => {
+      if(!res.ok) throw new Error("TTS status " + res.status);
+      return res.blob();
+    })
+    .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      const audio = new Audio(blobUrl);
+      currentAudioObj = audio;
+      
+      let handled = false;
+      const onFinish = () => {
+        if(!handled){
+          handled = true;
+          try { URL.revokeObjectURL(blobUrl); } catch(e){}
+          if(callback) callback();
+        }
+      };
+      
+      audio.onended = onFinish;
+      audio.onerror = () => {
+        try { URL.revokeObjectURL(blobUrl); } catch(e){}
+        fallbackWebSpeech(text, callback);
+      };
+      
+      audio.play().catch(err => {
+        try { URL.revokeObjectURL(blobUrl); } catch(e){}
+        fallbackWebSpeech(text, callback);
+      });
+    })
+    .catch(err => {
+      console.warn("Neural TTS fetch error, using WebSpeech fallback:", err);
+      fallbackWebSpeech(text, callback);
+    });
+}
+
+function fallbackWebSpeech(text, callback){
+  if(!window.speechSynthesis) {
+    if(callback) callback();
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.pitch = 0.95;
+  u.rate = 1.0;
+  u.volume = 1.0;
+  
+  const voices = window.speechSynthesis.getVoices();
+  const naturalVoice = voices.find(v => 
+    v.name.includes("Google") || 
+    v.name.includes("Natural") || 
+    v.name.includes("Samantha") || 
+    v.name.includes("Daniel") || 
+    v.name.includes("Oliver") || 
+    v.lang.startsWith("en")
+  );
+  if(naturalVoice) u.voice = naturalVoice;
+  
+  u.onend = () => { if(callback) callback(); };
+  u.onerror = () => { if(callback) callback(); };
+  
+  speechSynthesis.speak(u);
+}
 </script>
 </body>
 </html>

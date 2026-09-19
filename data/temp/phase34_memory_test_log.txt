@@ -1,0 +1,154 @@
+
+============================================================
+CAT 1 — FUNCTIONAL CORRECTNESS
+============================================================
+  PASS  C1.1 — Episode recorded, returns ID
+  PASS  C1.2 — Episode retrievable in recent()
+  PASS  C1.3 — Keyword search finds episode
+  PASS  C1.4 — episode_count >= 1
+  PASS  C1.5 — Entity lookup returns entity
+  PASS  C1.6 — Entity lookup case-insensitive
+  PASS  C1.7 — Entity type filtering works
+  PASS  C1.8 — Most recent entity accessible
+  PASS  C1.9 — Entity count accurate
+  PASS  C1.10 — Trusted value readable
+  PASS  C1.11 — Untrusted value readable with trusted_only=False
+  PASS  C1.12 — Untrusted value blocked with trusted_only=True
+  PASS  C1.13 — is_trusted correct for trusted key
+  PASS  C1.14 — is_trusted=False for untrusted key
+  PASS  C1.15 — EvolvingContext len=3
+  PASS  C1.16 — get_recent(2) returns 2 turns
+  PASS  C1.17 — context_string non-empty
+  PASS  C1.18 — get_last_user_entity finds entity hint
+
+============================================================
+CAT 2 — CONTEXT ISOLATION (NO CROSS-SESSION LEAKAGE)
+============================================================
+  PASS  C2.1 — Session B cannot read Session A secret
+  PASS  C2.2 — Session B size=0 (no A keys)
+  PASS  C2.3 — EntityRegistry B has no A entities
+  PASS  C2.4 — session_episodes() filtered to own session
+  PASS  C2.5 — clear_session removes own episodes only
+
+============================================================
+CAT 3 — RESTART / RECOVERY (DISK PERSISTENCE)
+============================================================
+  PASS  C3.1 — Episode 'task A' survives restart
+  PASS  C3.2 — Episode 'task B' survives restart
+  PASS  C3.3 — Reloaded count >= 2
+  PASS  C3.4 — Conflict log persists across reload
+
+============================================================
+CAT 4 — AMBIGUOUS AND CONFLICTING CONTEXT
+============================================================
+  PASS  C4.1 — Trusted wins over untrusted
+  PASS  C4.2 — Resolution=TRUSTED_WINS
+  PASS  C4.3 — User correction always wins
+  PASS  C4.4 — Resolution=USER_WINS
+  PASS  C4.5 — Latest wins when both trusted
+  PASS  C4.6 — Resolution=LATEST_WINS
+  PASS  C4.7 — LATEST_WINS when both untrusted
+  PASS  C4.8 — Trust can only be downgraded on conflict
+  PASS  C4.9 — Conflict log grew
+
+============================================================
+CAT 5 — CONTEXT EXPIRATION (TTL)
+============================================================
+  PASS  C5.1 — Entity present before TTL
+  PASS  C5.2 — Entity expired after TTL
+  PASS  C5.3 — count() returns 0 after expiry
+  PASS  C5.4 — Touched entity still alive after original TTL
+  PASS  C5.5 — Expired turns excluded from get_recent()
+  PASS  C5.6 — len(ec) excludes expired turns
+
+============================================================
+CAT 6 — PRIVACY / PROMPT-INJECTION PREVENTION
+============================================================
+  PASS  C6.1 — Screen injection detected
+  PASS  C6.2 — Screen injection result trusted=False
+  PASS  C6.3 — Alert message set
+  PASS  C6.4 — User-source injection detected
+  PASS  C6.5 — Injected user text is untrusted
+  PASS  C6.6 — Normal command trusted=True
+  PASS  C6.7 — Normal command injection_risk=False
+  PASS  C6.8 — Benign screen text still untrusted (source=screen)
+  PASS  C6.9 — Injected screen turn excluded from trusted context
+  PASS  C6.10 — Untrusted sm value blocked by trusted_only=True
+  PASS  C6.11 — alert_count >= 2 after injection attempts
+
+============================================================
+CAT 7 — MEMORY SIZE LIMITS / BOUNDED GROWTH
+============================================================
+  PASS  C7.1 — EntityRegistry never exceeds MAX_ENTITIES (count=100)
+  PASS  C7.2 — SessionMemory never exceeds MAX_KEYS (size=200)
+  PASS  C7.3 — Long values truncated to MAX_VALUE_BYTES
+  PASS  C7.4 — EpisodicHistory disk write bounded
+
+============================================================
+CAT 8 — PRIVACY BOUNDARIES
+============================================================
+  PASS  C8.1 — Episodic objective hard-capped at 256 chars (len=256)
+  PASS  C8.2 — Screen source always untrusted: 'hello'
+  PASS  C8.2 — Screen source always untrusted: 'open file'
+  PASS  C8.2 — Screen source always untrusted: 'click button'
+  PASS  C8.2 — Screen source always untrusted: 'type text'
+  PASS  C8.3 — is_safe_to_store=True for user trusted text
+  PASS  C8.4 — is_safe_to_store=False for screen text
+
+============================================================
+CAT 9 — BACKWARD COMPATIBILITY
+============================================================
+  PASS  C9.1 — context_memory.py singletons all importable
+  PASS  C9.2 — ConversationalContext.add_turn() still works
+  PASS  C9.3 — TaskMemory record/get round-trip still works
+  PASS  C9.4 — GroundingPatternCache still works
+  PASS  C9.5 — AppActionMemory still works
+  PASS  C9.6 — Phase 34.5 interpreter still works
+  PASS  C9.7 — ai_routes.py still parses after Track 3
+
+============================================================
+CAT 10 — PROTECTED FILES UNCHANGED
+============================================================
+  PASS  C10.1 — Protected file exists: safety_layer.py
+  PASS  C10.2 — Protected file parseable: safety_layer.py
+  PASS  C10.1 — Protected file exists: agent_state_machine.py
+  PASS  C10.2 — Protected file parseable: agent_state_machine.py
+  PASS  C10.1 — Protected file exists: checkpoint_manager.py
+  PASS  C10.2 — Protected file parseable: checkpoint_manager.py
+  PASS  C10.3 — evolved_memory.py does not import safety_layer
+  PASS  C10.4 — evolved_memory.py does not import checkpoint_manager
+  PASS  C10.5 — evolved_memory has no execute/bypass methods
+
+============================================================
+PERF — LATENCY MEASUREMENTS
+============================================================
+  PASS  PERF — EpisodicHistory.record: avg 2.501ms/call (50 calls)
+  PASS  PERF — EpisodicHistory.get_recent: avg 0.001ms/call (200 calls)
+  PASS  PERF — EntityRegistry.register: avg 0.023ms/call (200 calls)
+  PASS  PERF — EntityRegistry.lookup: avg 0.001ms/call (200 calls)
+  PASS  PERF — SessionMemory.set: avg 0.001ms/call (200 calls)
+  PASS  PERF — SessionMemory.get: avg 0.001ms/call (200 calls)
+  PASS  PERF — PrivacyGuard.check: avg 0.002ms/call (200 calls)
+  PASS  PERF — EvolvingContext.add_turn: avg 0.004ms/call (200 calls)
+  PASS  PERF — EvolvingContext.get_recent: avg 0.006ms/call (200 calls)
+  PASS  PERF — ConflictResolver.resolve: avg 1.939ms/call (50 calls)
+
+============================================================
+PHASE 34 TRACK 3 — MEMORY TEST SUMMARY
+============================================================
+  TOTAL PASS: 80
+  TOTAL FAIL: 0
+  RESULT: ALL PASS
+============================================================
+
+PERFORMANCE SUMMARY
+  OK  EpisodicHistory.record: 2.501ms avg
+  OK  EpisodicHistory.get_recent: 0.001ms avg
+  OK  EntityRegistry.register: 0.023ms avg
+  OK  EntityRegistry.lookup: 0.001ms avg
+  OK  SessionMemory.set: 0.001ms avg
+  OK  SessionMemory.get: 0.001ms avg
+  OK  PrivacyGuard.check: 0.002ms avg
+  OK  EvolvingContext.add_turn: 0.004ms avg
+  OK  EvolvingContext.get_recent: 0.006ms avg
+  OK  ConflictResolver.resolve: 1.939ms avg

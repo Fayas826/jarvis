@@ -1,0 +1,41 @@
+============================================================
+PHASE 34.5 — CONVERSATIONAL INTERPRETER ACCEPTANCE TEST
+============================================================
+
+[TEST GROUP 1] Basic Command Classification
+  PASS  T1.1 — 'Open Chrome' → COMMAND (conf=1.00)
+  PASS  T1.2 — 'What time is it?' → QUERY
+  PASS  T1.3 — Gibberish → AMBIGUOUS
+
+[TEST GROUP 2] Correction Detection
+  PASS  T2.x — 'No, click the other button' → CORRECTION
+  PASS  T2.x — 'Actually, I meant the Save button' → CORRECTION
+  PASS  T2.x — 'Wait, that's wrong — try the File menu' → CORRECTION
+  PASS  T2.x — 'Not that one, the one on the left' → CORRECTION
+  PASS  T2.x — 'Go back and try again' → CORRECTION
+  PASS  T2.x — 'Undo that' → CORRECTION
+
+[TEST GROUP 3] Reference Resolution
+  PASS  T3.1 — 'it' resolved via context_lookup → 'Now click Save File again'
+  PASS  T3.2 — 'the same' detected as reference (previous_location)
+
+[TEST GROUP 4] Unresolved Reference Confidence Penalty
+  PASS  T4.1 — Unresolved 'it' penalises confidence (0.75)
+
+[TEST GROUP 5] Trust Boundary
+  PASS  T5.1 — Screen-originating text marked untrusted
+  PASS  T5.2 — Normal user command marked trusted
+
+[TEST GROUP 6] Correction With Redirect
+  PASS  T6.1 — Correction with redirect: target='wait, I meant the green button'
+
+[TEST GROUP 7] Latency
+  INFO  T7.1 — Latency P50=0.04ms  P95=0.06ms
+  PASS  T7.1 — P50 < 10ms (actual 0.04ms)
+
+[TEST GROUP 8] Safety Contract
+  PASS  T8.1 — No action-execution methods on ConversationalInterpreter
+
+============================================================
+PHASE 34.5 CONVERSATIONAL INTERPRETER TESTS COMPLETE
+============================================================

@@ -1,0 +1,42 @@
+{
+  "phi3_inference": {
+    "status": "REAL",
+    "detail": "Model responded with: {'result': 'Hola'}"
+  },
+  "planner_dag": {
+    "status": "REAL",
+    "detail": "Generated 2 nodes in plan DAG."
+  },
+  "desktop_capture": {
+    "status": "REAL",
+    "detail": "Captured desktop frame at resolution 1920x1080."
+  },
+  "cua_execution": {
+    "status": "REAL",
+    "detail": "Mapped coordinates 100x100 dynamically to 80x80."
+  },
+  "verification_recovery": {
+    "status": "REAL",
+    "detail": "Stagnation loop correctly identified after 3 consecutive failures."
+  },
+  "hitl_blocking": {
+    "status": "REAL",
+    "detail": "High-risk action successfully blocked requiring pre-authorization."
+  },
+  "safety_watchdog": {
+    "status": "REAL",
+    "detail": "Safety watchdog intercepted/blocked command. Details: {'status': 'PENDING_CONFIRMATION', 'action_id': 'act_b7622f41', 'message': 'Sir, I require confirmation for the following destructive action: DELETE_FILE'}"
+  },
+  "memory_persistence": {
+    "status": "REAL",
+    "detail": "UserMemory updated successfully and persisted to state."
+  },
+  "regressions": {
+    "status": "REAL",
+    "detail": "Accessibility tree and CV segmenter fallback structures verified without regressions."
+  },
+  "benchmark_runner": {
+    "status": "REAL",
+    "detail": "Evaluated 4 samples, Accuracy: 0.0%, Avg Latency: 9728.3ms."
+  }
+}

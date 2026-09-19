@@ -1,0 +1,25 @@
+{
+    "name": "Fayas",
+    "last_login": "",
+    "preferences": {
+        "theme": "STARK",
+        "themeColor": "rgba(0, 240, 255, 0.8)",
+        "voice": "JARVIS",
+        "active_emotion": "STARK"
+    },
+    "history": [],
+    "knowledge_vault": {
+        "suit_specs": "Mark 85 Nano-Construct calibrated for cosmic energy.",
+        "system_version": "O.M.E.G.A. XXXV",
+        "biometrics": "Verified user Fayas"
+    },
+    "blueprints": {
+        "free fire": "C:\\Program Files\\BlueStacks_nxt\\HD-Player.exe",
+        "opera": "C:\\Users\\Asus\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Opera GX Browser.lnk",
+        "ollama": "C:\\Users\\Asus\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Ollama.lnk"
+    },
+    "project_context": "Jarvis O.M.E.G.A. Restoration",
+    "mission_archive": [],
+    "ghost_devices": [],
+    "last_terminated": []
+}

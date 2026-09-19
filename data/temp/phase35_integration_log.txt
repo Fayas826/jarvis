@@ -1,0 +1,112 @@
+
+============================================================
+I1 — MODULE IMPORT CHAIN
+============================================================
+  PASS  I1.1 — action_confidence imported (35.3)
+  PASS  I1.2 — action_executor imported (35.1)
+  PASS  I1.3 — task_recovery (35.5) imported
+  PASS  I1.4 — AppActionMemory (35.4) imported
+  PASS  I1.5 — Phase 34.5 ConversationalInterpreter still importable
+  PASS  I1.6 — Phase 34.1 TaskPlanner still importable
+
+============================================================
+I2 — COMPUTER_USE_AGENT.PY WIRE VALIDATION
+============================================================
+  PASS  I2.1 — computer_use_agent.py parses without SyntaxError
+  PASS  I2.2 — Hook 'action_executor' present in CUA
+  PASS  I2.2 — Hook '_action_executor' present in CUA
+  PASS  I2.2 — Hook 'exec_result_35' present in CUA
+  PASS  I2.2 — Hook 'failure_classifier' present in CUA
+  PASS  I2.2 — Hook 'recovery_strategy_router' present in CUA
+  PASS  I2.2 — Hook 'failure_type' present in CUA
+  PASS  I2.2 — Hook 'strategy' present in CUA
+  PASS  I2.2 — Hook 'app_action_memory' present in CUA
+  PASS  I2.2 — Hook 'FailureType' present in CUA
+  PASS  I2.2 — Hook 'RecoveryStrategy' present in CUA
+  PASS  I2.2 — Hook 'needs_user' present in CUA
+  PASS  I2.2 — Hook 'is_halt' present in CUA
+  PASS  I2.2 — Hook 'should_retry' present in CUA
+  PASS  I2.2 — Hook 'INVALIDATE_AND_REGROUND' present in CUA
+  PASS  I2.2 — Hook 'safety_gate.check_safety' present in CUA
+  PASS  I2.2 — Hook 'confidence_report' present in CUA
+  PASS  I2.2 — Hook 'verification_method' present in CUA
+  PASS  I2.2 — Hook 'backend_used' present in CUA
+  PASS  I2.3 — safety_gate import preserved
+  PASS  I2.4 — safety_gate.check_safety called (primary)
+  PASS  I2.5 — safety_gate re-checked on recovery retry
+
+============================================================
+I3 — ACTION_CONFIDENCE x ACTION_EXECUTOR CONTRACT
+============================================================
+  PASS  I3.1 — OS_COMMAND confidence HIGH risk
+  PASS  I3.2 — verification_required=True for HIGH
+  PASS  I3.3 — Bad coords → is_safe_to_execute=False
+  PASS  I3.4 — APP_OPEN backend=native
+  PASS  I3.5 — UI_AUTOMATION backend=uia
+
+============================================================
+I4 — FAILURE_CLASSIFIER x RECOVERY_ROUTER CONTRACT
+============================================================
+  PASS  I4.x — ACTION_BLOCKED -> SURFACE_TO_USER
+  PASS  I4.x — ACTION_BLOCKED should_retry=False
+  PASS  I4.x — ACTION_BLOCKED needs_user=True
+  PASS  I4.x — ACTION_BLOCKED is_halt=False
+  PASS  I4.x — FATAL -> HALT
+  PASS  I4.x — FATAL should_retry=False
+  PASS  I4.x — FATAL needs_user=False
+  PASS  I4.x — FATAL is_halt=True
+  PASS  I4.x — TIMEOUT -> WAIT_AND_RETRY
+  PASS  I4.x — TIMEOUT should_retry=True
+  PASS  I4.x — TIMEOUT needs_user=False
+  PASS  I4.x — TIMEOUT is_halt=False
+  PASS  I4.x — ELEMENT_GONE -> REGROUND_AND_RETRY
+  PASS  I4.x — ELEMENT_GONE should_retry=True
+  PASS  I4.x — ELEMENT_GONE needs_user=False
+  PASS  I4.x — ELEMENT_GONE is_halt=False
+  PASS  I4.x — STALE_GROUNDING -> INVALIDATE_AND_REGROUND
+  PASS  I4.x — STALE_GROUNDING should_retry=True
+  PASS  I4.x — STALE_GROUNDING needs_user=False
+  PASS  I4.x — STALE_GROUNDING is_halt=False
+  PASS  I4.x — WRONG_TARGET -> REGROUND_ALT_TOOL
+  PASS  I4.x — WRONG_TARGET should_retry=True
+  PASS  I4.x — WRONG_TARGET needs_user=False
+  PASS  I4.x — WRONG_TARGET is_halt=False
+  PASS  I4.x — BACKEND_ERROR -> SWITCH_BACKEND
+  PASS  I4.x — BACKEND_ERROR should_retry=True
+  PASS  I4.x — BACKEND_ERROR needs_user=False
+  PASS  I4.x — BACKEND_ERROR is_halt=False
+
+============================================================
+I5 — APP_ACTION_MEMORY x TOOL_ROUTER ADVISORY CONTRACT
+============================================================
+  PASS  I5.1 — DOM preferred after 5 successes (UIA below threshold)
+  PASS  I5.2 — ToolRouter selects dom independently
+  PASS  I5.3 — AppActionMemory has no decide_tool_route
+
+============================================================
+I6 — PHASE 34 REGRESSION
+============================================================
+  PASS  I6.1 — Phase 34.5 interpreter round-trip
+  PASS  I6.2 — Phase 34.4 grounding cache round-trip
+  PASS  I6.3 — Phase 34.4 TaskMemory round-trip
+  PASS  I6.4 — ai_routes.py (Phase 34.6 wire) still parses
+
+============================================================
+I7 — SAFETY CONTRACT (All Phase 35 Modules)
+============================================================
+  PASS  I7.x — ActionConfidenceBuilder: no dangerous methods
+  PASS  I7.x — action_executor: no dangerous methods
+  PASS  I7.x — failure_classifier: no dangerous methods
+  PASS  I7.x — recovery_strategy_router: no dangerous methods
+  PASS  I7.x — app_action_memory: no dangerous methods
+  PASS  I7.x — Protected: safety_layer.py exists unchanged
+  PASS  I7.x — Protected: agent_state_machine.py exists unchanged
+  PASS  I7.x — Protected: checkpoint_manager.py exists unchanged
+
+============================================================
+PHASE 35 INTEGRATION TEST SUMMARY
+============================================================
+  TOTAL PASS: 76
+  TOTAL FAIL: 0
+  RESULT: PHASE 35 INTEGRATION: ALL PASS
+============================================================

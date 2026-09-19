@@ -1,0 +1,27 @@
+FROM kivy/buildozer:latest
+
+LABEL maintainer="JARVIS APK Builder"
+LABEL description="Builds JARVIS Android APK using Buildozer"
+
+# Install extra system deps
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    libasound2-dev \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up workspace
+WORKDIR /app
+
+# Copy android_app source
+COPY . /app/
+
+# Install Python deps for pre-check
+RUN pip install --no-cache-dir requests kivy
+
+# Accept Android SDK licenses
+RUN yes | buildozer android update 2>/dev/null || true
+
+# Build the APK
+CMD ["buildozer", "-v", "android", "debug"]

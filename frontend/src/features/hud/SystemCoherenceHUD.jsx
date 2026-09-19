@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, useTime, useTransform } from "framer-motion";
-
-const seededValue = (index, seed = 37) => {
-  const value = Math.sin(index * 53.91 + seed) * 10000;
-  return value - Math.floor(value);
-};
+import React from "react";
+import { motion, useTime, useTransform, AnimatePresence } from "framer-motion";
 
 export default function AuraHUD({ 
   isIgniting = false, 

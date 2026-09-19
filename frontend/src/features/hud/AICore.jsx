@@ -1,4 +1,5 @@
 import React, { useMemo, useRef } from "react";
+import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { View, Points, PointMaterial } from "@react-three/drei";
 import { motion } from "framer-motion";
@@ -191,8 +192,6 @@ export default function AICore({
   onClick 
 }) {
   const parallax = { x: 0, y: 0 };
-
-  const glowColor = themeColor;
 
   return (
     <div 

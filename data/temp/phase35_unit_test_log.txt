@@ -1,0 +1,85 @@
+
+============================================================
+35.3 — ACTION CONFIDENCE MODEL
+============================================================
+  PASS  T35.3.1 — CLICK risk=MEDIUM
+  PASS  T35.3.2 — coord_validity=PASS
+  PASS  T35.3.3 — pre_validation=True (conf=0.94)
+  PASS  T35.3.4 — verify_required=True (MEDIUM)
+  PASS  T35.3.5 — overall_confidence near 0.94 (0.940)
+  PASS  T35.3.6 — OS_COMMAND risk=HIGH
+  PASS  T35.3.7 — coord=N/A for non-click
+  PASS  T35.3.8 — verify_required=True (HIGH)
+  PASS  T35.3.9 — SCROLL risk=LOW
+  PASS  T35.3.10 — verify_required=False (LOW)
+  PASS  T35.3.11 — Out-of-bounds coords → coord=FAIL
+  PASS  T35.3.12 — Pre-validation fails on bad coords
+  PASS  T35.3.13 — Overall conf penalised (0.270)
+  PASS  T35.3.14 — Low-confidence CLICK pre_ok=False
+  PASS  T35.3.15 — High-conf valid action is_safe=True
+  PASS  T35.3.16 — Failed pre-valid is_safe=False
+  PASS  T35.3.17 — to_dict has all required fields
+  PASS  T35.3.18 — ActionConfidenceBuilder has no execute method
+
+============================================================
+35.1 — ACTION EXECUTOR (import + pre-validation logic)
+============================================================
+  PASS  T35.1.1 — ActionExecutor instantiable
+  PASS  T35.1.2 — APP_OPEN -> native
+  PASS  T35.1.3 — UI_AUTOMATION -> uia
+  PASS  T35.1.4 — OS_COMMAND -> os_command
+  PASS  T35.1.5 — OPEN_APP verify=True when window matches (method=window_title)
+  PASS  T35.1.6 — OPEN_APP verify=True when Chrome window appears (method=window_title)
+  PASS  T35.1.7 — TYPE verify=True when window unchanged after typing (method=text_check)
+  PASS  T35.1.8 — ActionExecutor has no safety bypass
+
+============================================================
+35.5 — FAILURE CLASSIFIER + RECOVERY STRATEGY ROUTER
+============================================================
+  PASS  T35.5.1 — BLOCKED status -> ACTION_BLOCKED
+  PASS  T35.5.2 — Timeout error -> TIMEOUT
+  PASS  T35.5.3 — Window changed -> ELEMENT_GONE
+  PASS  T35.5.4 — Cache hit + low confidence -> STALE_GROUNDING
+  PASS  T35.5.5 — Low confidence non-cached -> WRONG_TARGET
+  PASS  T35.5.6 — Driver exception -> BACKEND_ERROR
+  PASS  T35.5.7 — WRONG_TARGET -> REGROUND_ALT_TOOL
+  PASS  T35.5.8 — ELEMENT_GONE -> REGROUND_AND_RETRY
+  PASS  T35.5.9 — STALE_GROUNDING -> INVALIDATE_AND_REGROUND
+  PASS  T35.5.10 — TIMEOUT -> WAIT_AND_RETRY
+  PASS  T35.5.11 — ACTION_BLOCKED -> SURFACE_TO_USER
+  PASS  T35.5.12 — FATAL -> HALT
+  PASS  T35.5.13 — REGROUND_AND_RETRY should_retry=True
+  PASS  T35.5.14 — SURFACE_TO_USER needs_user=True
+  PASS  T35.5.15 — HALT is_halt=True
+  PASS  T35.5.16 — task_recovery_controller.attempt_recovery exists
+  PASS  T35.5.17 — task_recovery_controller.rollback_files exists
+  PASS  T35.5.18 — describe() returns non-empty string (Target element was present at grounding )
+
+============================================================
+35.4 — APP ACTION MEMORY
+============================================================
+  PASS  T35.4.1 — observation_count=7 after 7 records
+  PASS  T35.4.2 — success_rate = 5/7 ~= 0.71 (0.714)
+  PASS  T35.4.3 — UIA preferred (100% > 71%) (preferred=uia)
+  PASS  T35.4.4 — Insufficient obs returns None
+  PASS  T35.4.5 — get_app_profile has CLICK key
+  PASS  T35.4.6 — profile[CLICK][dom] has success_rate
+  PASS  T35.4.7 — app_action_memory singleton is AppActionMemory
+  PASS  T35.4.8 — No execute/safety bypass methods on AppActionMemory
+
+============================================================
+SAFETY CONTRACT — All Phase 35 Modules
+============================================================
+  PASS  SAFETY — ActionConfidenceBuilder: no dangerous methods
+  PASS  SAFETY — action_executor: no dangerous methods
+  PASS  SAFETY — failure_classifier: no dangerous methods
+  PASS  SAFETY — recovery_strategy_router: no dangerous methods
+  PASS  SAFETY — app_action_memory: no dangerous methods
+
+============================================================
+PHASE 35 UNIT TEST SUMMARY
+============================================================
+  TOTAL PASS: 57
+  TOTAL FAIL: 0
+  RESULT: PHASE 35 UNITS: ALL PASS
+============================================================

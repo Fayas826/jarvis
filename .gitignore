@@ -42,8 +42,22 @@ yarn-error.log*
 *.pb
 *.pb_CORRUPTED
 *.gz
+*.zip
 scratch/backups/
 data/brain/
 data/memory/
 neural_memory/
 backend/omega_system.log*
+
+# Oversized models & massive datasets (> 100MB blocked by GitHub)
+training_lab/jarvis_brain_merged/
+training_lab/game_development.jsonl
+training_lab/1million_godtier_data.jsonl
+training_lab/jarvis_5million_game_dev_model/
+training_lab/jarvis_1million_FULL_model_backup_chunk5/
+training_lab/**/checkpoint-*/
+training_lab/**/chunk_*/
+project_memory/shadow_checkpoints/
+project_memory/checkpoints/
+
+

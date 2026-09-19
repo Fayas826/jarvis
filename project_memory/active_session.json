@@ -1,0 +1,47 @@
+{
+  "plan_id": "7595a5a2-d6c8-4ce4-857b-a9a8746b5830",
+  "objective": "Launch calculator application and wait",
+  "intent": {
+    "objective": "Launch calculator application and wait",
+    "priority": "MEDIUM",
+    "risk_level": "LOW",
+    "forbidden_actions": [],
+    "success_conditions": [
+      "title_check"
+    ],
+    "confidence_requirement": 0.7
+  },
+  "created_at": 1787380996.7935696,
+  "updated_at": 1787381079.3321218,
+  "status": "PARTIAL",
+  "active_node_id": "TASK-002",
+  "nodes": {
+    "TASK-001": {
+      "status": "COMPLETED",
+      "started_at": 1787381012.5432036,
+      "completed_at": 1787381013.136444,
+      "result": {
+        "status": "SUCCESS",
+        "action_type": "WAIT",
+        "node_id": "TASK-001"
+      }
+    },
+    "TASK-002": {
+      "status": "RETRYING",
+      "started_at": 1787381013.1463559,
+      "retry_count": 1,
+      "retry_at": 1787381079.3266783
+    }
+  },
+  "tool_history": [],
+  "error_history": [],
+  "recovery_history": [
+    {
+      "node_id": "TASK-002",
+      "strategy": "RETRY",
+      "outcome": "RECOVERABLE_FAILURE",
+      "ts": 1787381079.317924
+    }
+  ],
+  "variables": {}
+}

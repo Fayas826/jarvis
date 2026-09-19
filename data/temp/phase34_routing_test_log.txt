@@ -1,0 +1,82 @@
+
+============================================================
+CAT 1 — ROUTING CORRECTNESS
+============================================================
+  PASS  C1.1 — Chrome DOM wins base case
+  PASS  C1.2 — Correct score assigned
+  PASS  C1.3 — Reason details observations
+  PASS  C1.4 — Textfield target biases DOM higher
+
+============================================================
+CAT 2 — LATENCY-WEIGHTED SELECTION
+============================================================
+  PASS  C2.1 — Base DOM latency is 10ms
+  PASS  C2.2 — DOM latency adapted higher (new_lat=715.2ms)
+  PASS  C2.3 — UIA selected over lagged DOM
+
+============================================================
+CAT 3 — LEARNED-PREFERENCE ROUTING
+============================================================
+  PASS  C3.1 — Learned memory overrides higher grounding confidence
+
+============================================================
+CAT 4 — COLD-START BEHAVIOR
+============================================================
+  PASS  C4.1 — Cold start fallback defaults safely
+
+============================================================
+CAT 5 — FAILURE / FALLBACK BEHAVIOR
+============================================================
+  PASS  C5.1 — Hard default fallback triggered when no candidates available
+  PASS  C5.2 — Hard fallback identifies as fallback
+
+============================================================
+CAT 6 — VRAM-AWARE ROUTING
+============================================================
+  PASS  C6.1 — VLM wins under low VRAM pressure
+  PASS  C6.2 — VLM penalised under high VRAM pressure, DOM wins
+  PASS  C6.3 — VLM completely disabled under critical VRAM
+
+============================================================
+CAT 7 — STALE-MEMORY DECAY
+============================================================
+  PASS  C7.1 — Fully trusted learned preference weight is higher than decayed stale one
+
+============================================================
+CAT 8 — PROMPT-INJECTION ISOLATION
+============================================================
+  PASS  C8.1 — Newlines removed
+  PASS  C8.2 — Output truncated safely
+
+============================================================
+CAT 9 — BACKWARD COMPATIBILITY
+============================================================
+  PASS  C9.1 — VLMRouter singleton exists
+  PASS  C9.2 — ToolRouter singleton exists
+  PASS  C9.3 — decide_tool_route interface works
+  PASS  C9.4 — record_outcome interface works
+
+============================================================
+CAT 10 — PROTECTED BOUNDARIES
+============================================================
+  PASS  C10.1 — Protected file exists: safety_layer.py
+  PASS  C10.2 — Protected file parseable: safety_layer.py
+  PASS  C10.1 — Protected file exists: agent_state_machine.py
+  PASS  C10.2 — Protected file parseable: agent_state_machine.py
+  PASS  C10.1 — Protected file exists: checkpoint_manager.py
+  PASS  C10.2 — Protected file parseable: checkpoint_manager.py
+  PASS  C10.3 — vlm_router.py does not import safety_layer
+  PASS  C10.4 — vlm_router.py does not import checkpoint_manager
+
+============================================================
+PERF — LATENCY MEASUREMENTS
+============================================================
+  PASS  PERF — IntelligentToolRouter.route: avg 0.075ms/call (500 calls)
+
+============================================================
+PHASE 34 TRACK 4 — TOOL ROUTING TEST SUMMARY
+============================================================
+  TOTAL PASS: 29
+  TOTAL FAIL: 0
+  RESULT: ALL PASS
+============================================================

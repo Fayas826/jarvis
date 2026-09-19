@@ -1,0 +1,52 @@
+
+============================================================
+1. REGRESSION & MILESTONES VERIFICATION
+============================================================
+  PASS — REAL  1.1 — State machine transition planning
+  PASS — REAL  1.2 — ScreenFrame instance creation and width mapping
+
+============================================================
+2. DEPENDENCY & CLEAN-MACHINE INTEGRITY
+============================================================
+  PASS — REAL  2.1 — Pillow import resolves
+  PASS — REAL  2.2 — OpenCV cv2 import resolves
+  PASS — REAL  2.3 — pyautogui import resolves
+
+============================================================
+3. RTX 3050 VRAM VALIDATION
+============================================================
+  PASS — REAL  3.1 — Router disables VLM under critical VRAM (>95% used)
+  PASS — REAL  3.2 — Router penalizes VLM under high VRAM (>85% used)
+
+============================================================
+4. GROUNDING CASCADE & COLD START
+============================================================
+  PASS — REAL  4.1 — DOM match early exit resolved target
+  PASS — REAL  4.2 — DOM match successfully bypassed UIA scans
+
+============================================================
+5. COORDINATE SANITY CHECK
+============================================================
+  PASS — REAL  5.1 — Screen center accepted
+  PASS — REAL  5.2 — Out of bounds width coordinate rejected
+  PASS — REAL  5.3 — Top-left corner deadzone rejected
+
+============================================================
+6. SAFETY KERNEL & BLOCK ENFORCEMENT
+============================================================
+  PASS — REAL  6.1 — Safety validation mapped to ACTION_BLOCKED
+  PASS — REAL  6.2 — ACTION_BLOCKED selects SURFACE_TO_USER (halt retries)
+
+============================================================
+7. RELEASE PACKAGE HYGIENE
+============================================================
+  PASS — REAL  7.1 — vlm_router contains no machine-specific absolute path credentials
+  PASS — REAL  7.2 — gui_grounding contains no machine-specific absolute path credentials
+
+============================================================
+PHASE 34 TRACK 8 — HARDENING RUNNER SUMMARY
+============================================================
+  TOTAL PASS: 16
+  TOTAL FAIL: 0
+  RESULT: ALL PASS
+============================================================

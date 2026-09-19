@@ -3,26 +3,14 @@ import { motion } from "framer-motion";
 import { View, Float, MeshDistortMaterial, Sphere } from "@react-three/drei";
 import * as THREE from "three";
 
-// 🌀 3D_KINETIC_CORE: WEBGL BACKGROUND SYNERGY
+// 🌀 3D_KINETIC_CORE: AMBIENT ENERGY FIELD (NO BLOB)
 const KineticCanvas = () => {
     return (
-        <div className="absolute inset-0 z-0 pointer-events-none opacity-30">
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
             <View className="w-full h-full">
-                <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} intensity={1} color="#00f0ff" />
-                <Float speed={2} rotationIntensity={1} floatIntensity={1}>
-                    <Sphere args={[2.5, 64, 64]}>
-                        <MeshDistortMaterial
-                            color="#006677"
-                            speed={3}
-                            distort={0.4}
-                            radius={1}
-                            wireframe
-                            transparent
-                            opacity={0.3}
-                        />
-                    </Sphere>
-                </Float>
+                <ambientLight intensity={0.3} color="#00f0ff" />
+                <pointLight position={[0, 5, 5]} intensity={2} color="#00f0ff" />
+                <pointLight position={[-5, -5, -5]} intensity={0.5} color="#0055ff" />
             </View>
         </div>
     );
@@ -35,12 +23,13 @@ export default function CinematicOverlay({ children, active = true }) {
   // 📝 PROTOCOL_LOG_GENERATOR (SIMULATED AUTHENTICATION)
   useEffect(() => {
     const protocols = [
-        "ESTABLISHING_ENCRYPTED_TUNNEL...",
-        "VERIFYING_STARK_INDUSTRIAL_CERT...",
-        "Bypassing_Legacy_Firewall_v6.2",
-        "RETRIEVING_NEURAL_SIGNATURE...",
+        "ESTABLISHING_ENCRYPTED_QUANTUM_TUNNEL...",
+        "VERIFYING_OMEGA_NEURAL_CERT...",
+        "BYPASSING_LEGACY_FIREWALL_V6.2...",
+        "RETRIEVING_BIOMETRIC_NEURAL_SIGNATURE...",
+        "IDENTITY_CONFIRMED: MASTER_FAYAS",
         "ACCESS_GRANTED: LEVEL_OMEGA",
-        "INITIALIZING_ZENITH_TRANSFORMATION"
+        "INITIALIZING_ZENITH_NEURAL_CORE..."
     ];
     let i = 0;
     const interval = setInterval(() => {
@@ -71,7 +60,7 @@ export default function CinematicOverlay({ children, active = true }) {
       />
 
       {/* 📋 TERMINAL_PROTOCOL_LOGS (LEFT_ALIGNED) */}
-      <div className="absolute top-1/2 -translate-y-1/2 left-10 flex flex-col gap-2 z-20 pointer-events-none">
+      <div className="absolute top-1/2 -translate-y-1/2 left-12 flex flex-col gap-2 z-20 pointer-events-none">
           {logs.map((log, i) => (
               <motion.div 
                   key={i}
@@ -84,21 +73,30 @@ export default function CinematicOverlay({ children, active = true }) {
           ))}
       </div>
 
-      {/* 💎 LUXURY_HEADER: STARK_INDUSTRIES_AUTH */}
-      <div className="absolute top-10 left-10 flex flex-col gap-1 pointer-events-none z-30">
+      {/* 💎 LUXURY_HEADER: O.M.E.G.A. AUTH — pushed below the sidebar toggle */}
+      <div className="absolute top-20 left-12 flex flex-col gap-1 pointer-events-none z-30">
         <div className="flex items-center gap-3">
           <div className="w-8 h-[1px] bg-cyan-400/40" />
-          <span className="font-mono text-[10px] text-cyan-400/60 tracking-[0.6em] uppercase">Secure_Auth_v7.4</span>
+          <span className="font-mono text-[10px] text-cyan-400/60 tracking-[0.6em] uppercase">QUANTUM_AUTH_v20.0</span>
         </div>
         <motion.h1 
             initial={{ letterSpacing: "1em", opacity: 0 }}
-            animate={{ letterSpacing: "0.8em", opacity: 1 }}
-            className="font-mono text-[16px] text-white font-black uppercase drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]"
+            animate={{ letterSpacing: "0.3em", opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            className="font-mono text-[18px] text-white font-black uppercase drop-shadow-[0_0_20px_rgba(0,240,255,0.5)]"
         >
-          PROPERTY OF STARK INDUSTRIES
+          O.M.E.G.A. NEURAL CORE
         </motion.h1>
+        <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="font-mono text-[9px] text-cyan-400/50 uppercase tracking-[0.4em] mt-0.5"
+        >
+          Omniscient Multi-Engine General Architecture
+        </motion.p>
         <div className="flex justify-between items-center mt-2 px-1">
-           <span className="text-[8px] text-cyan-500/40 uppercase tracking-[0.4em]">Verified: Master_Fayas</span>
+           <span className="text-[8px] text-cyan-500/40 uppercase tracking-[0.4em]">Neural ID: Master_Fayas // OMEGA_TIER</span>
            <div className="flex gap-1.5">
               {[1,2,3,4].map(i => (
                 <motion.div 

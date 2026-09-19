@@ -1,0 +1,5 @@
+{
+  "qwen2_vl_vision_model": 2000,
+  "deepseek_coder_model": 2000,
+  "bert_emotion_model": 2000
+}

@@ -1,0 +1,22 @@
+add device 1: /dev/input/event6
+  name:     "uinput_nav"
+add device 2: /dev/input/event5
+  name:     "mt6877-mt6359 USB_3_5 Jack"
+add device 3: /dev/input/event0
+  name:     "ACCDET"
+add device 4: /dev/input/event4
+  name:     "uinput-goodix"
+add device 5: /dev/input/event3
+  name:     "fts_ts"
+add device 6: /dev/input/event2
+  name:     "awinic_haptic"
+add device 7: /dev/input/event1
+  name:     "mtk-kpd"
+[   13521.415172] /dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   00000663            
+[   13521.415172] /dev/input/event3: EV_ABS       ABS_MT_POSITION_X    000016b5            
+[   13521.415172] /dev/input/event3: EV_ABS       ABS_MT_POSITION_Y    000028a2            
+[   13521.415172] /dev/input/event3: EV_KEY       BTN_TOUCH            DOWN                
+[   13521.415172] /dev/input/event3: EV_SYN       SYN_REPORT           00000000            
+[   13521.490223] /dev/input/event3: EV_ABS       ABS_MT_TRACKING_ID   ffffffff            
+[   13521.490223] /dev/input/event3: EV_KEY       BTN_TOUCH            UP                  
+[   13521.490223] /dev/input/event3: EV_SYN       SYN_REPORT           00000000            

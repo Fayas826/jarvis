@@ -1,0 +1,52 @@
+{
+  "tasks": [
+    {
+      "task_id": "TASK-001",
+      "parent_id": null,
+      "objective": "Verify screen capture active state",
+      "description": "Initialize screen captures and verify active application displays",
+      "action_type": "WAIT",
+      "dependencies": [],
+      "preconditions": {},
+      "expected_state": "SUCCESS",
+      "retry_policy": {
+        "max_retries": 3,
+        "strategy": "reground"
+      },
+      "timeout": 30.0,
+      "risk_level": "LOW",
+      "recovery_strategy": "replan",
+      "completion_condition": "title_check",
+      "status": "PENDING",
+      "id": "TASK-001",
+      "goal": "Verify screen capture active state",
+      "acceptance_criteria": "SUCCESS"
+    },
+    {
+      "task_id": "TASK-002",
+      "parent_id": "TASK-001",
+      "objective": "Launch sandbox Calculator application",
+      "description": "Trigger calculator launches and verify title change state",
+      "action_type": "OPEN_APP",
+      "dependencies": [
+        "TASK-001"
+      ],
+      "preconditions": {
+        "app_installed": true
+      },
+      "expected_state": "Calculator",
+      "retry_policy": {
+        "max_retries": 3,
+        "strategy": "reground"
+      },
+      "timeout": 30.0,
+      "risk_level": "LOW",
+      "recovery_strategy": "replan",
+      "completion_condition": "title_check",
+      "status": "PENDING",
+      "id": "TASK-002",
+      "goal": "Launch sandbox Calculator application",
+      "acceptance_criteria": "Calculator"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "training_lab/train_lora.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 4651,
+    "sha256": "77ae6b38ba9048b8ff57c388662229f1b762ff337565ec6e6c0588d1bd7ed19b"
+  },
+  "training_lab/my_data.jsonl": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 18538611,
+    "sha256": "943d16b99d9a23c05b7209477de38d82739c99b934b53c37d8ad6dae582da15e"
+  },
+  "training_lab/master_training_queue.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 3181,
+    "sha256": "94caa1f1016ac6ace00f954f80a610c60f550d1bc8627adb9f182dc87002902a"
+  },
+  "training_lab/generate_88_books_dataset.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 6138,
+    "sha256": "26078cb5363925ec9571085f7e005cc08a80242bb90024b8d7981f41268443d9"
+  },
+  "training_lab/generate_mindset_psychology_dataset.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 4213,
+    "sha256": "ecc5559797de3c940fea95235b83d2c9baf1799106661f12b661a0ab0ef02547"
+  },
+  "training_lab/phase_37_llava_vision_dataset.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 714,
+    "sha256": "8d5d934579e5d10ecee782087ce5b018a9952dd8885bc60ab2f11021ed1496a3"
+  },
+  "training_lab/phase_42_bert_llama_hybrid.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 795,
+    "sha256": "d423a44b9f056111ad81f8c44bd002f5cecf8872479dfb190e7870c2ebc54019"
+  },
+  "core/reliability/hardware_security_enforcer.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 4332,
+    "sha256": "dc96da4c358e1a68141ce59b827a1e5736564eac2927a8e1e2b7a724cefb2672"
+  },
+  "core/reliability/pre_speech_zero_error_gate.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 2288,
+    "sha256": "1bf3c5956a0cc699178d59f0b5b3954d97fee946187ae9007862df98c1205323"
+  },
+  "core/reliability/language_zero_error_verifier.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 2328,
+    "sha256": "be8b9797f94dec19065b5fba6e3d9fd80b4e7d0d9f9695a1b96a10d541c14f8a"
+  },
+  "vault_traps/JARVIS_CORE_KEYS.zip": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 28,
+    "sha256": "d0dcef37f2807c90a1c7c4a9d793ae2decd53dfe947cd329285c868fbb0d63f9"
+  },
+  "core/cognition/unified_swarm_architecture.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 3219,
+    "sha256": "9ee98cc06b208a1bd7a7e11500dbd7a917b6a453727e8ca454e31b91466cbae0"
+  },
+  "core/cognition/lazy_model_loader.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 2531,
+    "sha256": "becb0e63dee12719493f10a22664da7d18ddc6d0cc24880d44865383ce8f618c"
+  },
+  "core/cognition/hybrid_swarm_router.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 4796,
+    "sha256": "a816baa7645607c22c45020566ed7ae54fb342d651aa4f531b6460fb2d9103f2"
+  },
+  "core/cognition/knowledge_library_indexer.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 3661,
+    "sha256": "a0f8b09a941b671331e8a905134e976fab04dbc61bd554e8c3f2d6d59473b6c0"
+  },
+  "core/orchestration/mcp_remote_bridge.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 4265,
+    "sha256": "55bf84f1ff420ea5bd4394bc9aaaaae96b1de9461100cb764029e3d4eebcf805"
+  },
+  "create_system_restore_point.py": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 1819,
+    "sha256": "39fc0cc380803eea5713fa769b0f29a873fac56f63a936cdd0c2a76b45299e7f"
+  },
+  "docs/jarvis_master_capabilities_and_hardware_blueprint.md": {
+    "status": "FROZEN_LOCKED",
+    "size_bytes": 10984,
+    "sha256": "af1774c872168e4306734cb5fa15119c641082183182cb461eb170f6bce4f6e5"
+  }
+}

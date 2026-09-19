@@ -1,0 +1,43 @@
+============================================================
+PHASE 34.6 — FULL INTEGRATION TEST SUITE
+============================================================
+
+[INTEGRATION 1] Module Import Chain
+  PASS  I1.1 — context_memory imported (34.4)
+  PASS  I1.2 — conversational_interpreter imported (34.5)
+  PASS  I1.3 — task_planner imported (34.1)
+  PASS  I1.4 — vlm_router/ToolRouter imported (34.3)
+  PASS  I1.5 — gui_grounding/VisionGrounder imported (34.2)
+
+[INTEGRATION 2] Interpreter -> Context Round-Trip (34.5 x 34.4)
+  PASS  I2.1 — 'Now save it' resolved via context_lookup: 'Now save Notepad'
+  PASS  I2.2 — Correction detected, target: 'save as PDF instead'
+  PASS  I2.3 — Context buffer holds 4 turns
+
+[INTEGRATION 3] Grounding Cache Advisory Contract (34.4 x 34.2)
+  PASS  I3.1 — Grounding cache hit: source=uia, conf=0.91
+  PASS  I3.2 — Grounding cache invalidated on app switch
+
+[INTEGRATION 4] TaskMemory - Task Planner Contract (34.4 x 34.1)
+  PASS  I4.1 — 2 success + 1 failure tracked, confidence=0.85
+  PASS  I4.2 — Named output stored and retrievable
+  PASS  I4.3 — Task marked COMPLETED
+
+[INTEGRATION 5] ai_routes.py Wire Validity
+  PASS  I5.1 — ai_routes.py parses without SyntaxError
+  PASS  I5.2 — All Phase 34.5/34.4 integration hooks present in ai_routes.py
+
+[INTEGRATION 6] Safety Contract (All Phase 34 Modules)
+  PASS  I6.1 — No Phase 34 module exposes action-execution or safety-bypass methods
+
+[INTEGRATION 7] Performance Envelope
+  PASS  I7.x — ConvContext.add_turn: avg 0.001ms
+  PASS  I7.x — ConvContext.get_recent: avg 0.001ms
+  PASS  I7.x — Interpreter.interpret: avg 0.034ms
+  PASS  I7.x — TaskMemory.record_task: avg 0.012ms
+  PASS  I7.x — GroundingCache.record: avg 0.004ms
+  PASS  I7.x — GroundingCache.lookup: avg 0.003ms
+
+============================================================
+PHASE 34.6 INTEGRATION TEST SUITE COMPLETE
+============================================================

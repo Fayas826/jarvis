@@ -33,7 +33,7 @@ export default function ArmorOverlay({ active, mode }) {
             className="absolute top-1/4 left-10 text-[10px] text-red-500 font-mono space-y-2"
           >
             <div>ARMOR_INTEGRITY: 100%</div>
-            <div>STARK_OS_V_XI: ACTIVE</div>
+            <div>OMEGA_OS_V_XX: ACTIVE</div>
             <div>TACTICAL_SYNC: HIGH</div>
           </motion.div>
 

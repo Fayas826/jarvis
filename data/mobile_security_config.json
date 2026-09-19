@@ -1,0 +1,18 @@
+{
+  "device_serial": "uozd6pcuijqozhh6",
+  "pin_password": "0000",
+  "pattern_sequence": [7, 5, 9, 1, 2, 3, 6, 8, 4],
+  "pattern_grid_resolution": [1080, 2400],
+  "node_coordinates": {
+    "1": [270, 1100],
+    "2": [540, 1100],
+    "3": [810, 1100],
+    "4": [270, 1370],
+    "5": [540, 1370],
+    "6": [810, 1370],
+    "7": [270, 1640],
+    "8": [540, 1640],
+    "9": [810, 1640]
+  },
+  "auto_unlock_enabled": true
+}

@@ -81,25 +81,31 @@ class SonicEngineV2:
 
         def _execute_tts():
             try:
-                import pyttsx3
-                import pythoncom
-                pythoncom.CoInitialize()
+                import tempfile
+                if not hasattr(self, 'tts_model') or self.tts_model is None:
+                    print(f"[SONIC_V2] 🧬 Igniting Neural TTS (VITS)...")
+                    from TTS.api import TTS
+                    self.tts_model = TTS(model_name="tts_models/en/vctk/vits", progress_bar=False, gpu=False)
+                    print("[SONIC_V2] ✅ TTS Core ONLINE (Offline)")
+
+                with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
+                    temp_path = f.name
+                
+                # p273 is a crisp, professional British-style male voice
+                self.tts_model.tts_to_file(text=clean_text, file_path=temp_path, speaker="p273")
+                
+                pygame.mixer.music.load(temp_path)
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy():
+                    pygame.time.Clock().tick(10)
+                
+                pygame.mixer.music.unload()
                 try:
-                    engine = pyttsx3.init()
-                    voices = engine.getProperty('voices')
-                    for voice in voices:
-                        v_name = voice.name.lower()
-                        if "male" in v_name or "david" in v_name or "george" in v_name or "gb" in v_name or "uk" in v_name:
-                            engine.setProperty('voice', voice.id)
-                            break
-                    # More natural speaking rate
-                    engine.setProperty('rate', 165)
-                    engine.setProperty('volume', 1.0)
-                    engine.say(clean_text)
-                    engine.runAndWait()
-                    engine.stop()
-                finally:
-                    pythoncom.CoUninitialize()
+                    os.remove(temp_path)
+                except Exception as e:
+                    from core.reliability.system_logger import system_logger
+                    system_logger.log('ERROR', 'sonic_engine_v2', f'Unhandled exception: {e}')
+                    pass
             except Exception as e:
                 print(f"[SONIC_THREAD_FAIL] {e}")
 
