@@ -1,4 +1,4 @@
-# JARVIS AI ⚡
+# AEGIS AI ⚡
 
 A futuristic AI assistant system with:
 
